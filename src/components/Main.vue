@@ -52,6 +52,7 @@ export default {
   text-align: center;
   color: #fff;
 }
+
 .main-banner h2 {
   font-size: 3.5rem;
   margin-bottom: 10px;
@@ -65,6 +66,7 @@ export default {
   padding: 40px 20px;
   background-color: #f9f9f9;
 }
+
 .introduction h2 {
   font-size: 2rem;
   margin-bottom: 10px;

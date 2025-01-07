@@ -15,4 +15,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  
+  server: {
+    port: 3000, // 프론트엔드 포트 설정
+    host: 'localhost',
+    open: true, // 브라우저 자동 열기
+  },
 })

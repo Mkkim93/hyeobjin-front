@@ -11,6 +11,8 @@ import Yerim from "./components/Yerim.vue";
 import BeforeAfter from "./components/BeforeAfter.vue";
 import Estimate from "./components/Estimate.vue";
 import Support from "./components/Support.vue";
+import Register from "./components/Register.vue";
+import Login from "./components/Login.vue";
 
 const routes = [
   {path: '/', component: Main},
@@ -30,6 +32,9 @@ const routes = [
 
     {path: '/support', component: Support},
     {path: '/estimate', component: Estimate},
+
+    {path: '/register', component: Register},
+    {path: '/login', component: Login},
   ];
 
 const router = createRouter({
