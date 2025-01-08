@@ -2,9 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import About from "./components/About.vue";
 import Location from "./components/Location.vue";
 import History from "./components/History.vue";
-import Gallary from "./components/Gallary.vue";
 import Main from "./components/Main.vue";
-import Products from "./components/Products.vue"; 
 import Kcc from "./components/Kcc.vue";
 import Hugre from "./components/Hugre.vue";
 import Yerim from "./components/Yerim.vue";
@@ -25,9 +23,6 @@ const routes = [
     {path: '/hugre', component: Hugre},
     {path: '/yerim', component: Yerim},
 
-    {path: '/products', component: Products},
-
-    {path: '/gallary', component: Gallary},
     {path: '/before-after', component: BeforeAfter},
 
     {path: '/support', component: Support},

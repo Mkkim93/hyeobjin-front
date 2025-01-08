@@ -1,41 +1,50 @@
 <template>
-
-<div class="wrap">
-    
+  <div class="wrap">
     <HomeView />
-
-    <section class="main-banner">
-      <div class="banner-content">
-        <MySwifer />
-      </div>
-    </section>
-
-    <div class="router-content">
-     <router-view></router-view>
+    <div class="swifer-content">
+      <MySwifer />
     </div>
-    
+
+    <div class="main-content">
+
+      <div class="left-banner">
+        <LeftBanner />
+      </div>
+
+      <div class="router-content">
+        <router-view></router-view>
+      </div>
+
+      <div class="right-banner">
+        <RightBanner />
+      </div>
+
+    </div>
+
     <Footer />
   </div>
-
 </template>
 
 <script>
 import Footer from './components/Footer.vue';
 import HomeView from './components/HomeView.vue';
 import MySwifer from './components/MySwifer.vue';
+import LeftBanner from './components/LeftBanner.vue';
+import RightBanner from './components/RightBanner.vue';
 
 export default {
   name: 'App',
   components: {
-    Footer,
     HomeView,
     MySwifer,
+    LeftBanner,
+    RightBanner,
+    Footer,
   }
 }
 </script>
 
 <style>
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -49,9 +58,35 @@ body {
   min-height: 100vh;
 }
 
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left-banner,
+.right-banner {
+  width: 20%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 .router-content {
-  width: 60%; /* 원하는 너비로 수정 */
-  margin: 0 auto; /* 가운데 정렬 */
-  padding: 20px; /* 필요시 패딩 추가 */
+  width: 60%;
+  /* 중앙 콘텐츠 영역 */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+  /* 가운데 콘텐츠 배경색 추가 (필요시) */
+}
+
+/* 배너 및 콘텐츠 영역 조정 */
+.left-banner, .right-banner {
+  position: sticky; /* 스크롤에 따라 고정 */
+  top: 0; /* 화면 상단 고정 */
+  height: calc(100vh - 40px); /* 전체 높이에서 여백을 빼서 고정 크기 설정 */
 }
 </style>

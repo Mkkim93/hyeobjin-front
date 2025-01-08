@@ -17,24 +17,12 @@
             </ul>
           </li>
 
-          <li><router-link to="/products" tag="li">
-              <h4>제품소개</h4>
-            </router-link></li>
-
           <li class="dropdown">
-            <h4>창호소개</h4>
+            <h4>제품소개</h4>
             <ul class="submenu">
               <li><router-link to="/kcc" tag="li">KCC</router-link></li>
               <li><router-link to="/hugre" tag="li">휴그린</router-link></li>
               <li><router-link to="/yerim" tag="li">예림</router-link></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <h4>시공갤러리</h4>
-            <ul class="submenu">
-              <li><router-link to="/gallary" tag="li">갤러리</router-link></li>
-              <li><router-link to="/before-after" tag="li">시공 전후</router-link></li>
             </ul>
           </li>
 
@@ -83,6 +71,13 @@ body {
   line-height: 1.6;
 }
 
+.contact-info {
+  z-index: 1002;
+}
+h1 {
+  z-index: 1001;
+}
+
 .header {
   background-color: #000;
   color: #fff;
@@ -114,7 +109,7 @@ body {
   left: 0;
   right: 0;
   width: 100%;
-  height: 40px;
+  height: 5px;
   margin-top: 145px;
   z-index: 1000;
   box-sizing: border-box;
@@ -131,7 +126,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
   width: 100%;
+  margin-bottom: 50px;
 }
 
 .menu li {
@@ -171,6 +168,11 @@ body {
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: auto;
+}
+
+.submenu li {
+  display: flex;
+  
 }
 
 .submenu li:hover {

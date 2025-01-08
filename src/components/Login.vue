@@ -40,9 +40,9 @@
     name: "Login",
     data() {
       return {
-        username: "",
-        password: "",
-        errorMessage: ""
+        username: '',
+        password: '',
+        errorMessage: ''
       };
     },
     methods: {
@@ -72,6 +72,7 @@
   </script>
   
   <style scoped>
+
   .login-container {
     max-width: 400px;
     margin: 0 auto;

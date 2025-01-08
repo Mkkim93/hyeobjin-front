@@ -93,7 +93,7 @@ export default {
 
 .swiper-slide img {
   width: 100%;      /* 이미지의 가로를 슬라이드 크기에 맞춤 */
-  height: 70%;     /* 이미지의 세로를 슬라이드 크기에 맞춤 */
+  height: 100%;     /* 이미지의 세로를 슬라이드 크기에 맞춤 */
   object-fit: cover; /* 이미지를 칸에 맞게 비율을 유지하면서 자름 */
 }
 </style>

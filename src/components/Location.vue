@@ -22,6 +22,11 @@
 <script>
 export default {
   name: "Location",
+  data() {
+    return {
+
+    }
+  },
   mounted() {
     // 카카오맵 API 로드 및 초기화
     const script = document.createElement("script");
@@ -53,19 +58,6 @@ export default {
 
 <style>
 
-
-/* 전체 섹션 스타일 */
-/* 전체 섹션 스타일 */
-.location-container {
-  max-width: 100%; /* 최대 가로 폭 */
-  width: 80%; /* 섹션 전체 가로 길이 */
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
 /* 제목 스타일 */
 .location-title {
   font-size: 2.5rem;
@@ -88,7 +80,7 @@ export default {
 
 .map {
   width: 100%; /* iframe의 가로 길이 최대화 */
-  height: 600px; /* 고정 높이 */
+  height: 800px; /* 고정 높이 */
   border: none;
 }
 
