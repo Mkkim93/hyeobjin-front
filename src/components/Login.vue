@@ -36,6 +36,7 @@
   </template>
   
   <script>
+
   export default {
     name: "Login",
     data() {
@@ -48,11 +49,21 @@
     methods: {
   async handleLogin() {
     // 서버에 로그인 요청
+    console.log('username', this.username);
+      console.log('password', this.password);
     try {
-      const response = await this.$axios.post("/api/login", {
+      // /login : 현재 서버의 Security config 로그인 경로에 /login 이 정의되어 있기 때문
+      const response = await this.$axios.post("/login", {
         username: this.username,
         password: this.password
+
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
       });
+      
+      console.log('response', response);
 
       // 로그인 성공 시, 토큰이 Authorization 헤더에 포함되어 있음
       const token = response.headers['authorization'] || response.data.token;
@@ -64,11 +75,13 @@
       }
     } catch (error) {
       // 로그인 실패 시 에러 메시지 표시
+      console.log('username', this.username);
+      console.log('password', this.password);
       this.errorMessage = "Invalid username or password!";
     }
   }
 }
-  };
+};
   </script>
   
   <style scoped>
