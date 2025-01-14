@@ -29,7 +29,7 @@
   </template>
   
   <script>
-  import axios from 'axios';
+ 
   
   export default {
     name: 'Register',
@@ -47,7 +47,7 @@
     methods: {
       async submitForm() {
         try {
-          const response = await this.$axios.post('/api/register', this.form);
+          const response = await this.$axios.post('/register', this.form);
           alert('관리자 등록 성공');
           this.$router.push('/login'); // redirect: /login
         } catch (error) {

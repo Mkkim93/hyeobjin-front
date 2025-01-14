@@ -3,7 +3,7 @@
     <div class="intro-container">
       <!-- Left Section: Image -->
       <div class="intro-image">
-        <img :src="asform" alt="A/S 이미지" />
+        <img :src="asformImg" alt="A/S 이미지" />
       </div>
 
       <!-- Right Section: Company Introduction -->
@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import asform from '@/assets/asform.jpg';
+import asformImg from '@/assets/asform.jpg';
 export default {
     name: 'ASForm',
     data() {
         return {
-            asform,
+          asformImg,
 
         }
     },

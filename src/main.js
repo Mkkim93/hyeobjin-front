@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import RouterName from './router.js';
 import axios from "./plugins/axios";
+import "./assets/base.css"; // Tailwind CSS 적용
 
 const app = createApp(App);
 

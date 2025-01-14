@@ -1,9 +1,12 @@
 <template>
   <div class="wrap">
+
     <HomeView />
+
     <div class="swifer-content">
       <MySwifer />
     </div>
+
 
     <div class="main-content">
 
@@ -11,9 +14,7 @@
         <LeftBanner />
       </div>
 
-      <div class="router-content">
-        <router-view></router-view>
-      </div>
+      <div class="router-content"><router-view></router-view></div>
 
       <div class="right-banner">
         <RightBanner />
@@ -22,6 +23,7 @@
     </div>
 
     <Footer />
+
   </div>
 </template>
 
@@ -34,6 +36,12 @@ import RightBanner from './components/RightBanner.vue';
 
 export default {
   name: 'App',
+
+  data() {
+    return {
+
+    }
+  },
   components: {
     HomeView,
     MySwifer,
@@ -84,9 +92,13 @@ body {
 }
 
 /* 배너 및 콘텐츠 영역 조정 */
-.left-banner, .right-banner {
-  position: sticky; /* 스크롤에 따라 고정 */
-  top: 0; /* 화면 상단 고정 */
-  height: calc(100vh - 40px); /* 전체 높이에서 여백을 빼서 고정 크기 설정 */
+.left-banner,
+.right-banner {
+  position: sticky;
+  /* 스크롤에 따라 고정 */
+  top: 0;
+  /* 화면 상단 고정 */
+  height: calc(100vh - 40px);
+  /* 전체 높이에서 여백을 빼서 고정 크기 설정 */
 }
 </style>
