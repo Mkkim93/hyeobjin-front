@@ -20,9 +20,10 @@
           <li class="dropdown">
             <h4>제품소개</h4>
             <ul class="submenu">
-              <li><router-link to="/kcc" tag="li">KCC</router-link></li>
-              <li><router-link to="/hugre" tag="li">휴그린</router-link></li>
-              <li><router-link to="/yerim" tag="li">예림</router-link></li>
+            
+              <li v-for="manufacturer in manufacturers" :key="manufacturer.manuId">
+              <router-link :to="`/manu/${manufacturer.manuId}`">{{ manufacturer.manuName }}</router-link>
+              </li>
             </ul>
           </li>
 
@@ -44,26 +45,42 @@
         <span>📞 042 - 583 - 3131</span>
       </div>
     </div>
+    
   </header>
+  
 </template>
 
 <script>
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   data() {
     return {
-
-
-    }
+      manufacturers: [], // 서버에서 가져올 제조사 목록
+    };
   },
-  props: {
+  created() {
+    this.fetchManufacturers(); // 컴포넌트가 생성되면 데이터 가져오기
   },
+  methods: {
+    async fetchManufacturers() {
+      try {
+        const response = await this.$axios.get('/manufacturers', {
+          headers: {
+            "Content-Type": "application/json", // 요청 헤더 설정
+          },
+        });
+        console.log('response', response);
 
-  components: {
-
-  }
-}
+        // 서버에서 받은 데이터가 기대한 형식인지 확인하고 할당
+        this.manufacturers = response.data;
+        // console.log('this.manufactures', this.manufacturers);
+      } catch (error) {
+        console.error('Failed to fetch manufacturers:', error);
+      }
+    },
+  },
+};
 </script>
 
 <style>
@@ -148,8 +165,8 @@ h1 {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0; /* 부모 메뉴 항목의 중앙으로 조정 */
-  transform: translateX(-50%); /* 정확하게 중앙 정렬 */
+  left: 50%; /* 중앙으로 이동 */
+  transform: translateX(-20%); /* 정확한 중앙 정렬 */
   width: max-content;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -160,7 +177,7 @@ h1 {
   border: none;
   z-index: 1000;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(0px);
   pointer-events: none;
 }
 
@@ -182,6 +199,7 @@ h1 {
   background-color: #333;
 
 }
+
 
 @media screen and (max-width: 768px) {
   .menu {

@@ -6,9 +6,11 @@ import "./assets/base.css"; // Tailwind CSS 적용
 
 const app = createApp(App);
 
-// router
-app.use(RouterName).mount('#app')
+// router 설정은 항상 axios 이후에 해줘야함
 
 // axios 
 axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.$axios = axios;
+
+// router
+app.use(RouterName).mount('#app')

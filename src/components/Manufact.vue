@@ -16,14 +16,15 @@
 
         <!-- 선택된 카테고리 표시 -->
         <div class="category-content">
-            <h3>선택된 카테고리: {{ activeCategory }}</h3>
+            <h3>선택된 카테고리1111: {{ activeCategory }}</h3>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
-    name: 'Kcc',
+    name: 'Manufact',
     data() {
         return {
             categories: ['도어', '창문', '창호', '핸들', '기타'], // 중분류 카테고리 목록

@@ -5,13 +5,22 @@
     <div class="swiper-wrapper">
       <!-- Slides -->
       <div class="swiper-slide">
-        <img src="@/assets/logo01.jpg" alt="Logo 1" />
+        <img src="@/assets/이미지1.png" alt="Logo 1" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/logo02.jpg" alt="Logo 2" />
+        <img src="@/assets/이미지2.png" alt="Logo 2" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/logo03.jpg" alt="Logo 3" />
+        <img src="@/assets/이미지3.png" alt="Logo 3" />
+      </div>
+      <div class="swiper-slide">
+        <img src="@/assets/이미지4.png" alt="Logo 3" />
+      </div>
+      <div class="swiper-slide">
+        <img src="@/assets/이미지5.png" alt="Logo 3" />
+      </div>
+      <div class="swiper-slide">
+        <img src="@/assets/이미지6.png" alt="Logo 3" />
       </div>
     </div>
     <!-- If we need pagination -->
@@ -30,9 +39,12 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import image1 from "@/assets/logo01.jpg"; // @는 src 디렉토리를 나타냅니다.
-import image2 from "@/assets/logo02.jpg";
-import image3 from "@/assets/logo03.jpg";
+import image1 from "@/assets/이미지1.png"; // @는 src 디렉토리를 나타냅니다.
+import image2 from "@/assets/이미지2.png";
+import image3 from "@/assets/이미지3.png";
+import image4 from "@/assets/이미지4.png";
+import image5 from "@/assets/이미지5.png";
+import image6 from "@/assets/이미지6.png";
 
 export default {
   name: "MySwifer",
@@ -40,7 +52,10 @@ export default {
     return {
       image1,
       image2,
-      image3
+      image3,
+      image4,
+      image5,
+      image6,
     };
   },
 

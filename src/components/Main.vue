@@ -4,6 +4,10 @@
       <p>700여 매장이 함께 참여한 시공, 믿을 수 있는 프리미엄 창호, 최대 10년 A/S 보증과 품질을 약속합니다.</p>
     </section>
 
+    <div class="emax-Intro">
+      <img :src="emaxIntro" alt="emax-intro">
+    </div>
+
     <!-- Services Section -->
     <section class="services">
       <div class="service-item">
@@ -25,16 +29,19 @@
         <button>More View</button>
       </div>
       <!-- Add more service items as needed -->
+    
     </section>
+    
 </template>
 
 <script>
+import emaxIntro from '@/assets/emax-intro.png';
 export default {
     name: 'Main',
 
     data() {
         return {
-          
+          emaxIntro,
         }
     }
 }
@@ -78,6 +85,19 @@ export default {
   justify-content: center;
   gap: 20px;
   padding: 20px;
+}
+
+.emax-Intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.emax-Intro img {
+  max-width: 100%;  /* 부모 요소에 맞게 이미지 크기 조정 */
+  height: auto;     /* 비율 유지하며 높이 자동 조정 */
+  object-fit: contain; /* 이미지의 비율을 유지하면서 크기에 맞게 조정 */
 }
 
 .service-item {
