@@ -8,7 +8,7 @@ import Estimate from "./components/Estimate.vue";
 import Support from "./components/Support.vue";
 import Register from "./components/Register.vue";
 import Login from "./components/Login.vue";
-import Admin from "./components/Admin.vue";
+import Admin from "./components/admin/Admin.vue";
 import ASForm from "./components/ASForm.vue";
 import Notice from "./components/Notice.vue";
 import Manufact from "./components/Manufact.vue";

@@ -57,11 +57,14 @@ export default {
   data() {
     return {
       manufacturers: [], // 서버에서 가져올 제조사 목록
+     
     };
   },
+
   created() {
     this.fetchManufacturers(); // 컴포넌트가 생성되면 데이터 가져오기
   },
+
   methods: {
     async fetchManufacturers() {
       try {
@@ -73,6 +76,7 @@ export default {
         console.log('response', response);
 
         // 서버에서 받은 데이터가 기대한 형식인지 확인하고 할당
+
         this.manufacturers = response.data;
         // console.log('this.manufactures', this.manufacturers);
       } catch (error) {
@@ -162,7 +166,7 @@ h1 {
 }
 
 .submenu {
-  display: none;
+  display: flex;
   position: absolute;
   top: 100%;
   left: 50%; /* 중앙으로 이동 */
@@ -177,7 +181,7 @@ h1 {
   border: none;
   z-index: 1000;
   opacity: 0;
-  transform: translateY(0px);
+  transform: translateY(-10px);
   pointer-events: none;
 }
 

@@ -1,7 +1,7 @@
 <template>
     <div class="banner-content">
       <aside>
-        <p>우측 배너</p>
+        <p></p>
       </aside>
     </div>
   </template>
@@ -18,7 +18,6 @@
   <style>
   .banner-content {
   
-    background-color: #f0f0f0;
     align-items: center;
     justify-content: center;
     
