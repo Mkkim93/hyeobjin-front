@@ -1,29 +1,23 @@
 <template>
-    <section class="introduction">
+<section class="introduction">
     <div class="intro-container">
-      <!-- Left Section: Image -->
       <div class="intro-image">
-        <img :src="AboutImg" alt="회사 이미지" />
+        <img :src="asformImg" alt="A/S 이미지" />
       </div>
 
-      <!-- Right Section: Company Introduction -->
       <div class="intro-text">
-        <h2>회사 개요</h2>
-        <p>저희 협진시스템창호는 창호 제작 공장을 직접 운영하여 정직하고 합리적인 가격, 우수한 제품을 보장할 수 있습니다.
-정직한 제품, 고객의 믿음과 신뢰를 쌓아가는 회사가 되도록 노력하겠습니다.
-A/S발생시 빠르고 책임감 있는 A/S처리를 약속드립니다.
-정품 자재로 믿을 수 있는 제품을 약속 드립니다. 언제나 편하게 문의 하세요.
-          가족과 같은 마음으로 친절히 상담해 드리겠습니다.</p>
+        <h2>A/S 문의</h2>
+        <p>협진 창호 A/S 신청은 아래의 연락처로 내용을 문자로 부탁드립니다.</p><br>
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
   <section class="services">
     <div class="service-item">
       <img src="#" alt="">
-      <h3>Layout 01</h3>
-      <p>Detail 01</p>
+      <h3>고객 상담</h3>
+      <p>평일 09:00 ~ 17:00 주말 및 공휴일 휴무</p>
+      <p>010-2223-0000</p>
     </div>
     <div class="service-item">
       <img src="#" alt="">
@@ -36,20 +30,24 @@ A/S발생시 빠르고 책임감 있는 A/S처리를 약속드립니다.
       <p>Deatil 03</p>
     </div>
   </section>
+
+  
 </template>
 
 <script>
-import AboutImg from '@/assets/aboutImg.jpg';
+import asformImg from '../../assets/images/asform.jpg';
 export default {
-    name: 'About',
+    name: 'ASForm',
     data() {
         return {
-            AboutImg,
-        };
+          asformImg,
+
+        }
     },
 }
 </script>
-<style scoped>
+
+<style>
 /* 전체 레이아웃 설정 */
 .introduction {
   padding: 60px 20px;
@@ -166,4 +164,5 @@ export default {
     margin-bottom: 20px;
   }
 }
+
 </style>

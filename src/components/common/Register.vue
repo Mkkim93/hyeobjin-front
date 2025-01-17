@@ -29,7 +29,7 @@
   </template>
   
   <script>
- 
+ import '../../assets/styles/register.css';
   
   export default {
     name: 'Register',
@@ -58,68 +58,5 @@
   };
   </script>
   
-  <style scoped>
-  .register-form {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    font-size: 16px;
-    color: #444;
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-  }
-  
-  .form-group input:focus {
-    border-color: #4a90e2;
-    outline: none;
-  }
-  
-  .submit-btn {
-    width: 100%;
-    padding: 14px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-btn:hover {
-    background-color: #357ab7;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 20px;
-    text-align: center;
-  }
+  <style>
   </style>

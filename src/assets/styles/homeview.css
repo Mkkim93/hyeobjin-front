@@ -1,0 +1,166 @@
+  .contact-info {
+    z-index: 1002;
+    /* white-space: nowrap; */
+  }
+  h1 {
+    z-index: 1001;
+  }
+  
+  .header {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .menu {
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    gap: 20px;
+    /* position: fixed; */
+    font-size: 1.5rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 30px;
+    margin-top: 145px;
+    z-index: 1000;
+    box-sizing: border-box;
+    white-space: nowrap;
+    flex: 1;
+  }
+  
+  .menu ul {
+    list-style: none;
+    background-color: black;
+    color: aliceblue;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  
+  .menu li {
+    position: relative;
+    display: block;
+    left: 0;
+    padding: 10px 50px;
+    cursor: pointer;
+    background-color: black;
+    color: aliceblue;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .submenu {
+    display: flex;
+    position: absolute;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    left: 0; /* 중앙으로 이동 */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    border: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+  }
+  
+  .menu li:hover .submenu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto;
+  }
+  
+  
+  .submenu li:hover {
+    background: #444;
+    cursor: pointer;
+  }
+  
+  .menu li:hover {
+    background-color: #333;
+  
+  }
+  
+  
+  @media screen and (max-width: 768px) {
+    .menu {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .menu li {
+      padding: 20px;
+    }
+  }
+  
+  .router-link-active {
+    color: inherit !important;
+    text-decoration: none;
+  }
+  
+  .router-link-exact-active {
+    color: inherit !important;
+    text-decoration: none;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  a,
+  .router-link-active,
+  .router-link-exact-active {
+    background-color: transparent !important;
+    outline: none;
+  }
+  
+  a:focus,
+  .router-link-active:focus,
+  .router-link-exact-active:focus {
+    background-color: transparent !important;
+    outline: none;
+  }
+  
+  a:active,
+  .router-link-active:active,
+  .router-link-exact-active:active {
+    background-color: transparent !important;
+    outline: none;
+  }
+  
+  .contact-info span {
+    margin-left: 50px;
+  }
+  
+  .contact-info span:nth-child(2) {
+    padding-right: 30px; /* 두 번째 span에 패딩 추가 */
+  }

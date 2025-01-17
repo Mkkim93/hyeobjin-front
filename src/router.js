@@ -1,17 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
-import About from "./components/About.vue";
-import Location from "./components/Location.vue";
-import History from "./components/History.vue";
-import Main from "./components/Main.vue";
-import BeforeAfter from "./components/BeforeAfter.vue";
-import Estimate from "./components/Estimate.vue";
-import Support from "./components/Support.vue";
-import Register from "./components/Register.vue";
-import Login from "./components/Login.vue";
+import About from "./components/common/About.vue";
+import Location from "./components/common/Location.vue";
+import History from "./components/common/History.vue";
+import Main from "./components/view/Main.vue";
+import BeforeAfter from "./components/common/BeforeAfter.vue";
+import Estimate from "./components/common/Estimate.vue";
+import Support from "./components/common/Support.vue";
+import Register from "./components/common/Register.vue";
+import Login from "./components/common/Login.vue";
 import Admin from "./components/admin/Admin.vue";
-import ASForm from "./components/ASForm.vue";
-import Notice from "./components/Notice.vue";
-import Manufact from "./components/Manufact.vue";
+import ASForm from "./components/common/ASForm.vue";
+import Notice from "./components/common/Notice.vue";
+import Manufact from "./components/common/Manufact.vue";
+import BoardDetail from "./components/common/BoardDetail.vue";
 
 
 const routes = [
@@ -47,7 +48,17 @@ const routes = [
     {path: '/support', component: Support},
     {path: '/estimate', component: Estimate},
     {path: '/asform', component: ASForm},
-    {path: '/notice', component: Notice},
+
+    {
+      path: '/notice', 
+      component: Notice,
+    },
+    
+    {
+      path: '/notice/:id',
+      component: BoardDetail,
+      props: true,
+    },
 
     {path: '/register', component: Register},
     {path: '/login', component: Login},
