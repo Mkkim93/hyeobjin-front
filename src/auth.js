@@ -1,8 +1,7 @@
-import axios from 'axios';
 
 export const handleLogin = async (username, password) => {
   try {
-    const response =  this.axios.post("/login", { username, password }, {
+    const response =  this.$axios.post("/login", { username, password }, {
       headers: {
         "Content-Type": "application/json"
       }

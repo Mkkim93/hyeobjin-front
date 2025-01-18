@@ -62,17 +62,16 @@ export default {
     data() {
         return {
             BoardDetail: null,
-          
+            
         }
     },
     props: {
-      
+
     },
 
     created() {
       this.fetchBoardDetails(this.$route.params.id);
       console.log('this.$route.params.id', this.$route.params.id);
-      
     },
 
     methods: {

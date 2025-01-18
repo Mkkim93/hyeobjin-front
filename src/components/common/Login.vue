@@ -2,7 +2,6 @@
     <div class="login-container">
       <h1>Login</h1>
       
-      <!-- 로그인 폼 -->
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="username">Username</label>
@@ -48,7 +47,7 @@
     },
     methods: {
   async handleLogin() {
-    // 서버에 로그인 요청
+   
     console.log('username', this.username);
     console.log('password', this.password);
     try {
@@ -77,7 +76,7 @@
       this.$router.push("/");
 
     } catch (error) {
-      // 로그인 실패 시 에러 메시지 표시
+     
       console.log('username', this.username);
       console.log('password', this.password);
       this.errorMessage = "Invalid username or password!";

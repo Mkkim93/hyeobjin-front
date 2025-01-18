@@ -16,7 +16,6 @@
       <div class="image-container">
         <!-- TODO v-for 사용 해야됨 -->
         <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" />
-       <p>{{items.fileBoxes[0].fileName}}</p> <!-- (임시) 파일명 확인 -->
       </div>
       <div class="info-container">
         <h1>{{ items.itemName }}</h1>
@@ -28,17 +27,30 @@
             <td>{{ items.manuName }}</td>
           </tr>
           <tr>
-            <th>원산지</th>
+            <th>용도</th>
             <td>{{ items.itemUse }}</td>
           </tr>
+
           <tr>
-            <th>컬러</th>
+            <th>내부 색상</th>
             <td>{{ items.itemInColor }}</td>
           </tr>
+
           <tr>
-            <th>추천공간</th>
+            <th>외부 색상</th>
+            <td>{{ items.itemOutColor }}</td>
+          </tr>
+
+          <tr>
+            <th>유리사용두께</th>
             <td>{{ items.itemSpec }}</td>
           </tr>
+
+          <tr>
+            <th>창틀 폭</th>
+            <td>{{ items.itemFrameWidth }}</td>
+          </tr>
+  
         </tbody>
         </table>
       </div>

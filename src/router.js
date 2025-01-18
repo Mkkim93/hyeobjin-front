@@ -4,7 +4,6 @@ import Location from "./components/common/Location.vue";
 import History from "./components/common/History.vue";
 import Main from "./components/view/Main.vue";
 import BeforeAfter from "./components/common/BeforeAfter.vue";
-import Estimate from "./components/common/Estimate.vue";
 import Support from "./components/common/Support.vue";
 import Register from "./components/common/Register.vue";
 import Login from "./components/common/Login.vue";
@@ -46,7 +45,6 @@ const routes = [
     {path: '/before-after', component: BeforeAfter},
 
     {path: '/support', component: Support},
-    {path: '/estimate', component: Estimate},
     {path: '/asform', component: ASForm},
 
     {

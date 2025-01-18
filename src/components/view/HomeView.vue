@@ -32,7 +32,6 @@
             <h4>고객상담</h4>
             <ul class="submenu">
               <li><router-link to="/notice" tag="li">공지사항</router-link></li>
-              <li><router-link to="/estimate" tag="li">견적요청</router-link></li>
               <li><router-link to="/support" tag="li">1:1문의</router-link></li>
               <li><router-link to="/asform" tag="li">A/S문의</router-link></li>
             </ul>

@@ -1,13 +1,13 @@
 <template>
   <section class="location-container">
-    <!-- 섹션 제목 -->
+  
     <h2 class="location-title">찾아오시는 길</h2>
-    <!-- 지도 및 설명 컨테이너 -->
+   
     <div class="map-wrapper">
-      <!-- 카카오맵이 렌더링될 영역 -->
+     
       <div id="map" class="map"></div>
     </div>
-    <!-- 설명 폼 -->
+   
     <div class="info-wrapper">
       <h3 class="info-title">(주)협진시스템창호</h3>
       <ul class="info-list">
@@ -28,27 +28,27 @@ export default {
     }
   },
   mounted() {
-    // 카카오맵 API 로드 및 초기화
+   
     const script = document.createElement("script");
     script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=893feef44fe943f2ac60e2fd3db808c7";
     script.onload = () => {
       kakao.maps.load(() => {
-        // 지도 초기화
-        const container = document.getElementById("map"); // 지도가 표시될 div
+      
+        const container = document.getElementById("map"); 
         const options = {
-          center: new kakao.maps.LatLng(36.28238783070588, 127.37469104514605), // 초기 지도 중심 좌표
-          level: 3, // 확대 레벨
+          center: new kakao.maps.LatLng(36.28238783070588, 127.37469104514605), 
+          level: 3, 
         };
 
-        const map = new kakao.maps.Map(container, options); // 지도 생성
+        const map = new kakao.maps.Map(container, options); 
 
-        // 마커 추가
-        const markerPosition = new kakao.maps.LatLng(36.28238783070588, 127.37469104514605); // 마커 위치
+        
+        const markerPosition = new kakao.maps.LatLng(36.28238783070588, 127.37469104514605); 
         const marker = new kakao.maps.Marker({
           position: markerPosition,
         });
 
-        marker.setMap(map); // 마커를 지도에 표시
+        marker.setMap(map);
       });
     };
     document.head.appendChild(script);
@@ -58,7 +58,6 @@ export default {
 
 <style>
 
-/* 제목 스타일 */
 .location-title {
   font-size: 2.5rem;
   text-align: center;
@@ -68,9 +67,8 @@ export default {
   padding-bottom: 10px;
 }
 
-/* 지도 섹션 스타일 */
 .map-wrapper {
-  width: 100%; /* 부모 컨테이너의 전체 가로 길이 */
+  width: 100%; 
   margin-bottom: 20px;
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -79,14 +77,14 @@ export default {
 }
 
 .map {
-  width: 100%; /* iframe의 가로 길이 최대화 */
-  height: 800px; /* 고정 높이 */
+  width: 100%; 
+  height: 800px; 
   border: none;
 }
 
-/* 설명 폼 스타일 */
+
 .info-wrapper {
-  width: 100%; /* 부모 컨테이너의 전체 가로 길이 */
+  width: 100%; 
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
