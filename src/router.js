@@ -12,11 +12,41 @@ import ASForm from "./components/common/ASForm.vue";
 import Notice from "./components/common/Notice.vue";
 import Manufact from "./components/common/Manufact.vue";
 import BoardDetail from "./components/common/BoardDetail.vue";
+import ItemManagement from "./components/admin/ItemManagement.vue";
+import NoticeManagement from "./components/admin/NoticeManagement.vue";
+import UserManagement from "./components/admin/UserManagement.vue";
 
 
 const routes = [
   {path: '/', component: Main},
 
+  
+  {
+    path: '/admin', 
+    component: Admin,  // 기본적으로 Admin 컴포넌트를 렌더링
+  },
+  
+  {
+    path: '/admin/:id', 
+    component: Admin,
+    children: [
+      {
+        path: 'user', component: UserManagement,
+      },
+
+      {
+        path: 'item', component: ItemManagement,
+      },
+      
+      {
+        path: 'notice', component: NoticeManagement,
+      }, 
+    ]
+    
+  },
+
+
+  // common components
     {path: '/about', component: About},
     {path: '/location', component: Location},
     {path: '/history', component: History},
@@ -61,7 +91,7 @@ const routes = [
     {path: '/register', component: Register},
     {path: '/login', component: Login},
 
-    {path: '/admin', component: Admin},
+    
   ];
 
 const router = createRouter({

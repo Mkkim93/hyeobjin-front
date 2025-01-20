@@ -70,12 +70,6 @@ export default {
     };
   },
 
-  // computed: {
-  //   filteredItems() {
-  //     return this.itemsNumList.filter(item => item.manuId === Number(this.manuId));
-  //   },
-  // },
-
   created() {
     this.manuId = this.$route.params.id;
     this.fetchItems(this.manuId);  
@@ -84,10 +78,6 @@ export default {
   watch: {
     '$route.params.id': 'handleManuIdChange',
   },
-
-  // mounted() {
-  //   this.fetchItemDetails(itemId);
-  // },
 
   methods: {
     handleManuIdChange() {
@@ -101,12 +91,15 @@ export default {
 
     async fetchItems(manuId) {
       try {
-
+        // get 요청 시 json type 명시를 생략 가능 (단, post, put 요청 시에는 명시하는 것이 일반적)
         const response = await this.$axios.get(`/items/numbers?manuId=${manuId}`, {
           headers: {
             "Content-Type": "application/json",
           },
         });
+
+        // await 를 사용해서 get(`/items/numbers?manuId...`) 가 완료될때까지 다음 코드를 중단 시킨다.
+        // 즉, this.itemsNumList = response.data 가 실행되기 전에 get 요청을 기다리게 한다.
         this.itemsNumList = response.data; 
         console.log('response', response);
         console.log('response-data', response.data);

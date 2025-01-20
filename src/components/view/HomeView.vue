@@ -37,6 +37,9 @@
             </ul>
           </li>
 
+          <!-- /admin (관리자폼 진입 향후 display:none 설정 후 관리자 로그인 상태에서 보이도록 구현 예정) -->
+              <li><router-link to="/admin" tag="li">설정</router-link></li>
+
         </ul>
       </nav>
 

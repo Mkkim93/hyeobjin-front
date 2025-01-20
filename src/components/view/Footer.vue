@@ -6,7 +6,8 @@
           T. 010 - 4951 - 4944 &nbsp;ㅣ&nbsp; 
           F. 042 - 583 - 3131 <br>사업자등록번호 : 5643-110-238421 <br>
           <small>&copy; Copyright Hyeobjin Changho All rights reserved.</small>
-          <a><router-link to="/login" tag="p">관리자 로그인</router-link></a> <!-- 임시 adim login link -->
+
+          <a><router-link to="/login" tag="p"> 관리자 로그인</router-link></a> <!-- 임시 adim login link -->
       </p>
     </footer>
 

@@ -6,7 +6,7 @@
         <tr>
           <th class="border border-gray-300 p-2">번호</th>
           <th class="border border-gray-300 p-2">제목</th>
-          <th class="border border-gray-300 p-2">글쓴이</th>
+          <th class="border border-gray-300 p-2">작성자</th>
           <th class="border border-gray-300 p-2">조회</th>
           <th class="border border-gray-300 p-2">날짜</th>
         </tr>
@@ -49,7 +49,6 @@ export default {
 
   created() {
     this.fetchBoardList();
-
   },
 
   methods: {
@@ -70,35 +69,12 @@ export default {
             "Content-Type": "application/json",
           },
         });
-        console.log('response', response);
-
         this.boardList = response.data.content;
 
-        console.log('this.boardList', this.boardList);
-
       } catch (error) {
-
         console.log('response error', error);
       }
     },
-
-
-
-    // async searchPosts() {
-    //   try {
-    //     const response = this.$axios.get(`/boards?searchKeyword=${this.searchKeyword}`, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //     this.boardList = response.data.content;
-    //     console.log('searchKeyword', searchKeyword);
-    //     console.log('response.data.content', response.data.content);
-    //     console.log('this.boardList', this.boardList);
-    //   } catch (error) {
-    //     console.log('searchKeyword boardList error', error);
-    //   }
-    // },
 
     formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
@@ -107,8 +83,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   max-width: 800px;
+}
+.bg-gray-200 {
+  text-align: center;
 }
 </style>

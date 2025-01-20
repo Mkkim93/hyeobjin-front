@@ -5,6 +5,7 @@ import axios from "./plugins/axios";
 import "./assets/styles/base.css"; 
 import "./assets/styles/tailwind.css";
 
+
 const app = createApp(App);
 
 // router 설정은 항상 axios 이후에 해줘야함

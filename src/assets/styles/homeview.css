@@ -31,7 +31,7 @@
     align-items: center;
     border-radius: 5px;
     gap: 20px;
-    /* position: fixed; */
+    position: sticky; /* 나중에 swifer 랑 겹칠 수도 있음 */ 
     font-size: 1.5rem;
     top: 0;
     left: 0;
