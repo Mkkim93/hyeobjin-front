@@ -5,6 +5,11 @@ import axios from "./plugins/axios";
 import "./assets/styles/base.css"; 
 import "./assets/styles/tailwind.css";
 
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Import Bootstrap JS Bundle (includes Popper.js)
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 const app = createApp(App);
 

@@ -48,7 +48,9 @@ export default {
     methods: {
       async submitForm() {
         try {
-          const response = await this.$axios.post('/register', this.form);
+          await this.$axios.post('/register', this.form, {
+           
+          });
           alert('관리자 등록 성공');
           this.$router.push('/login'); // redirect: /login
         } catch (error) {

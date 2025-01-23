@@ -11207,6 +11207,12 @@ body {
   opacity: 0.2;
 }
 
+.collapse.show {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 .datatable-sorter::before {
   bottom: 4px;
 }

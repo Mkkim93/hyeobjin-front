@@ -5,7 +5,7 @@ import History from "./components/common/History.vue";
 import Main from "./components/view/Main.vue";
 import BeforeAfter from "./components/common/BeforeAfter.vue";
 import Support from "./components/common/Support.vue";
-import Register from "./components/common/Register.vue";
+import Register from "./components/admin/Register.vue";
 import Login from "./components/common/Login.vue";
 import Admin from "./components/admin/Admin.vue";
 import ASForm from "./components/common/ASForm.vue";
@@ -15,35 +15,56 @@ import BoardDetail from "./components/common/BoardDetail.vue";
 import ItemManagement from "./components/admin/ItemManagement.vue";
 import NoticeManagement from "./components/admin/NoticeManagement.vue";
 import UserManagement from "./components/admin/UserManagement.vue";
+import ManufactManagement from "./components/admin/ManufactManagement.vue";
 
 
 const routes = [
   {path: '/', component: Main},
 
-  
   {
     path: '/admin', 
-    component: Admin,  // 기본적으로 Admin 컴포넌트를 렌더링
-  },
-  
-  {
-    path: '/admin/:id', 
     component: Admin,
+    props: true,
     children: [
       {
-        path: 'user', component: UserManagement,
+        path: 'user',
+        name: 'UserManagement',
+        component: UserManagement,
+        props: true, 
+       
       },
 
       {
-        path: 'item', component: ItemManagement,
+        path: 'manu',
+        name: 'ManufactManagement',
+        component: ManufactManagement,
+        props: true,
+      },
+
+      { 
+        path: 'register',
+        name: "Register",
+        component: Register,
+        props: true,
+      },
+
+      {
+        path: 'item', 
+        name: 'ItemManagement',
+        component: ItemManagement,
+        props: true, 
       },
       
       {
-        path: 'notice', component: NoticeManagement,
+        path: 'notice', 
+        name: 'NoticeManagement',
+        component: NoticeManagement,
+        props: true, 
       }, 
     ]
     
   },
+
 
 
   // common components
@@ -88,7 +109,7 @@ const routes = [
       props: true,
     },
 
-    {path: '/register', component: Register},
+    
     {path: '/login', component: Login},
 
     

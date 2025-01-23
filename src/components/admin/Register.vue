@@ -49,7 +49,7 @@
         try {
           const response = await this.$axios.post('/register', this.form);
           alert('관리자 등록 성공');
-          this.$router.push('/login'); // redirect: /login
+          this.$router.push('/admin'); // redirect: /login
         } catch (error) {
           this.errorMessage = error.response.data || '등록 실패';
         }

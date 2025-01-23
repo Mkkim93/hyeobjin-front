@@ -1,48 +1,52 @@
-  .contact-info {
-    z-index: 1002;
-    /* white-space: nowrap; */
-  }
-  h1 {
-    z-index: 1001;
-  }
+  
+
   
   .header {
     background-color: #000;
     color: #fff;
     padding: 10px 20px;
-    /* position: fixed; */
+    /* position: fixed;  */
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    /* z-index: 1000; */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    flex: 1;
+    text-align: left;
   }
   
   .header-inner {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+  }
+
+  .contact-info {   
+    white-space: nowrap;
+    text-align: right;
   }
   
   .menu {
+    flex: 2;
     background: black;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
     gap: 20px;
     position: sticky; /* 나중에 swifer 랑 겹칠 수도 있음 */ 
     font-size: 1.5rem;
     top: 0;
     left: 0;
-    right: 0;
+    /* right: 20px; */
     width: 100%;
     height: 30px;
     margin-top: 145px;
     z-index: 1000;
     box-sizing: border-box;
     white-space: nowrap;
-    flex: 1;
   }
   
   .menu ul {
@@ -50,7 +54,9 @@
     background-color: black;
     color: aliceblue;
     margin: 0;
-    padding: 20px;
+    /* padding: 20px; */
+    line-height: 65px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,9 +111,19 @@
   }
   
   .menu li:hover {
-    background-color: #333;
+    color: skyblue;
   
   }
+
+.submenu li a,
+.submenu li router-link {
+  display: block; /* 블록 요소로 설정하여 전체 클릭 가능 */
+  padding: 10px 20px; /* 클릭 범위 확대 */
+  text-decoration: none; /* 밑줄 제거 */
+  width: 100%; /* 부모 `li`의 너비를 채움 */
+  height: 100%; /* 부모 `li`의 높이를 채움 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
+}
   
   
   @media screen and (max-width: 768px) {

@@ -6,51 +6,65 @@
       <nav class="menu">
         <ul>
 
-          <li><router-link to="/" tag="li"><h4>Home</h4></router-link></li>
+          <router-link to="/"><li>
+              <h4>Home</h4>
+            </li></router-link>
 
           <li class="dropdown">
             <h4>회사소개</h4>
             <ul class="submenu">
-              <li><router-link to="/about" tag="li">회사소개</router-link></li>
-              <li><router-link to="/location" tag="li">찾아오시는 길</router-link></li>
-              <li><router-link to="/history" tag="li">회사 연혁</router-link></li>
+              <router-link to="/about">
+                <li>회사소개</li>
+              </router-link>
+              <router-link to="/location">
+                <li>오시는 길</li>
+              </router-link>
+              <router-link to="/history">
+                <li>회사 연혁</li>
+              </router-link>
             </ul>
           </li>
 
           <li class="dropdown">
             <h4>제품소개</h4>
-            <ul class="submenu">
-          
-              <li v-for="manufacturer in manufacturers" :key="manufacturer.manuId">
-              <router-link :to="`/manu/${manufacturer.manuId}`">{{ manufacturer.manuName }}</router-link>
-              </li>
 
+            <ul class="submenu">
+              <li v-for="manufacturer in manufacturers" :key="manufacturer.manuId">
+              <router-link :to="`/manu/${manufacturer.manuId}`">
+                {{ manufacturer.manuName }}</router-link>
+              </li>
             </ul>
           </li>
 
           <li class="dropdown">
             <h4>고객상담</h4>
             <ul class="submenu">
-              <li><router-link to="/notice" tag="li">공지사항</router-link></li>
-              <li><router-link to="/support" tag="li">1:1문의</router-link></li>
-              <li><router-link to="/asform" tag="li">A/S문의</router-link></li>
+              <router-link to="/notice">
+                <li>공지사항</li>
+              </router-link>
+              <router-link to="/support">
+                <li>1:1문의</li>
+              </router-link>
+              <router-link to="/asform">
+                <li>A/S문의</li>
+              </router-link>
             </ul>
           </li>
 
           <!-- /admin (관리자폼 진입 향후 display:none 설정 후 관리자 로그인 상태에서 보이도록 구현 예정) -->
-              <li><router-link to="/admin" tag="li">설정</router-link></li>
+          <router-link to="/admin"><li>설정</li></router-link>
 
         </ul>
       </nav>
-
       <div class="contact-info">
         <span>📞 010 - 4951 - 4944</span>
         <span>📞 042 - 583 - 3131</span>
       </div>
+
     </div>
-    
+
   </header>
-  
+
 </template>
 
 <script>
@@ -61,7 +75,7 @@ export default {
   data() {
     return {
       manufacturers: [],
-     
+
     };
   },
 
@@ -90,8 +104,8 @@ export default {
 
 <style scoped>
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
 </style>
