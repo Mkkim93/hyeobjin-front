@@ -59,7 +59,8 @@
                                 <router-link to="/admin/item" tag="a">
                                     <a class="nav-link">전체 제품 관리</a>
                                 </router-link>
-                                <router-link to="/admin/item" tag="a">
+
+                                <router-link to="/admin/add" tag="a">
                                     <a class="nav-link">제품 등록</a>
                                 </router-link>
                             </nav>

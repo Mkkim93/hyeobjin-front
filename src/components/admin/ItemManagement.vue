@@ -11,11 +11,19 @@
           <th class="border border-gray-300 p-2">등록일</th>
           <th class="border border-gray-300 p-2">최근수정일</th>
           <th class="border border-gray-300 p-2">등록여부</th>
-          <th class="border border-gray-300 p-2">제조사명</th>
+          <th class="border border-gray-300 p-2">제조사명
+            <select v-model="selectedManu" @change="filterByManu" class="border p-1">
+              <option value=""></option>
+              <option value="KCC">KCC</option>
+              <option value="예림">예림</option>
+              <option value="휴그린">휴그린</option>
+              <!-- 필요에 따라 제조사 옵션 추가 -->
+            </select>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in ItemListData.content" :key="item.id" class="text-center hover:bg-gray-100">
+        <tr v-for="item in ItemListData.content" :key="item.itemId" class="text-center hover:bg-gray-100">
           <td class="border border-gray-300 p-2">{{ item.itemId }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemNum }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemName }}</td>
@@ -30,7 +38,7 @@
     
     <div>
       <button :disabled="currentPage === 0" @click="fetchItemList(currentPage - 1)">이전</button>
-      <button :disabled="currentPage === totalPages - 1" @click="fetchItemList(currentPage + 1)">다음</button>
+      <button :disabled="currentPage === totalPages - 1" @click="fetchItemList(this.currentPage + 1)">다음</button>
       <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
     </div>
 
@@ -45,9 +53,13 @@ export default {
   data() {
     return {
       ItemListData: [],
-      currentPage: 1, // 현재 페이지
+      // 기본 페이지 값 데이터가 넘어오면 컨트롤러에서 지정한 페이징 데이터 비동기 응답
+      currentPage: 0, // 현재 페이지
       totalPages: 10, // 전체 페이지 수
       pageSize: 5,   // 페이지 크기
+
+      selectedManu: '',
+      filteredItemList: [],
     }
   },
   setup() {
@@ -59,17 +71,30 @@ export default {
   },
 
   methods: {
+
+    
+
     async fetchItemList(page) {
       try {
-        const response = await this.$axios.get(`/admin/items?=page${page}&size=${this.pageSize}&manuName=${"KCC"}`);
-        
+        const response = await this.$axios.get(`/admin/items?page=${page}&size=${this.pageSize}&manuName=${this.selectedManu || ''}`, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      
         this.ItemListData = response.data;
+        this.filteredItemList = this.ItemListData; // 초기에는 모든 데이터를 표시
         this.currentPage = page;
         this.totalPages = response.data.totalPages;
         console.log(response);
       } catch (error) {
         console.log('page load error', error);
       }
+    },
+
+    filterByManu() {
+      // 선택된 제조사로 데이터를 필터링
+      this.fetchItemList(this.currentPage); // 제조사명 변경 시 다시 데이터 로드
     }
   },
   

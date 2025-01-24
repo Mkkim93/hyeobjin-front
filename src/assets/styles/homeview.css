@@ -124,6 +124,25 @@
   height: 100%; /* 부모 `li`의 높이를 채움 */
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
 }
+
+@media screen and (max-width: 768px) {
+  .menu {
+      flex-direction: column;
+      height: auto;
+  }
+
+  .menu li {
+      padding: 20px;
+  }
+
+  /* 드롭다운 메뉴를 클릭하면 보이도록 설정 */
+  .menu li.active .submenu {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+  }
+}
   
   
   @media screen and (max-width: 768px) {

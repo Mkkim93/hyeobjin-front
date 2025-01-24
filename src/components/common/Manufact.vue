@@ -13,10 +13,15 @@
  
   <div v-if="items">
     <div class="container">
-      <div class="image-container">
-        <!-- TODO v-for 사용 해야됨 -->
-        <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" />
-      </div>
+      <div class="image-container" v-if="!items.fileBoxes || items.fileBoxes.length === 0 || !items.fileBoxes[0].fileName">
+  <!-- 파일이 없을 때 대체 이미지를 표시 -->
+  <img src="" alt="기본 이미지" />
+</div>
+<div class="image-container" v-else>
+  <!-- 파일이 있을 때 파일명을 바인딩하여 이미지를 표시 -->
+  <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" />
+</div>
+
       <div class="info-container">
         <h1>{{ items.itemName }}</h1>
         <p>{{ items.itemDescription }}</p>

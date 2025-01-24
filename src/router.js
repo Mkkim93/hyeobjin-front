@@ -16,6 +16,7 @@ import ItemManagement from "./components/admin/ItemManagement.vue";
 import NoticeManagement from "./components/admin/NoticeManagement.vue";
 import UserManagement from "./components/admin/UserManagement.vue";
 import ManufactManagement from "./components/admin/ManufactManagement.vue";
+import ItemCreate from "./components/admin/ItemCreate.vue";
 
 
 const routes = [
@@ -53,6 +54,15 @@ const routes = [
         name: 'ItemManagement',
         component: ItemManagement,
         props: true, 
+        
+      },
+      {  
+            path: 'add',
+            name: 'ItemCreate',
+            component: ItemCreate,
+            props: true,
+          
+        
       },
       
       {
