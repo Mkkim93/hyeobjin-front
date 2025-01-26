@@ -45,7 +45,7 @@
                         </router-link>
 
                         <div class="sb-sidenav-menu-heading">카테고리</div>
-
+                        
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -91,9 +91,9 @@
 
                         <div class="collapse" id="collapsePages" aria-labelledby="headingThree"
                             data-bs-parent="#sidenavAccordion">
-
+                        
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-
+                            
                                 <!-- 새로운 관리자 등록 -->
                                 <router-link to="/admin/register">
                                     <li class="nav-link collapsed" data-bs-toggle="collapse"
@@ -103,7 +103,6 @@
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </li>
                                 </router-link>
-
 
                                 <!-- 관리자 리스트 조회 -->
                                 <router-link to="/admin/user">
@@ -144,7 +143,22 @@
                             data-bs-parent="#collapseNewMenu2">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="option1.html">견적 요청</a>
-                                
+                            </nav>
+                        </div>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseNewMenu3" aria-expanded="false" aria-controls="collapseNewMenu3">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            공지사항
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <div class="collapse" id="collapseNewMenu3" aria-labelledby="headingFive"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <router-link to="/admin/notice" tag="a">
+                                    <a class="nav-link">공지사항 관리</a>
+                                </router-link>
                             </nav>
                         </div>
 
@@ -163,9 +177,9 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
+                    <h1 class="mt-4">협진시스템 관리자 페이지</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">현황</li>
                     </ol>
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
@@ -210,7 +224,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
+                                    최근 견적 요청
                                 </div>
                                 <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                             </div>
@@ -219,7 +233,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
+                                    A/S 요청
                                 </div>
                                 <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                             </div>

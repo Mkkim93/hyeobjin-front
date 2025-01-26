@@ -17,6 +17,8 @@ import NoticeManagement from "./components/admin/NoticeManagement.vue";
 import UserManagement from "./components/admin/UserManagement.vue";
 import ManufactManagement from "./components/admin/ManufactManagement.vue";
 import ItemCreate from "./components/admin/ItemCreate.vue";
+import ItemDetail from "./components/admin/ItemDetail.vue";
+import ItemEdit from "./components/admin/ItemEdit.vue";
 
 
 const routes = [
@@ -56,6 +58,21 @@ const routes = [
         props: true, 
         
       },
+
+      {
+        path: '/item/:itemId/:manuId',
+        name: 'ItemDetail',
+        component: ItemDetail,
+        props: true,
+      },
+
+      {
+        path: '/item/edit/:itemId',
+        name: 'edit',
+        component: ItemEdit,
+        props: true,
+        },
+
       {  
             path: 'add',
             name: 'ItemCreate',

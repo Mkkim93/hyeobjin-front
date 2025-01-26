@@ -83,7 +83,7 @@
               @focus="handleFocus"
                 @blur="handleBlur" />
             </label>
-
+            
             <label for="itemDescription">제품 설명 :
               <textarea :placeholder="inputValue ? '' : '제품 설명을 입력해주세요'" 
               id="itemDescription"
@@ -286,7 +286,7 @@ export default {
       try {
         await this.$axios.post('/items', CreateItemDTO, {
           headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data'
     }
         });
         

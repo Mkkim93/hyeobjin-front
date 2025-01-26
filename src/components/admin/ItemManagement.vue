@@ -26,7 +26,13 @@
         <tr v-for="item in ItemListData.content" :key="item.itemId" class="text-center hover:bg-gray-100">
           <td class="border border-gray-300 p-2">{{ item.itemId }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemNum }}</td>
-          <td class="border border-gray-300 p-2">{{ item.itemName }}</td>
+
+          <td class="border border-gray-300 p-2">
+          <p @click="$router.push({ name: 'ItemDetail', params: { itemId: item.itemId, manuId: item.manuId } })" tag="td">
+          {{ item.itemName }}
+          </p>
+          </td>
+
           <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemRegdate }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemUpdate }}</td>

@@ -5,7 +5,7 @@
     <div class="swiper-wrapper">
      
       <div class="swiper-slide">
-        <img src="@/assets/images/이미지1.png" alt="Logo 1" />
+        <img src="@/assets/images/test2.jpg" alt="Logo 1" />
       </div>
       <div class="swiper-slide">
         <img src="@/assets/images/이미지2.png" alt="Logo 2" />
