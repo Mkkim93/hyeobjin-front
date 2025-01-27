@@ -57,7 +57,7 @@ export default {
     methods: {
         async fetchManuList() {
             try {
-                const response = await this.$axios.get('/manufacturers/count');
+                const response = await this.$axios.get('/admin/manu/count');
                 // 받아온 데이터를 ManufactListData에 할당
                 this.ManufactListData = response.data;
                 console.log('response', response);

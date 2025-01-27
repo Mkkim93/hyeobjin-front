@@ -6,6 +6,7 @@
     <div class="map-wrapper">
      
       <div id="map" class="map"></div>
+      
     </div>
    
     <div class="info-wrapper">
@@ -24,27 +25,28 @@ export default {
   name: "Location",
   data() {
     return {
-
+        
     }
   },
 
-  setup() {
+  created() {
    
     const script = document.createElement("script");
     script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=893feef44fe943f2ac60e2fd3db808c7";
     script.onload = () => {
+      console.log('kakao', kakao)
       kakao.maps.load(() => {
       
         const container = document.getElementById("map"); 
         const options = {
-          center: new kakao.maps.LatLng(36.28238783070588, 127.37469104514605), 
+          center: new kakao.maps.LatLng(36.282378818987155, 127.37469382777536), 
           level: 3, 
         };
 
         const map = new kakao.maps.Map(container, options); 
 
         
-        const markerPosition = new kakao.maps.LatLng(36.28238783070588, 127.37469104514605); 
+        const markerPosition = new kakao.maps.LatLng(36.282378818987155, 127.37469382777536); 
         const marker = new kakao.maps.Marker({
           position: markerPosition,
         });

@@ -49,7 +49,9 @@ export default {
       async submitForm() {
         try {
           await this.$axios.post('/register', this.form, {
-           
+           headers: {
+              'Content-Type': 'application/json',
+           }
           });
           alert('관리자 등록 성공');
           this.$router.push('/login'); // redirect: /login

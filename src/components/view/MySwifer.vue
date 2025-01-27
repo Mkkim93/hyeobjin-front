@@ -5,15 +5,15 @@
     <div class="swiper-wrapper">
      
       <div class="swiper-slide">
-        <img src="@/assets/images/test2.jpg" alt="Logo 1" />
+        <img src="@/assets/images/test01.jpg" alt="Logo 1" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/images/이미지2.png" alt="Logo 2" />
+        <img src="@/assets/images/test02.jpg" alt="Logo 2" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/images/이미지3.png" alt="Logo 3" />
+        <img src="@/assets/images/test03.jpg" alt="Logo 3" />
       </div>
-      <div class="swiper-slide">
+      <!-- <div class="swiper-slide">
         <img src="@/assets/images/이미지4.png" alt="Logo 3" />
       </div>
       <div class="swiper-slide">
@@ -21,7 +21,7 @@
       </div>
       <div class="swiper-slide">
         <img src="@/assets/images/이미지6.png" alt="Logo 3" />
-      </div>
+      </div> -->
     </div>
     <!-- If we need pagination -->
 
@@ -39,23 +39,12 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import image1 from "@/assets/images/이미지1.png"; 
-import image2 from "@/assets/images/이미지2.png";
-import image3 from "@/assets/images/이미지3.png";
-import image4 from "@/assets/images/이미지4.png";
-import image5 from "@/assets/images/이미지5.png";
-import image6 from "@/assets/images/이미지6.png";
 
 export default {
   name: "MySwifer",
   data() {
     return {
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      image6,
+    
     };
   },
 

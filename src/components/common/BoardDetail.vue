@@ -18,7 +18,7 @@
 
   <hr class="my-6 border-gray-300">
   
-  <div>
+  <!-- <div>
     <h2 class="text-lg font-semibold text-gray-800 mb-4">댓글</h2>
 
    
@@ -50,7 +50,7 @@
         <p class="text-gray-700">또 다른 댓글 내용입니다.</p>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 </template>
 

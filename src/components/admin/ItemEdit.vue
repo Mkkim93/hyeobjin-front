@@ -5,13 +5,17 @@
       <form @submit.prevent="modifyItemData">
       <div class="row gx-4 gx-lg-5 align-items-center">
 
-        <div class="col-md-6">
+      <div class="col-md-6">
+        <div class="image-container">
+          <!-- <img :src="`/item/${ItemDetailData.fileBoxes[0].fileName}`" alt="제품 이미지" /> -->
+          
   <img class="card-img-top mb-5 mb-md-0" 
        :src="imageUrl || 'https://dummyimage.com/600x700/dee2e6/6c757d.jpg'" 
        alt="..." />
   <div class="mt-3">
-    <label for="filePath">제품 이미지 업로드:</label>
-    <input type="file" id="filePath" ref="fileInput" @change="handleFileUpload" />
+    <label for="imageUrl">제품 이미지 업로드:</label>
+    <input type="file" id="imageUrl" ref="fileInput" 
+    @change="handleFileUpload" />
   </div>
 </div>
 
@@ -126,6 +130,8 @@
             </label>
           </div>
 
+          <!-- <img :src="`/item/${ItemDetailData.fileBoxes[1].fileName}`" alt="제품 이미지" /> -->
+        </div>
             <!-- data 전송 (미리보기 or 등록 설정)-->
             <button class="btn btn-outline-dark flex-shrink-0" type="submit">수정</button>
           </div>
@@ -149,7 +155,9 @@ export default {
       modifyItemId: null,
       imageUrl: null,
       fileBoxes: [],
+      isMain: null,
     }
+
   },
 
   props: ['itemId'],
@@ -157,7 +165,6 @@ export default {
   created() {
     this.modifyItemId = Number(this.itemId);
     this.fetchItemDetailData(this.modifyItemId);
-    this.imageUrl = this.ItemDetailData.fileBoxes[0].filePath;
   },
 
   methods: {
@@ -165,6 +172,8 @@ export default {
       try {
         const response = await this.$axios.get(`/admin/items/modify?itemId=${itemId}`);
         this.ItemDetailData = response.data;
+        console.log('this.ItemDetailData', this.ItemDetailData);
+        this.imageUrl = `/item/${this.ItemDetailData.fileBoxes[0].fileName}` || null;
       } catch (error) {
         console.log('fetchModifyData', error);
       }
@@ -176,6 +185,7 @@ export default {
       if (files.length > 0) {
         this.imageUrl = URL.createObjectURL(files[0]); // 이미지 미리보기
         this.fileBoxes = Array.from(files); // 업로드된 파일 저장
+        // this.ItemDetailData.fileBoxes[0].fileName = this.imageUrl;
       }
     },
 
@@ -186,6 +196,7 @@ export default {
       formData.append("itemId", this.modifyItemId);
       formData.append("itemName", this.ItemDetailData.itemName);
       formData.append("itemNum", this.ItemDetailData.itemNum);
+      formData.append("isMain", true);
       formData.append("itemType", this.ItemDetailData.itemType);
       formData.append("itemUse", this.ItemDetailData.itemUse);
       formData.append("itemOutColor", this.ItemDetailData.itemOutColor);
@@ -195,6 +206,7 @@ export default {
       formData.append("itemDescription", this.ItemDetailData.itemDescription);
       formData.append("itemYN", this.ItemDetailData.itemYN);
       
+      
       // 파일 데이터 (선택된 파일 추가)
       if (this.fileBoxes.length > 0) {
         this.fileBoxes.forEach(file => {
@@ -203,11 +215,14 @@ export default {
       }
 
       try {
-        await this.$axios.post('/items/update', formData, {
+        await this.$axios.post('/admin/items/update', formData, {
+          
           headers: {
             'Content-Type': 'multipart/form-data', // 파일 전송 시 필요한 헤더 설정
           },
+          
         });
+        console.log('formData', formData);
         
         alert('수정 완료');
         window.location.href = '/admin/item';

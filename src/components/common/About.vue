@@ -1,9 +1,9 @@
 <template>
     <section class="introduction">
     <div class="intro-container">
-      <div class="intro-image">
-        <img :src="AboutImg" alt="회사 이미지" />
-      </div>
+      <div class="emax-Intro">
+      <img :src="emaxIntro" alt="emax-intro">
+    </div>
 
       <div class="intro-text">
         <h2>회사 개요</h2>
@@ -36,13 +36,13 @@ A/S발생시 빠르고 책임감 있는 A/S처리를 약속드립니다.
 </template>
 
 <script>
-import AboutImg from '../../assets/images/aboutImg.jpg';
+import emaxIntro from '@/assets/images/emax-intro.png';
 import '../../assets/styles/about.css';
 export default {
     name: 'About',
     data() {
         return {
-            AboutImg,
+            emaxIntro,
         };
     },
 }

@@ -51,7 +51,7 @@ export default {
       
       if (isConfirmed) {
         try {
-          const response = await this.$axios.delete(`/manufacturers?manuId=${this.selectedId}`, {
+          const response = await this.$axios.delete(`/admin/manu?manuId=${this.selectedId}`, {
            
             headers: {
               "Content-Type": "application/json",

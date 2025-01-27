@@ -34,8 +34,8 @@
           </td>
 
           <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
-          <td class="border border-gray-300 p-2">{{ item.itemRegdate }}</td>
-          <td class="border border-gray-300 p-2">{{ item.itemUpdate }}</td>
+          <td class="border border-gray-300 p-2">{{ formatDate(item.itemRegDate) }}</td>
+          <td class="border border-gray-300 p-2">{{ formatDate(item.itemUpdate) }}</td>
           <td class="border border-gray-300 p-2">{{ item.itemYN }}</td>
           <td class="border border-gray-300 p-2">{{ item.manuName }}</td>
         </tr>
@@ -47,12 +47,12 @@
       <button :disabled="currentPage === totalPages - 1" @click="fetchItemList(this.currentPage + 1)">다음</button>
       <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
     </div>
-
   </div>
 </template>
 
 <script>
 import '../../assets/styles/admin.css';
+import dayjs from 'dayjs';
 
 export default {
   name: 'ItemManagement',
@@ -92,7 +92,7 @@ export default {
         this.filteredItemList = this.ItemListData; // 초기에는 모든 데이터를 표시
         this.currentPage = page;
         this.totalPages = response.data.totalPages;
-        console.log(response);
+        console.log(response.data);
       } catch (error) {
         console.log('page load error', error);
       }
@@ -101,7 +101,11 @@ export default {
     filterByManu() {
       // 선택된 제조사로 데이터를 필터링
       this.fetchItemList(this.currentPage); // 제조사명 변경 시 다시 데이터 로드
-    }
+    },
+
+    formatDate(date) {
+      return dayjs(date).format('YYYY-MM-DD');
+    },
   },
   
 }

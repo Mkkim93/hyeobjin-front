@@ -10,8 +10,7 @@
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
                     aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                        class="fas fa-search"></i></button>
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
         <!-- Navbar-->
@@ -57,11 +56,15 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <router-link to="/admin/item" tag="a">
-                                    <a class="nav-link">전체 제품 관리</a>
+                                    <a class="nav-link">제품 목록</a>
                                 </router-link>
-
+                                
                                 <router-link to="/admin/add" tag="a">
                                     <a class="nav-link">제품 등록</a>
+                                </router-link>
+                                    
+                                <router-link to="/admin/delete" tag="a">
+                                    <a class="nav-link">제품 삭제</a>
                                 </router-link>
                             </nav>
                         </div>

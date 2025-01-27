@@ -19,6 +19,7 @@ import ManufactManagement from "./components/admin/ManufactManagement.vue";
 import ItemCreate from "./components/admin/ItemCreate.vue";
 import ItemDetail from "./components/admin/ItemDetail.vue";
 import ItemEdit from "./components/admin/ItemEdit.vue";
+import ItemDelete from "./components/admin/ItemDelete.vue";
 
 
 const routes = [
@@ -78,8 +79,13 @@ const routes = [
             name: 'ItemCreate',
             component: ItemCreate,
             props: true,
-          
-        
+      },
+
+      {
+        path: '/admin/delete',
+        name: 'delete',
+        component: ItemDelete,
+        props: true,
       },
       
       {

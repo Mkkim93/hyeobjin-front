@@ -43,7 +43,7 @@ export default {
       };
 
       try {
-        await this.$axios.post('/manufacturers', manufactureDTO);
+        await this.$axios.post('/admin/manu', manufactureDTO);
         alert(this.manuName + '의 제조사가 성공적으로 등록되었습니다.');
         window.location.href = '/admin/manu'; // router 안먹힘 나중에 원인 확인 어쩌면 현재 vue 파일 라우터 설정 안해서 그런듯?
       } catch (error) {

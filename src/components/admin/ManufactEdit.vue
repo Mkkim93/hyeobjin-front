@@ -72,7 +72,7 @@ export default {
 
             if (isConfirmed) {
                 try {
-                    const response = await this.$axios.post('/manufacturers/update', this.manufactureDTO, {
+                    const response = await this.$axios.post('/admin/manu/update', this.manufactureDTO, {
                         headers: {
                             "Content-Type": "application/json",
                         }
