@@ -2,13 +2,23 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import RouterName from './router.js';
 import axios from "./plugins/axios";
-import "./assets/styles/base.css"; 
+
 import "./assets/styles/tailwind.css";
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Import Bootstrap JS Bundle (includes Popper.js)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+// Import Summernote CSS
+import 'summernote/dist/summernote-bs4.css';
+
+// Import summernote JS Bundle
+import 'summernote/dist/summernote-bs4.min.js';
+
+// Import jQuery (Summernote 의존성)
+import $ from 'jquery';
+window.$ = $; // Summernote가 jQuery를 글로벌 `$` 객체로 필요로 함
 
 
 const app = createApp(App);

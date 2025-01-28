@@ -1,177 +1,161 @@
 <template>
-  <p>공지 관리 페이지 입니다.</p>
-  <div class="card mb-4">
-    <div class="card-header">
-      <i class="fas fa-table me-1"></i>
-      DataTable Example
+   <div class="table-container">
+    <h1 class="text-2xl font-bold text-center mb-5">공지사항</h1>
+
+    <!-- 테이블 -->
+    <table class="table">
+      <thead class="table-header">
+        <tr>
+          <th class="table-cell">번호</th>
+          <th class="table-cell">게시글유형</th>
+          <th class="table-cell">제목</th>
+          <th class="table-cell">작성자</th>
+          <th class="table-cell">등록일</th>
+          <th class="table-cell">수정일</th>
+          <th class="table-cell">공개여부</th>
+          <th class="table-cell">조회</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(post, count) in boardList"
+          :key="post.boardId"
+          class="hover:bg-gray-100"
+        >
+          <td class="table-cell">{{ this.currentPage * this.pageSize + count + 1 }}</td>
+          <td class="table-cell">{{ post.boardType }}</td>
+          <td class="table-cell text-left">
+            <p @click="$router.push('notice/' + post.boardId)" class="cursor-pointer">
+              {{ post.boardTitle }}
+            </p>
+          </td>
+          <td class="table-cell">{{ post.writer }}</td>
+          <td class="table-cell">{{ formatDate(post.boardRegDate) }}</td>
+          <td class="table-cell">{{ formatDate(post.boardUpdate) }}</td>
+          <td class="table-cell">{{ post.boardYN }}</td>
+          <td class="table-cell">{{ post.boardViewCount }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex justify-between items-center mt-5">
+      <!-- 페이지 네비게이션 중앙 정렬 -->
+      <nav aria-label="Page navigation example" class="flex-1 flex justify-center">
+        <ul class="pagination">
+          <!-- Previous Button -->
+          <li class="page-item" :class="{'disabled': currentPage === 0}">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
+          </li>
+
+          <!-- 페이지 번호들 동적으로 생성 -->
+          <li v-for="page in totalPages" :key="page" class="page-item" :class="{'active': currentPage === page - 1}">
+            <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
+          </li>
+
+          <!-- Next Button -->
+          <li class="page-item" :class="{'disabled': currentPage === totalPages - 1}">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- 글쓰기 버튼 -->
     </div>
-    <div class="card-body">
-      <table id="datatablesSimple">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-            <th>Start date</th>
-            <th>Salary</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-         
-          <tr>
-            <td>Charde Marshall</td>
-            <td>Regional Director</td>
-            <td>San Francisco</td>
-            <td>36</td>
-            <td>2008/10/16</td>
-            <td>$470,600</td>
-          </tr>
-          <tr>
-            <td>Haley Kennedy</td>
-            <td>Senior Marketing Designer</td>
-            <td>London</td>
-            <td>43</td>
-            <td>2012/12/18</td>
-            <td>$313,500</td>
-          </tr>
-          <tr>
-            <td>Tatyana Fitzpatrick</td>
-            <td>Regional Director</td>
-            <td>London</td>
-            <td>19</td>
-            <td>2010/03/17</td>
-            <td>$385,750</td>
-          </tr>
-          <tr>
-            <td>Michael Silva</td>
-            <td>Marketing Designer</td>
-            <td>London</td>
-            <td>66</td>
-            <td>2012/11/27</td>
-            <td>$198,500</td>
-          </tr>
-          <tr>
-            <td>Paul Byrd</td>
-            <td>Chief Financial Officer (CFO)</td>
-            <td>New York</td>
-            <td>64</td>
-            <td>2010/06/09</td>
-            <td>$725,000</td>
-          </tr>
-          <tr>
-            <td>Gloria Little</td>
-            <td>Systems Administrator</td>
-            <td>New York</td>
-            <td>59</td>
-            <td>2009/04/10</td>
-            <td>$237,500</td>
-          </tr>
-          <tr>
-            <td>Bradley Greer</td>
-            <td>Software Engineer</td>
-            <td>London</td>
-            <td>41</td>
-            <td>2012/10/13</td>
-            <td>$132,000</td>
-          </tr>
-          <tr>
-            <td>Dai Rios</td>
-            <td>Personnel Lead</td>
-            <td>Edinburgh</td>
-            <td>35</td>
-            <td>2012/09/26</td>
-            <td>$217,500</td>
-          </tr>
-          <tr>
-            <td>Jenette Caldwell</td>
-            <td>Development Lead</td>
-            <td>New York</td>
-            <td>30</td>
-            <td>2011/09/03</td>
-            <td>$345,000</td>
-          </tr>
-          <tr>
-            <td>Yuri Berry</td>
-            <td>Chief Marketing Officer (CMO)</td>
-            <td>New York</td>
-            <td>40</td>
-            <td>2009/06/25</td>
-            <td>$675,000</td>
-          </tr>
-          <tr>
-            <td>Caesar Vance</td>
-            <td>Pre-Sales Support</td>
-            <td>New York</td>
-            <td>21</td>
-            <td>2011/12/12</td>
-            <td>$106,450</td>
-          </tr>
-          <tr>
-            <td>Doris Wilder</td>
-            <td>Sales Assistant</td>
-            <td>Sidney</td>
-            <td>23</td>
-            <td>2010/09/20</td>
-            <td>$85,600</td>
-          </tr>
-          <tr>
-            <td>Angelica Ramos</td>
-            <td>Chief Executive Officer (CEO)</td>
-            <td>London</td>
-            <td>47</td>
-            <td>2009/10/09</td>
-            <td>$1,200,000</td>
-          </tr>
-          <tr>
-            <td>Gavin Joyce</td>
-            <td>Developer</td>
-            <td>Edinburgh</td>
-            <td>42</td>
-            <td>2010/12/22</td>
-            <td>$92,575</td>
-          </tr>
-          <tr>
-            <td>Jennifer Chang</td>
-            <td>Regional Director</td>
-            <td>Singapore</td>
-            <td>28</td>
-            <td>2010/11/14</td>
-            <td>$357,650</td>
-          </tr>
-          <tr>
-            <td>Brenden Wagner</td>
-            <td>Software Engineer</td>
-            <td>San Francisco</td>
-            <td>28</td>
-            <td>2011/06/07</td>
-            <td>$206,850</td>
-          </tr>
-          <tr>
-            <td>Fiona Green</td>
-            <td>Chief Operating Officer (COO)</td>
-            <td>San Francisco</td>
-            <td>48</td>
-            <td>2010/03/11</td>
-            <td>$850,000</td>
-          </tr>
-          
-        </tbody>
-      </table>
-    </div>
+    <!-- 검색 기능 -->
   </div>
+  <div class="mt-5 flex justify-center">
+      <input v-model="searchKeyword" class="border border-gray-300 p-2 rounded-md" type="text"
+        placeholder="검색어를 입력해주세요" />
+      <button @click="fetchBoardList" class="ml-2 bg-blue-500 text-white p-2 rounded-md">
+        검색
+      </button>
+    </div>
+
+    <router-link to="/admin/notice/add" tag="button">
+      <button type="button">글쓰기</button>
+    </router-link>
 </template>
 
 <script>
+import dayjs from 'dayjs';
+
 export default {
   name: 'NoticeManagement',
 
-  setup() {
+  data() {
+    return {
+      boardList: [],
+      searchKeyword: null,
 
-    console.log('NoticeManagement 컴포넌트가 랜더링 되었습니다.');
+      currentPage: 0, // 현재 페이지
+      totalPages: null, // 전체 페이지 수
+      pageSize: 5,   // 페이지 크기
+      
+      pageData: null,
+    };
+  },
+
+  created() {
+    
+    this.fetchBoardList();
+  },
+
+  mounted() {
+    
+  },
+
+  methods: {
+    async fetchBoardList() {
+      try {
+
+        const params = {
+          page: this.currentPage, // 현재 페이지 번호 (0부터 시작)
+          size: this.pageSize, // 페이지당 게시물 수
+        };
+
+        if (this.searchKeyword) {
+          params.searchKeyword = this.searchKeyword; // 검색어 추가
+          console.log('parames', params);
+        }
+
+        const response = await this.$axios.get(`/admin/boards`, { params }, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        this.boardList = response.data.content;
+        this.pageData = response.data;
+        this.totalPages = this.pageData.totalPages;  
+        
+        console.log('this.boardList', this.boardList);
+        console.log('response.data', response.data);
+
+      } catch (error) {
+        console.log('response error', error);
+      }
+    },
+
+    formatDate(date) {
+      return dayjs(date).format('YYYY-MM-DD');
+    },
+
+    // 페이지 변경 처리
+    changePage(pageNumber) {
+      if (pageNumber >= 0 && pageNumber < this.totalPages) {
+        this.currentPage = pageNumber;
+       
+        this.fetchBoardList(); // 페이지 변경 후 데이터 다시 불러오기
+        
+      }
+    },
   }
-}
+};
 </script>
 
-<style></style>
+<style scoped>
+
+.btn-1 {
+  width: 50px;
+}
+
+
+</style>

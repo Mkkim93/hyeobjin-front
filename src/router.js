@@ -20,6 +20,8 @@ import ItemCreate from "./components/admin/ItemCreate.vue";
 import ItemDetail from "./components/admin/ItemDetail.vue";
 import ItemEdit from "./components/admin/ItemEdit.vue";
 import ItemDelete from "./components/admin/ItemDelete.vue";
+import NoticeDetail from "./components/admin/NoticeDetail.vue";
+import NoticeCreate from "./components/admin/NoticeCreate.vue";
 
 
 const routes = [
@@ -94,9 +96,26 @@ const routes = [
         component: NoticeManagement,
         props: true, 
       }, 
+
+      {
+        path: 'notice/:id',
+        name: 'NoticeDetail',
+        component: NoticeDetail,
+        props: true,
+      },
+      {
+        path: 'notice/add',
+        name: 'NoticeCreate',
+        component: NoticeCreate,
+        props: true,
+      }
+
+      
     ]
     
   },
+
+  
 
 
 

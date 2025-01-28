@@ -111,10 +111,10 @@
   
       async deleteItems(ids) {
         try {
-          const response = await this.$axios.post('/admin/items/delete', ids);
+          const response = await this.$axios.delete('/admin/items', { data: ids });
           console.log('삭제 성공:', response);
           alert("제품의 삭제에 성공하였습니다.");
-          this.fetchItemList(this.currentPage); // 삭제 후 데이터 다시 불러오기
+          this.fetchItemList(this.currentPage); // TODO: 삭제 후 데이터 다시 불러올 때 빈 리스트일 때 요청 error 발생
         } catch (error) {
           console.error('삭제 실패:', error);
         }

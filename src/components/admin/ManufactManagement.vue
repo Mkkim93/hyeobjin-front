@@ -74,7 +74,7 @@ export default {
         // 제조사 추가 메서드 (예시)
         async addManuFacturer() {
             try {
-                await this.$axios.post('/manufacturers', {
+                await this.$axios.post('/admin.manu', {
                     headers: {
                         'Content-Type': 'application/json',
                     },
