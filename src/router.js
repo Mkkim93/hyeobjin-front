@@ -22,6 +22,7 @@ import ItemEdit from "./components/admin/ItemEdit.vue";
 import ItemDelete from "./components/admin/ItemDelete.vue";
 import NoticeDetail from "./components/admin/NoticeDetail.vue";
 import NoticeCreate from "./components/admin/NoticeCreate.vue";
+import NoticeEdit from "./components/admin/NoticeEdit.vue";
 
 
 const routes = [
@@ -103,12 +104,20 @@ const routes = [
         component: NoticeDetail,
         props: true,
       },
+      
       {
         path: 'notice/add',
         name: 'NoticeCreate',
         component: NoticeCreate,
         props: true,
-      }
+      },
+
+      {
+        path: 'notice/edit/:id',
+        name: 'NoticeEdit',
+        component: NoticeEdit,
+        props: true,
+      },
 
       
     ]

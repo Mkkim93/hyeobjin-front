@@ -44,6 +44,22 @@
                         </router-link>
 
                         <div class="sb-sidenav-menu-heading">카테고리</div>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseNewMenu3" aria-expanded="false" aria-controls="collapseNewMenu3">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            공지사항
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <div class="collapse" id="collapseNewMenu3" aria-labelledby="headingFive"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <router-link to="/admin/notice" tag="a">
+                                    <a class="nav-link">공지사항 관리</a>
+                                </router-link>
+                            </nav>
+                        </div>
                         
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -149,26 +165,8 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseNewMenu3" aria-expanded="false" aria-controls="collapseNewMenu3">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            공지사항
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-
-                        <div class="collapse" id="collapseNewMenu3" aria-labelledby="headingFive"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <router-link to="/admin/notice" tag="a">
-                                    <a class="nav-link">공지사항 관리</a>
-                                </router-link>
-                            </nav>
-                        </div>
-
-
-
-
-
+                        
+                        
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -350,12 +348,14 @@ export default {
         },
 
         async refreshAccessToken() {
-            localStorage.removeItem("access");
+            
             try {
+                localStorage.removeItem("access");
+                
 
-                const response = await this.$axios.post("/auth");
-                const newAccessToken = response.headers["access"];
-
+                const response = await this.$axios.post("/auth", {}, { withCredentials: true });
+                const newAccessToken = response.headers['authorization'];
+                
                 localStorage.setItem("access", newAccessToken);
 
                 console.log("New access token set:", newAccessToken);

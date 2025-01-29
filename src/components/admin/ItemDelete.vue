@@ -1,12 +1,13 @@
 <template>
     <p>제품 삭제 페이지 입니다.</p>
+   
     <div class="max-w-4xl mx-auto my-10">
       <h1 class="text-2xl font-bold text-center mb-5">제품 목록</h1>
-      
+      <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
       <table class="w-full table-auto border-collapse border border-gray-300">
         <thead class="bg-gray-200">
           <tr>
-            <th>선택</th>
+            <th class="border border-gray-300 p-2">선택</th>
             <th class="border border-gray-300 p-2">No</th>
             <th class="border border-gray-300 p-2">품번</th>
             <th class="border border-gray-300 p-2">제품명</th>
@@ -27,7 +28,7 @@
         </thead>
         <tbody>
           <tr v-for="item in ItemListData.content" :key="item.itemId" class="text-center hover:bg-gray-100">
-            <td>
+            <td class="border border-gray-300 p-2">
               <input type="checkbox" class="ck" v-model="selectedIds" :value="item.itemId" />
             </td>
             <td class="border border-gray-300 p-2">{{ item.itemId }}</td>
@@ -51,7 +52,7 @@
       <div>
         <button :disabled="currentPage === 0" @click="fetchItemList(currentPage - 1)">이전</button>
         <button :disabled="currentPage === totalPages - 1" @click="fetchItemList(this.currentPage + 1)">다음</button>
-        <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
+        
       </div>
       <div>
         <button @click="handleSelectedItems">선택된 항목 삭제</button>
@@ -75,6 +76,7 @@
         filteredItemList: [],
       }
     },
+    
     mounted() {
       this.fetchItemList(this.currentPage);
     },

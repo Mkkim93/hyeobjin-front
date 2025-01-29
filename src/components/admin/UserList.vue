@@ -15,7 +15,7 @@
       <tbody>
         <tr v-for="user in UsersList.content" :key="user.id" class="text-center hover:bg-gray-100">
           <td class="border border-gray-300 p-2">{{ user.usersId }}</td>
-          <td class="border border-gray-300 p-2">{{ user.username }}</td>
+          <td class="border border-gray-300 p-2 cursor-pointer">{{ user.username }}</td>
           <td class="border border-gray-300 p-2">{{ user.name }}</td>
           <td class="border border-gray-300 p-2">{{ user.role }}</td>
           <td class="border border-gray-300 p-2">{{ user.userTel }}</td>

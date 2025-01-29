@@ -1,4 +1,5 @@
 <template>
+
   <div class="wrap">
 
     <HomeView />
@@ -7,6 +8,7 @@
       <MySwifer />
     </div>
 
+    
 
     <div class="main-content">
 

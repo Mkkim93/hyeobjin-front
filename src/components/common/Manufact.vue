@@ -1,83 +1,93 @@
 <template>
- 
+
   <h4>Product No.</h4>
-  
-    <ul class="itemNums">
-      
-      <li v-for="(item, index) in itemsNumList" :key="item" class="itemCard">
-        <button @click="fetchItemDetails(item.manuId, item.itemId)">
-          {{ itemsNumList[index].itemNum }}
-        </button>
-      </li>    
-    </ul>
- 
+  <ul class="itemNums">
+    <li v-for="(item, index) in itemsNumList" :key="item" class="itemCard">
+      <button @click="fetchItemDetails(item.manuId, item.itemId)">
+        {{ itemsNumList[index].itemNum }}
+      </button>
+    </li>
+  </ul>
+
   <div v-if="items">
     <div class="container">
-      <div class="image-container" v-if="!items.fileBoxes || items.fileBoxes.length === 0 || !items.fileBoxes[0].fileName">
-  <!-- 파일이 없을 때 대체 이미지를 표시 -->
-  <img src="" alt="기본 이미지" />
-</div>
-<div class="image-container" v-else>
-  <!-- 파일이 있을 때 파일명을 바인딩하여 이미지를 표시 -->
-  <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" />
-</div>
+      <div class="image-container"
+        v-if="!items.fileBoxes || items.fileBoxes.length === 0 || !items.fileBoxes[0].fileName">
+        <!-- 파일이 없을 때 대체 이미지를 표시 -->
+        <img src="" alt="기본 이미지" />
+      </div>
+      <div class="image-container" v-else>
+        <!-- 파일이 있을 때 파일명을 바인딩하여 이미지를 표시 -->
+        <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" />
+      </div>
 
       <div class="info-container">
         <h1>{{ items.itemName }}</h1>
         <p>{{ items.itemDescription }}</p>
         <table>
           <tbody>
-          <tr>
-            <th>제조사</th>
-            <td>{{ items.manuName }}</td>
-          </tr>
-          <tr>
-            <th>용도</th>
-            <td>{{ items.itemUse }}</td>
-          </tr>
+            <tr>
+              <th>제조사</th>
+              <td>{{ items.manuName }}</td>
+            </tr>
+            <tr>
+              <th>용도</th>
+              <td>{{ items.itemUse }}</td>
+            </tr>
 
-          <tr>
-            <th>내부 색상</th>
-            <td>{{ items.itemInColor }}</td>
-          </tr>
+            <tr>
+              <th>내부 색상</th>
+              <td>{{ items.itemInColor }}</td>
+            </tr>
 
-          <tr>
-            <th>외부 색상</th>
-            <td>{{ items.itemOutColor }}</td>
-          </tr>
+            <tr>
+              <th>외부 색상</th>
+              <td>{{ items.itemOutColor }}</td>
+            </tr>
 
-          <tr>
-            <th>유리사용두께</th>
-            <td>{{ items.itemSpec }}</td>
-          </tr>
+            <tr>
+              <th>유리사용두께</th>
+              <td>{{ items.itemSpec }}</td>
+            </tr>
 
-          <tr>
-            <th>창틀 폭</th>
-            <td>{{ items.itemFrameWidth }}</td>
-          </tr>
-  
-        </tbody>
+            <tr>
+              <th>창틀 폭</th>
+              <td>{{ items.itemFrameWidth }}</td>
+            </tr>
+            <div v-if="step == 1">
+    <ItemImgBox :items="items" />
+  </div>
+          </tbody>
         </table>
       </div>
     </div>
   </div>
+  <!-- 반복적으로 이미지가 들어갈 곳 -->
+ 
 </template>
 
 <script>
 import '../../assets/styles/manufact.css';
+import ItemImgBox from './ItemImgBox.vue';
+
 export default {
   name: 'Manufact',
   data() {
     return {
-      items: null, 
+      items: null,
       itemsNumList: [],
       manuId: null,
+      step: 0,
     };
   },
 
   created() {
     this.manuId = this.$route.params.id;
-    this.fetchItems(this.manuId);  
+    this.fetchItems(this.manuId);
+  },
+
+  components: {
+    ItemImgBox,
   },
 
   watch: {
@@ -86,12 +96,12 @@ export default {
 
   methods: {
     handleManuIdChange() {
-      
-      this.items = null;  
-      this.itemsNumList = [];  
-      this.manuId = this.$route.params.id;  
+
+      this.items = null;
+      this.itemsNumList = [];
+      this.manuId = this.$route.params.id;
       console.log(`now manuId: ${this.manuId}`);
-      this.fetchItems(this.manuId);  
+      this.fetchItems(this.manuId);
     },
 
     async fetchItems(manuId) {
@@ -105,7 +115,7 @@ export default {
 
         // await 를 사용해서 get(`/items/numbers?manuId...`) 가 완료될때까지 다음 코드를 중단 시킨다.
         // 즉, this.itemsNumList = response.data 가 실행되기 전에 get 요청을 기다리게 한다.
-        this.itemsNumList = response.data; 
+        this.itemsNumList = response.data;
         console.log('response', response);
         console.log('response-data', response.data);
         console.log('this.itemsNumList', this.itemsNumList);
@@ -117,6 +127,7 @@ export default {
     },
 
     async fetchItemDetails(manuId, itemId) {
+      this.step = 1;
       try {
         console.log('manuId', manuId);
         const response = await this.$axios.get(`/items?manuId=${manuId}&itemId=${itemId}`, {
@@ -125,9 +136,9 @@ export default {
           },
         });
 
-       
+
         if (response.data.manuId === Number(this.manuId)) {
-          this.items = response.data; 
+          this.items = response.data;
           console.log('response.data', response.data);
         } else {
           console.log(`manuId ${response.data.manuId} does not match ${this.manuId}`);
@@ -146,5 +157,12 @@ body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   margin: 20px;
+}
+
+.image-box {
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
 }
 </style>

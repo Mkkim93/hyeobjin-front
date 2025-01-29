@@ -12,9 +12,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="post in boardList" :key="post.boardId" class="text-center hover:bg-gray-100">
-          <td class="border border-gray-300 p-2">{{ post.boardId }}</td>
-          <td class="border border-gray-300 p-2 text-left">
+        <tr v-for="(post, count) in boardList" :key="post.boardId" class="text-center hover:bg-gray-100">
+          <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1 }}</td>
+          <td class="border border-gray-300 p-2 text-left cursor-pointer">
             <p @click="$router.push('/notice/' + post.boardId)" tag="td">{{ post.boardTitle }}</p>
           </td>
           <td class="border border-gray-300 p-2">{{ post.writer }}</td>
@@ -23,6 +23,29 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="flex justify-between items-center mt-5">
+      <!-- 페이지 네비게이션 중앙 정렬 -->
+      <nav aria-label="Page navigation example" class="flex-1 flex justify-center">
+        <ul class="pagination">
+          <!-- Previous Button -->
+          <li class="page-item" :class="{'disabled': currentPage === 0}">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
+          </li>
+
+          <!-- 페이지 번호들 동적으로 생성 -->
+          <li v-for="page in totalPages" :key="page" class="page-item" :class="{'active': currentPage === page - 1}">
+            <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
+          </li>
+
+          <!-- Next Button -->
+          <li class="page-item" :class="{'disabled': currentPage === totalPages - 1}">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- 글쓰기 버튼 -->
+    </div>
 
     <!-- //TODO 검색 기능 구현 -->
     <div class="mt-5 flex justify-center">
@@ -44,6 +67,12 @@ export default {
     return {
       boardList: [],
       searchKeyword: null,
+
+      currentPage: 0, // 현재 페이지
+      totalPages: null, // 전체 페이지 수
+      pageSize: 5,   // 페이지 크기
+      
+      pageData: null,
     };
   },
 
@@ -56,8 +85,8 @@ export default {
       try {
 
         const params = {
-          page: this.page, // 현재 페이지 번호 (0부터 시작)
-          size: this.size, // 페이지당 게시물 수
+          page: this.currentPage, // 현재 페이지 번호 (0부터 시작)
+          size: this.pageSize, // 페이지당 게시물 수
         };
 
         if (this.searchKeyword) {
@@ -70,6 +99,8 @@ export default {
           },
         });
         this.boardList = response.data.content;
+        this.pageData = response.data;
+        this.totalPages = this.pageData.totalPages; 
 
       } catch (error) {
         console.log('response error', error);
@@ -78,6 +109,15 @@ export default {
 
     formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
+    },
+
+    changePage(pageNumber) {
+      if (pageNumber >= 0 && pageNumber < this.totalPages) {
+        this.currentPage = pageNumber;
+       
+        this.fetchBoardList(); // 페이지 변경 후 데이터 다시 불러오기
+        
+      }
     },
   }
 };

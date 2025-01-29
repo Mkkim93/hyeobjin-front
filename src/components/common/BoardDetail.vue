@@ -11,12 +11,13 @@
 
  
   <div class="mb-6">
-    <p class="text-gray-700 leading-relaxed">
-      {{BoardDetail.boardContent}}
-    </p>
-  </div>
+      <div
+        class="text-gray-700 leading-relaxed"
+        v-html="BoardDetail.boardContent"
+      ></div>
+    </div>
 
-  <hr class="my-6 border-gray-300">
+ 
   
   <!-- <div>
     <h2 class="text-lg font-semibold text-gray-800 mb-4">댓글</h2>
@@ -74,6 +75,10 @@ export default {
       console.log('this.$route.params.id', this.$route.params.id);
     },
 
+    mounted() {
+    $('#summernote').summernote();
+  },
+
     methods: {
       async fetchBoardDetails(id) {
         try {
@@ -99,4 +104,5 @@ export default {
 </script>
 
 <style>
+
 </style>

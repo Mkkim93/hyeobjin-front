@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import RouterName from './router.js';
 import axios from "./plugins/axios";
+import store from './store.js'
 
 import "./assets/styles/tailwind.css";
 
@@ -20,14 +21,18 @@ import 'summernote/dist/summernote-bs4.min.js';
 import $ from 'jquery';
 window.$ = $; // Summernote가 jQuery를 글로벌 `$` 객체로 필요로 함
 
-
 const app = createApp(App);
-
-// router 설정은 항상 axios 이후에 해줘야함
 
 // axios 
 axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.$axios = axios;
 
+// vuex 
+app.use(store)
+
 // router
-app.use(RouterName).mount('#app')
+// router 설정은 axios 다음으로 해줘야함
+app.use(RouterName)
+
+
+app.mount('#app')
