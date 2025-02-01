@@ -10,7 +10,8 @@
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
                     aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                        class="fas fa-search"></i></button>
             </div>
         </form>
         <!-- Navbar-->
@@ -60,7 +61,7 @@
                                 </router-link>
                             </nav>
                         </div>
-                        
+
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -74,11 +75,11 @@
                                 <router-link to="/admin/item" tag="a">
                                     <a class="nav-link">제품 목록</a>
                                 </router-link>
-                                
+
                                 <router-link to="/admin/add" tag="a">
                                     <a class="nav-link">제품 등록</a>
                                 </router-link>
-                                    
+
                                 <router-link to="/admin/delete" tag="a">
                                     <a class="nav-link">제품 삭제</a>
                                 </router-link>
@@ -110,9 +111,9 @@
 
                         <div class="collapse" id="collapsePages" aria-labelledby="headingThree"
                             data-bs-parent="#sidenavAccordion">
-                        
+
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            
+
                                 <!-- 새로운 관리자 등록 -->
                                 <router-link to="/admin/register">
                                     <li class="nav-link collapsed" data-bs-toggle="collapse"
@@ -165,8 +166,8 @@
                             </nav>
                         </div>
 
-                        
-                        
+
+
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -240,9 +241,9 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <!-- <div class="router-content"> -->
-                        <router-view></router-view>
+                    <router-view></router-view>
                     <!-- </div> -->
 
                 </div>
@@ -264,19 +265,15 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import { handleAccessValidation } from '@/utils/auth.js';
+import axios from '@/plugins/axios.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../assets/styles/admin.css';
 import 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js';
 
-
 export default {
     name: 'Admin',
-
-    components: {
-        
-    },
 
     data() {
         return {
@@ -289,24 +286,10 @@ export default {
         this.toggleOption();
     },
 
-
     methods: {
         async handleAccessValidation() {
-            const accessToken = localStorage.getItem("access");
-
-            // Access token이 없거나 만료된 경우 새로 발급받기
-            if (!accessToken || this.isAccessTokenExpired(accessToken)) {
-                const newAccessToken = await this.refreshAccessToken();
-                if (!newAccessToken) {
-                    console.log("Unable to refresh token. Redirecting to login.");
-                    this.$router.push("/login");
-                    return;
-                }
-            }
-
-            // 유효한 토큰으로 API 요청
-            const tokenToUse = localStorage.getItem("access");
-            await this.sendApiRequest(tokenToUse);
+            console.log('handleAccessValidation method 실행');
+            await handleAccessValidation(axios, this.$router);
         },
 
         async toggleOption() {
@@ -319,64 +302,6 @@ export default {
                         document.body.classList.contains('sb-sidenav-toggled')
                     );
                 });
-            }
-        },
-
-        isAccessTokenExpired(token) {
-            if (!token) return true;
-
-            try {
-                // Base64 디코딩
-                const base64Url = token.split('.')[1]; // JWT의 payload 부분을 가지고 온다
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const payload = JSON.parse(atob(base64));
-
-                // 발급 시간과 만료 시간을 출력
-                const issuedAt = dayjs.unix(payload.iat).format('YYYY-MM-DD HH:mm:ss'); // 발급 시간
-                const expirationTime = dayjs.unix(payload.exp).format('YYYY-MM-DD HH:mm:ss'); // 만료 시간
-
-                console.log(`발급 시간 (iat): ${issuedAt}`);
-                console.log(`만료 시간 (exp): ${expirationTime}`);
-
-                // 현재 시간과 만료 시간 비교
-                const currentTime = dayjs().unix(); // 현재 시간 (초 단위 UNIX 타임스탬프)
-                return payload.exp < currentTime;
-            } catch (error) {
-                console.error("isAccessTokenExpired error:", error);
-                return true;
-            }
-        },
-
-        async refreshAccessToken() {
-            
-            try {
-                localStorage.removeItem("access");
-                
-
-                const response = await this.$axios.post("/auth", {}, { withCredentials: true });
-                const newAccessToken = response.headers['authorization'];
-                
-                localStorage.setItem("access", newAccessToken);
-
-                console.log("New access token set:", newAccessToken);
-                return newAccessToken;
-            } catch (error) {
-                console.error("Failed to refresh access token:", error);
-                return null;
-            }
-        },
-
-        async sendApiRequest(accessToken) {
-            try {
-                const response = await this.$axios.get("/admin", {
-                    headers: {
-                        Authorization: `${accessToken}`,
-                    },
-                });
-                console.log("Admin page access granted", response.data);
-            } catch (error) {
-                console.error("Failed to access admin API:", error);
-                this.$router.push("/login");
             }
         },
     },

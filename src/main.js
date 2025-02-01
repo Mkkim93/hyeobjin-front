@@ -24,7 +24,7 @@ window.$ = $; // Summernote가 jQuery를 글로벌 `$` 객체로 필요로 함
 const app = createApp(App);
 
 // axios 
-axios.defaults.baseURL = 'http://localhost:8080';
+// axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.$axios = axios;
 
 // vuex 

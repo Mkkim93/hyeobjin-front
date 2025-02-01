@@ -54,21 +54,20 @@
               <th>창틀 폭</th>
               <td>{{ items.itemFrameWidth }}</td>
             </tr>
-            <div v-if="step == 1">
-    <ItemImgBox :items="items" />
-  </div>
           </tbody>
         </table>
       </div>
     </div>
+    <div class="image-container" v-for="(item, index) in imgBox" :key="item">
+        <img :src="`/itemsub/${imgBox[index].fileName}`" alt="제품 이미지" v-if="!imgBox[index].isMain"/>
+      </div>
   </div>
   <!-- 반복적으로 이미지가 들어갈 곳 -->
- 
 </template>
 
 <script>
 import '../../assets/styles/manufact.css';
-import ItemImgBox from './ItemImgBox.vue';
+
 
 export default {
   name: 'Manufact',
@@ -78,6 +77,8 @@ export default {
       itemsNumList: [],
       manuId: null,
       step: 0,
+
+      imgBox: [],
     };
   },
 
@@ -86,17 +87,12 @@ export default {
     this.fetchItems(this.manuId);
   },
 
-  components: {
-    ItemImgBox,
-  },
-
   watch: {
     '$route.params.id': 'handleManuIdChange',
   },
 
   methods: {
     handleManuIdChange() {
-
       this.items = null;
       this.itemsNumList = [];
       this.manuId = this.$route.params.id;
@@ -127,7 +123,7 @@ export default {
     },
 
     async fetchItemDetails(manuId, itemId) {
-      this.step = 1;
+      console.log('fetchItemDetails method start');
       try {
         console.log('manuId', manuId);
         const response = await this.$axios.get(`/items?manuId=${manuId}&itemId=${itemId}`, {
@@ -135,11 +131,11 @@ export default {
             "Content-Type": "application/json",
           },
         });
-
-
         if (response.data.manuId === Number(this.manuId)) {
           this.items = response.data;
+          this.imgBox = response.data.fileBoxes;
           console.log('response.data', response.data);
+          console.log('this.imgBox', this.imgBox);
         } else {
           console.log(`manuId ${response.data.manuId} does not match ${this.manuId}`);
         }
@@ -147,7 +143,9 @@ export default {
         console.log('error', error);
         this.items = {};
       }
-    }
+    },
+
+    
   },
 };
 </script>

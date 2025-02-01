@@ -46,6 +46,7 @@
       };
     },
     methods: {
+
   async handleLogin() {
    
     console.log('username', this.username);
@@ -58,7 +59,7 @@
 
       }, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         }
       });
       
@@ -67,6 +68,7 @@
       // 로그인 성공 시, 토큰이 Authorization 헤더에 포함되어 있음 (access token)
       const accessToken = response.headers['authorization'];
       if (accessToken) {
+      
         localStorage.setItem("access", accessToken);
         console.log('Access Token save', accessToken);
       }
