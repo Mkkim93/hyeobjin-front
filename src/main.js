@@ -4,6 +4,9 @@ import RouterName from './router.js';
 import axios from "./plugins/axios";
 import store from './store.js'
 
+import 'v-calendar/style.css';
+import VCalendar from 'v-calendar';
+
 import "./assets/styles/tailwind.css";
 
 // Import Bootstrap CSS
@@ -23,8 +26,11 @@ window.$ = $; // Summernote가 jQuery를 글로벌 `$` 객체로 필요로 함
 
 const app = createApp(App);
 
+// v-calendar
+app.use(VCalendar, {})
+
 // axios 
-// axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.$axios = axios;
 
 // vuex 

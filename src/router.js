@@ -1,5 +1,4 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { handleAccessValidation } from "./utils/auth.js";  // 토큰 검증을 위한 함수를 import
 import About from "./components/common/About.vue";
 import Location from "./components/common/Location.vue";
 import History from "./components/common/History.vue";
@@ -24,7 +23,6 @@ import ItemDelete from "./components/admin/item/ItemDelete.vue";
 import NoticeDetail from "./components/admin/notice/NoticeDetail.vue";
 import NoticeCreate from "./components/admin/notice/NoticeCreate.vue";
 import NoticeEdit from "./components/admin/notice/NoticeEdit.vue";
-import axios from "./plugins/axios";  // axios 직접 import
 
 
 const routes = [
@@ -125,7 +123,6 @@ const routes = [
     ]
   },
 
-  
   // common components
     {path: '/about', component: About},
     {path: '/location', component: Location},

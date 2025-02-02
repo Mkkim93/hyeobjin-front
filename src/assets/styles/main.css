@@ -32,6 +32,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 50px;
     gap: 20px;
     padding: 20px;
   }
@@ -41,12 +42,6 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-  }
-  
-  .emax-Intro img {
-    max-width: 100%; 
-    height: auto;    
-    object-fit: contain; 
   }
   
   .service-item {
