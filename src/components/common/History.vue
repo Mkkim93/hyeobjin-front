@@ -1,5 +1,5 @@
 <template>
-    
+    <p>ddd</p>
 </template>
 
 <script>
@@ -11,5 +11,8 @@ export default {
 
         };
     },
+
+    components: {
+    }
 }
 </script>

@@ -1,75 +1,80 @@
 <template>
-  <div class="max-w-4xl mx-auto my-10">
-    <h1 class="text-2xl font-bold text-center mb-5">제품 목록</h1>
-    <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
-    <table class="w-full table-auto border-collapse border border-gray-300">
-      <thead class="bg-gray-200">
-        <tr>
-          <th class="border border-gray-300 p-2">No</th>
-          <th class="border border-gray-300 p-2">품번</th>
-          <th class="border border-gray-300 p-2">제품명</th>
-          <th class="border border-gray-300 p-2">타입</th>
-          <th class="border border-gray-300 p-2">등록일</th>
-          <th class="border border-gray-300 p-2">최근수정일</th>
-          <th class="border border-gray-300 p-2">등록여부</th>
-          <th class="border border-gray-300 p-2">제조사명
-            <select v-model="selectedManu" @change="filterByManu" class="border p-1">
-              <option value=""></option>
-              <option value="KCC">KCC</option>
-              <option value="예림">예림</option>
-              <option value="휴그린">휴그린</option>
-              <!-- 필요에 따라 제조사 옵션 추가 -->
-            </select>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, count) in ItemListData" :key="item.itemId" class="text-center hover:bg-gray-100">
-          <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1 }}</td>
-          <td class="border border-gray-300 p-2">{{ item.itemNum }}</td>
+  <div class="max-w-5xl mx-auth my-10">
+    <!-- 카드 스타일 섹션 -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h1 class="text-2xl font-bold text-center mb-6">제품 목록</h1>
+      <p class="text-center">현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
 
-          <td class="border border-gray-300 p-2">
-          <p @click="$router.push({ name: 'ItemDetail', params: { itemId: item.itemId, manuId: item.manuId } })" tag="td" class="cursor-pointer">
-          {{ item.itemName }}
-          </p>
-          </td>
+      <!-- 제품 목록 테이블 -->
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="border border-gray-300 p-2">No</th>
+              <th class="border border-gray-300 p-2">품번</th>
+              <th class="border border-gray-300 p-2">제품명</th>
+              <th class="border border-gray-300 p-2">타입</th>
+              <th class="border border-gray-300 p-2">등록일</th>
+              <th class="border border-gray-300 p-2">최근수정일</th>
+              <th class="border border-gray-300 p-2">등록여부</th>
+              <th class="border border-gray-300 p-2">
+                제조사명
+                <select v-model="selectedManu" @change="filterByManu" class="border p-1 rounded-md ml-2">
+                  <option value="">전체</option>
+                  <option value="KCC">KCC</option>
+                  <option value="예림">예림</option>
+                  <option value="휴그린">휴그린</option>
+                </select>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, count) in ItemListData" :key="item.itemId" class="text-center hover:bg-gray-100">
+              <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1 }}</td>
+              <td class="border border-gray-300 p-2">{{ item.itemNum }}</td>
+              <td class="border border-gray-300 p-2">
+                <p @click="$router.push({ name: 'ItemDetail', params: { itemId: item.itemId, manuId: item.manuId } })"
+                  class="cursor-pointer text-blue-500 hover:underline">
+                  {{ item.itemName }}
+                </p>
+              </td>
+              <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
+              <td class="border border-gray-300 p-2">{{ formatDate(item.itemRegDate) }}</td>
+              <td class="border border-gray-300 p-2">{{ formatDate(item.itemUpdate) }}</td>
+              <td class="border border-gray-300 p-2">{{ item.itemYN === 'Y' ? '등록' : '미등록' }}</td>
+              <td class="border border-gray-300 p-2">{{ item.manuName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-          <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
-          <td class="border border-gray-300 p-2">{{ formatDate(item.itemRegDate) }}</td>
-          <td class="border border-gray-300 p-2">{{ formatDate(item.itemUpdate) }}</td>
-          <td class="border border-gray-300 p-2">{{ item.itemYN === 'Y' ? '등록' : '미등록' }}</td>
-          <td class="border border-gray-300 p-2">{{ item.manuName }}</td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <div class="flex justify-between items-center mt-5">
-      <!-- 페이지 네비게이션 중앙 정렬 -->
-      <nav aria-label="Page navigation example" class="flex-1 flex justify-center">
-        <ul class="pagination">
-          <!-- Previous Button -->
-          <li class="page-item" :class="{'disabled': currentPage === 0}">
-            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
-          </li>
+      <!-- 페이지네이션 섹션 -->
+      <div class="flex justify-center items-center mt-5">
+        <nav aria-label="Page navigation example">
+          <ul class="flex space-x-2">
+            <!-- Previous Button -->
+            <li class="page-item" :class="{'opacity-50 pointer-events-none': currentPage === 0}">
+              <a class="px-3 py-2 border rounded-md cursor-pointer" @click.prevent="changePage(currentPage - 1)">이전</a>
+            </li>
 
-          <!-- 페이지 번호들 동적으로 생성 -->
-          <li v-for="page in totalPages" :key="page" class="page-item" :class="{'active': currentPage === page - 1}">
-            <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
-          </li>
+            <!-- 페이지 번호들 동적으로 생성 -->
+            <li v-for="page in totalPages" :key="page" class="page-item" :class="{'font-bold text-blue-500': currentPage === page - 1}">
+              <a class="px-3 py-2 border rounded-md cursor-pointer" @click.prevent="changePage(page - 1)">{{ page }}</a>
+            </li>
 
-          <!-- Next Button -->
-          <li class="page-item" :class="{'disabled': currentPage === totalPages - 1}">
-            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
-          </li>
-        </ul>
-      </nav>
-      <!-- 글쓰기 버튼 -->
+            <!-- Next Button -->
+            <li class="page-item" :class="{'opacity-50 pointer-events-none': currentPage === totalPages - 1}">
+              <a class="px-3 py-2 border rounded-md cursor-pointer" @click.prevent="changePage(currentPage + 1)">다음</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </template>
 
+
 <script>
-import '@/assets/styles/admin.css';
 import dayjs from 'dayjs';
 
 export default {
@@ -152,6 +157,44 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+/* 기본 카드 스타일 */
+.bg-white {
+  background-color: white;
+}
 
+/* 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+}
+
+/* 페이지네이션 스타일 */
+.page-item {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.page-item a {
+  text-decoration: none;
+  color: #333;
+  padding: 6px 12px;
+}
+
+.page-item a:hover {
+  background-color: #f3f3f3;
+}
+
+/* 선택된 페이지 */
+.page-item .font-bold {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
 </style>

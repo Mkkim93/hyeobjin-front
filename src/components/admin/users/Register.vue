@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import '@/assets/styles/register.css';
 
 export default {
   name: 'Register',
@@ -71,4 +70,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+</style>

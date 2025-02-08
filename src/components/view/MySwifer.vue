@@ -13,15 +13,6 @@
       <div class="swiper-slide">
         <img src="@/assets/images/test03.jpg" alt="Logo 3" />
       </div>
-      <!-- <div class="swiper-slide">
-        <img src="@/assets/images/이미지4.png" alt="Logo 3" />
-      </div>
-      <div class="swiper-slide">
-        <img src="@/assets/images/이미지5.png" alt="Logo 3" />
-      </div>
-      <div class="swiper-slide">
-        <img src="@/assets/images/이미지6.png" alt="Logo 3" />
-      </div> -->
     </div>
     <!-- If we need pagination -->
 
@@ -85,7 +76,7 @@ export default {
 
 .swiper-container {
   width: 100%;      
-  height: 40vh;   
+  height: 45vh;   
   overflow: hidden;
   position: relative;  
   top: 0;
@@ -96,6 +87,6 @@ export default {
 .swiper-slide img {
   width: 100%;      
   height: 100%;     
-  object-fit: cover;
+  object-fit: fill;
 }
 </style>

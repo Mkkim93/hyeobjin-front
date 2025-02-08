@@ -1,65 +1,63 @@
 <template>
 
-  <div class="wrap">
-
-    <HomeView />
-
-    <div class="swifer-content">
-      <MySwifer />
-    </div>
-
+  <HomeView v-if="!isAdminPage" />
+  <Header v-if="!isMainPage" />
+  <div class="main-content">
     
-
-    <div class="main-content">
-
-      <div class="left-banner">
-        <LeftBanner />
-      </div>
-
-      <div class="router-content"><router-view></router-view></div>
-      
-      <div class="right-banner">
-        <RightBanner />
-      </div>
-
+    <div :class="{ 'main-content': !isAdminPage, 'admin-content': isAdminPage }">
+      <router-view />
     </div>
-
-    <Footer />
-
   </div>
+
+  <Footer />
 </template>
 
 <script>
 import Footer from './components/view/Footer.vue';
 import HomeView from './components/view/HomeView.vue';
-import MySwifer from './components/view/MySwifer.vue';
-import LeftBanner from './components/common/LeftBanner.vue';
-import RightBanner from './components/common/RightBanner.vue';
-
-import '@/assets/styles/app.css';
+import Header from './components/view/Header.vue';
 
 export default {
   name: 'App',
 
   data() {
     return {
-      
+      step: 0,
     }
   },
+
+  computed: {
+    isAdminPage() {
+      return this.$route.path.startsWith('/admin');
+    },
+
+    isMainPage() {
+      return this.$route.path !== '/';
+    }
+
+  },
+
   components: {
     HomeView,
-    MySwifer,
-    LeftBanner,
-    RightBanner,
+    Header,
     Footer,
   }
 }
 </script>
 
-<style scoped>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-  }
+<style>
+.main-content {
+  /* 고정 크기 설정 */
+  width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+  min-height: 70vh; /* 최소 높이 설정 */
+  max-height: 100%; /* 최대 높이 설정 (필요시 조정) */
+  padding: 0 10%;
+  box-sizing: border-box;
+  margin-bottom: 5%;
+  overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨기기 */
+}
+
+.admin-content {
+  background-color: #f0f0f0; /* 예시로 배경 색상 추가 */
+}
 </style>

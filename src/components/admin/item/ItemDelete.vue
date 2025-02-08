@@ -1,8 +1,7 @@
 <template>
-    <p>제품 삭제 페이지 입니다.</p>
+    <h1 class="text-2xl font-bold text-center mb-5">제품 삭제</h1>
    
     <div class="max-w-4xl mx-auto my-10">
-      <h1 class="text-2xl font-bold text-center mb-5">제품 목록</h1>
       <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
       <table class="w-full table-auto border-collapse border border-gray-300">
         <thead class="bg-gray-200">
@@ -61,7 +60,6 @@
   </template>
   
   <script>
-  import '@/assets/styles/admin.css';
   import dayjs from 'dayjs';
   export default {
       name: 'ItemDelete',

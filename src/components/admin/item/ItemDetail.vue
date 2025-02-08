@@ -1,6 +1,6 @@
 <template>
 
-  <p>제품 상세 페이지 입니다.</p>
+  <h1 class="text-2xl font-bold text-center mb-5">제품 상세</h1>
 
   <button class="btn-modify-ready" @click="modifyItems()">수정</button>
 
@@ -8,7 +8,7 @@
     <div class="container">
 
       <div class="image-container" v-for="(files, index) in fileBoxesData" :key="files">
-          <img :src="`/item/${fileBoxesData[index].fileName}`" alt="제품 이미지" v-if="fileBoxesData[index].isMain"/>
+        <img :src="`/item/${fileBoxesData[index].fileName}`" alt="제품 이미지" v-if="fileBoxesData[index].isMain" />
       </div>
 
       <div class="info-container">
@@ -16,7 +16,7 @@
         <p>{{ ItemDetailData.itemDescription }}</p>
         <table>
           <tbody>
-            
+
             <tr>
               <th>제조사</th>
               <td>{{ ItemDetailData.manuName }}</td>
@@ -51,15 +51,15 @@
         </table>
       </div>
 
-      
+
     </div>
   </div>
   <br>
-      <div class="image-container" v-for="(files, index) in fileBoxesData" :key="files">
-        
-          <img :src="`/itemsub/${fileBoxesData[index].fileName}`" alt="제품 이미지" v-if="!fileBoxesData[index].isMain"/>
-       
-      </div>
+  <div class="image-container" v-for="(files, index) in fileBoxesData" :key="files">
+
+    <img :src="`/itemsub/${fileBoxesData[index].fileName}`" alt="제품 이미지" v-if="!fileBoxesData[index].isMain" />
+
+  </div>
 </template>
 
 <script>
@@ -68,8 +68,8 @@ export default {
   data() {
     return {
       DetailItemId: null,
-      DetailManuId: null,
-      
+      // DetailManuId: null,
+
       ItemDetailData: {},
       fileBoxesData: [],
     };
@@ -78,8 +78,8 @@ export default {
   created() {
     console.log('ItemEdit 컴포넌트가 실행되었습니다.');
     this.DetailItemId = Number(this.$route.params.itemId);
-    this.DetailManuId = Number(this.$route.params.manuId);
-    this.fetchItemDetailData(this.DetailManuId, this.DetailItemId);
+    // this.DetailManuId = Number(this.$route.params.manuId);
+    this.fetchItemDetailData(this.DetailItemId);
   },
 
   mounted() {
@@ -87,10 +87,10 @@ export default {
   },
 
   methods: {
-    async fetchItemDetailData(manuId, itemId) {
+    async fetchItemDetailData(itemId) {
 
       try {
-        const response = await this.$axios.get(`/admin/items/detail?manuId=${manuId}&itemId=${itemId}`);
+        const response = await this.$axios.get(`/admin/items/detail?itemId=${itemId}`);
         this.ItemDetailData = response.data;
         this.fileBoxesData = response.data.fileBoxes;
         console.log('response.content', response);
@@ -104,12 +104,16 @@ export default {
 
     async modifyItems() {
       this.$router.push({
-        path: `/item/edit/${this.DetailItemId}`,
+        path: `/admin/item/edit/${this.DetailItemId}`,
       });
-
-    },
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.image-container img{
+  width: 300px;
+  height: 300px;
+}
+</style>

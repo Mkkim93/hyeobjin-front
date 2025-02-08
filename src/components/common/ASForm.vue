@@ -1,168 +1,212 @@
 <template>
-<section class="introduction">
-    <div class="intro-container">
-      <div class="intro-image">
-        <img :src="asformImg" alt="A/S 이미지" />
-      </div>
-
-      <div class="intro-text">
-        <h2>A/S 문의</h2>
-        <p>협진 창호 A/S 신청은 아래의 연락처로 내용을 문자로 부탁드립니다.</p><br>
-      </div>
-    </div>
-  </section>
-
-  <section class="services">
-    <div class="service-item">
-      <img src="#" alt="">
-      <h3>고객 상담</h3>
-      <p>평일 09:00 ~ 17:00 주말 및 공휴일 휴무</p>
-      <p>010-2223-0000</p>
-    </div>
-    <div class="service-item">
-      <img src="#" alt="">
-      <h3>Layout 02</h3>
-      <p>Detail 02</p>
-    </div>
-    <div class="service-item">
-      <img src="#" alt="">
-      <h3>Layout 03</h3>
-      <p>Deatil 03</p>
-    </div>
-  </section>
-
   
+  <div class="container my-5">
+    <!-- 페이지 제목 -->
+    <h2 class="text-center fw-bold main-title">1:1 문의 및 A/S 신청 작성</h2>
+    <p class="text-center text-muted subtitle">A/S 또는 기술 관련 궁금한 사항을 문의주시면 성실하게 답변 드립니다.</p>
+
+    <!-- 문의 유형 선택 -->
+     <form action="/" method="post">
+    <div class="bg-light p-4 my-4 border rounded">
+      <label class="fw-bold">문의 유형을 선택해 주세요.</label>
+      <select v-model="inquiryType" class="form-select mt-2">
+        <option value="as">A/S 접수</option>
+        <option value="general">일반 문의</option>
+      </select>
+      <small class="text-muted d-block mt-2">
+        * 해당 사서함 성격에 맞지 않는 내용은 삭제될 수 있습니다.<br>
+        * 빠른 처리가 필요한 경우 042-583-3131으로 연락 바랍니다.
+      </small>
+    </div>
+
+    <!-- 문의 내용 -->
+    <div class="border p-4 my-4 rounded">
+      <h4 class="fw-bold section-title">문의 내용</h4>
+
+      <!-- 제품 구분 -->
+      <div class="row my-3">
+        <div class="col-md-4">
+          <label>제품 구분 *</label>
+          <select class="form-select">
+            <option>건축재</option>
+            <option>가구</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>2차 구분 선택 *</label>
+          <select class="form-select">
+            <option>옵션 1</option>
+            <option>옵션 2</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>창호 부품 MAP *</label>
+          <select class="form-select">
+            <option>옵션 A</option>
+            <option>옵션 B</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 문의 제목 & 내용 -->
+      <input v-model="title" class="form-control my-2" placeholder="제목을 입력하세요.">
+      <textarea v-model="content" class="form-control my-2" rows="4" placeholder="문의 내용을 입력하세요."></textarea>
+      <small class="text-muted d-block">0/4000 byte</small>
+
+      <!-- 파일 첨부 -->
+      <div class="my-3">
+        <label>파일 첨부 (선택)</label>
+        <div class="d-flex">
+          <input type="file" class="form-control me-2">
+          <button class="btn btn-secondary">파일첨부</button>
+        </div>
+        <small class="text-muted">
+          * 첨부파일: 최대 20MB 이하, 5개까지 등록 가능<br>
+          * 파일형식: 문서, 이미지, 압축(zip) 파일
+        </small>
+      </div>
+    </div>
+
+    <!-- 고객 정보 -->
+    <div class="border p-4 my-4 rounded">
+      <h4 class="fw-bold section-title">고객 정보</h4>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>작성자 *</label>
+          <input v-model="customer.name" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label>연락처 *</label>
+          <div class="d-flex">
+            <input v-model="customer.phone1" class="form-control me-1">
+            <span class="mx-1">-</span>
+            <input v-model="customer.phone2" class="form-control me-1">
+            <span class="mx-1">-</span>
+            <input v-model="customer.phone3" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-3">
+        <div class="col-md-6">
+          <label>이메일 *</label>
+          <div class="d-flex">
+            <input v-model="customer.emailId" class="form-control me-1">
+            <span class="mx-1">@</span>
+            <input v-model="customer.emailDomain" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label>주소</label>
+          <input v-model="customer.address" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <!-- 업체 정보 -->
+    <div class="border p-4 my-4 rounded">
+      <h4 class="fw-bold section-title">업체 정보 (선택)</h4>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>업체명</label>
+          <input v-model="company.name" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label>업체 연락처</label>
+          <div class="d-flex">
+            <input v-model="company.phone1" class="form-control me-1">
+            <span class="mx-1">-</span>
+            <input v-model="company.phone2" class="form-control me-1">
+            <span class="mx-1">-</span>
+            <input v-model="company.phone3" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-3">
+        <div class="col-md-6">
+          <label>시공 일자</label>
+          <input type="date" v-model="company.date" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label>계약서 유무</label>
+          <div class="d-flex">
+            <input type="radio" v-model="company.contract" value="있음"> 있음
+            <input type="radio" v-model="company.contract" value="없음" class="ms-3"> 없음
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 개인정보 동의 -->
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="privacyCheck" v-model="this.privacyAgree">
+      <label class="form-check-label" for="privacyCheck" >
+        [필수] 개인정보 수집 및 이용 동의 <a href="#">자세히 보기</a>
+      </label>
+    </div>
+
+    <!-- 문의 등록 버튼 -->
+    <div class="text-center my-4">
+      <button type="submit" class="btn btn-dark btn-lg w-50" :disabled="!this.privacyAgree">문의 등록</button>
+    </div>
+  </form>
+  </div>
 </template>
 
 <script>
-import asformImg from '../../assets/images/asform.jpg';
 export default {
-    name: 'ASForm',
-    data() {
-        return {
-          asformImg,
+  name: "InquiryForm",
+  data() {
+    return {
+      privacyAgree: false,
 
-        }
-    },
-}
+      inquiryType: "as",
+      title: "",
+      content: "",
+      customer: {
+        name: "",
+        phone1: "",
+        phone2: "",
+        phone3: "",
+        emailId: "",
+        emailDomain: "",
+        address: "",
+      },
+      company: {
+        name: "",
+        phone1: "",
+        phone2: "",
+        phone3: "",
+        date: "",
+        contract: "",
+      }
+    };
+  }
+};
 </script>
 
-<style>
-/* 전체 레이아웃 설정 */
-.introduction {
-  padding: 60px 20px;
-  width: 100%;
-  background-color: #f9f9f9; /* 배경색 추가로 섹션 분리 */
+<style scoped>
+.container {
+  max-width: 800px;
+  border: #0078ff;
+  box-shadow: #0078ff;
 }
-
-/* 컨테이너 설정: Flexbox로 이미지와 텍스트 배치 */
-.intro-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto; /* 가운데 정렬 */
+.main-title {
+  font-size: 24px;
 }
-
-/* 좌측 이미지 섹션 */
-.intro-image img {
-  width: 100%;
-  max-width: 500px; /* 이미지 최대 너비 조정 */
-  height: auto; /* 비율 유지 */
-  border-radius: 10px; /* 부드러운 모서리 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+.subtitle {
+  font-size: 14px;
 }
-
-/* 우측 텍스트 섹션 */
-.intro-text {
-  max-width: 600px;
+.section-title {
+  border-bottom: 3px solid #0078ff;
+  display: inline-block;
+  padding-bottom: 5px;
 }
-
-.intro-text h2 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-  color: #333; /* 진한 색상으로 강조 */
-  border-left: 5px solid #0078ff; /* 좌측 강조선 */
-  padding-left: 10px;
+.btn-dark {
+  background-color: black;
+  color: white;
 }
-
-.intro-text p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* 서비스 항목 레이아웃 */
-.services {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  margin-top: 60px;
-  max-width: 1200px;
-  margin: 60px auto; /* 가운데 정렬 및 상단 여백 */
-}
-
-.service-item {
-  flex: 1;
-  text-align: center;
-  padding: 20px;
-  background-color: #fff; /* 배경 추가 */
-  border: 1px solid #ddd; /* 외곽선 추가 */
-  border-radius: 10px; /* 부드러운 모서리 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  transition: transform 0.3s, box-shadow 0.3s; /* 마우스 오버 효과 */
-}
-
-.service-item:hover {
-  transform: translateY(-10px); /* 살짝 올라감 */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* 그림자 증가 */
-}
-
-.service-item img {
-  width: 100%;
-  max-width: 150px; /* 이미지 크기 제한 */
-  height: auto;
-  object-fit: cover;
-  margin-bottom: 15px;
-  border-radius: 50%; /* 원형 이미지 */
-  border: 3px solid #0078ff; /* 테두리 추가 */
-}
-
-.service-item h3 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: #0078ff; /* 강조색 */
-}
-
-.service-item p {
-  font-size: 1rem;
-  color: #666;
-}
-
-/* 모바일 반응형 */
-@media screen and (max-width: 768px) {
-  .intro-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .intro-image img {
-    max-width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .services {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .service-item {
-    margin-bottom: 20px;
-  }
-}
-
 </style>

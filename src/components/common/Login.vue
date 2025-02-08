@@ -74,9 +74,9 @@
       }
 
       console.log('Refresh Token = server cookie'); // refresh token 은 서버에서 이미 쿠키에 저장
-
-      this.$router.push("/");
-
+      alert('로그인 성공');
+      this.$router.push("/admin");
+      
     } catch (error) {
      
       console.log('username', this.username);

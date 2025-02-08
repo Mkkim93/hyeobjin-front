@@ -61,7 +61,13 @@ export default {
 
 <style>
 
+.location-container {
+  margin-top: 10%;
+  justify-items: center;
+}
+
 .location-title {
+  display: inline-block;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 20px;
@@ -81,7 +87,7 @@ export default {
 
 .map {
   width: 100%; 
-  height: 800px; 
+  height: 600px; 
   border: none;
 }
 

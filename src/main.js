@@ -1,44 +1,33 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import RouterName from './router.js';
-import axios from "./plugins/axios";
 import store from './store.js'
+import axios from "./plugins/axios";
+import VCalender from 'v-calendar';
+import '@/assets/css/styles.css';
+import '@/assets/css/editor.css';
+import mitt from 'mitt';
 
-import 'v-calendar/style.css';
-import VCalendar from 'v-calendar';
 
-import "./assets/styles/tailwind.css";
-
-// Import Bootstrap CSS
+// 1) Bootstrap CSS import
 import 'bootstrap/dist/css/bootstrap.min.css';
-// Import Bootstrap JS Bundle (includes Popper.js)
+// 2) (선택) Bootstrap Icons import
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// 3) Bootstrap JS import (팝오버, 드롭다운 등 JS 필요 시)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-// Import Summernote CSS
-import 'summernote/dist/summernote-bs4.css';
-
-// Import summernote JS Bundle
-import 'summernote/dist/summernote-bs4.min.js';
-
-// Import jQuery (Summernote 의존성)
-import $ from 'jquery';
-window.$ = $; // Summernote가 jQuery를 글로벌 `$` 객체로 필요로 함
-
 const app = createApp(App);
-
-// v-calendar
-app.use(VCalendar, {})
-
+let emitter = mitt();
 // axios 
 axios.defaults.baseURL = 'http://localhost:8080';
 app.config.globalProperties.$axios = axios;
+app.config.globalProperties.emitter = emitter;
+app.use(VCalender, {})
 
 // vuex 
 app.use(store)
-
 // router
 // router 설정은 axios 다음으로 해줘야함
 app.use(RouterName)
-
 
 app.mount('#app')

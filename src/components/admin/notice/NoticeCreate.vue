@@ -1,136 +1,107 @@
 <template>
-  <p>공지 등록 페이지 입니다.</p>
-  <div>
-    <h1>공지 사항을 작성해주세요</h1>
+  <div class="notice-create">
+    <h2>공지 등록</h2>
+    <input type="text" v-model="title" placeholder="제목을 입력하세요" />
 
-    <!-- 제목 입력 필드 -->
-    <input v-model="title" type="text" placeholder="제목을 입력해주세요" class="border p-2 w-full mb-4 rounded-md" />
+    <CustomEditor v-model="postContent" />
 
-
-     <!-- 공개 여부 선택 -->
-     <label for="boardYN" class="block mb-2">공개 여부:</label>
-    <select v-model="boardYN" id="boardYN" class="border p-2 rounded-md w-full mb-4">
-      <option value="Y">공개</option>
-      <option value="N">비공개</option>
-    </select>
-
-    <div id="editor"></div>
-    <button class="btn btn-primary mt-3" @click="submitPost">Submit</button>
+    <h3>미리보기</h3>
+    <div v-html="postContent"></div>
+    <input type="file" multiple @change="handleFileChange" />
+    <button @click="submitPost">게시글 등록</button>
   </div>
-  
 </template>
 
 <script>
+import CustomEditor from '@/components/view/CustomEditor.vue';
 export default {
+
   name: 'NoticeCreate',
+
   data() {
     return {
       title: '',
-      boardFiles: [],
-      boardYN: '',
-    }
+      postContent: '',
+      files: [],
+    };
   },
 
-  setup() {
-    console.log("NoticeCreate 컴포넌트가 호출 되었습니다.");
-  },
-
-  mounted() {
-    $('#editor').summernote({
-      placeholder: '내용을 입력해주세요',
-      tabsize: 2,
-      height: 300,
-      callbacks: {
-        onImageUpload: (files) => {
-          // files가 배열이 아니면 배열로 감싸서 처리
-          if (files instanceof FileList) {
-            files = Array.from(files); // FileList를 배열로 변환
-          }
-
-          files.forEach(file => {
-            // 파일 객체가 아닌 경우 처리하지 않도록 검증
-            if (file instanceof File) {
-              this.boardFiles.push(file);
-
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                const base64 = e.target.result;
-                
-
-                $('#editor').summernote('insertImage', base64, function ($image) {
-                $image.attr('data-filename', file.name); // 파일명 저장
-            });
-        };
-        reader.readAsDataURL(file);
-
-              // FileReader가 파일 데이터를 읽도록 설정
-              reader.readAsDataURL(file);
-            } else {
-              console.error('파일 객체가 아닙니다:', file);
-            }
-          });
-        },
-        onInit: () => {
-          // Summernote 내부 요소에서 aria-hidden을 비활성화
-          const hiddenElements = document.querySelectorAll('[aria-hidden="true"]');
-          hiddenElements.forEach((element) => {
-            element.setAttribute('aria-hidden', 'false'); // 숨김 해제
-          });
-        },
-      }
-    });
+  components: {
+    CustomEditor,
   },
 
   methods: {
+
+    async handleFileChange(event) {
+      this.files = Array.from(event.target.files);
+    },
+
     async submitPost() {
-      const content = $('#editor').summernote('code'); // Summernote에서 작성한 내용
-      const formData = new FormData();
 
-      // 게시글 데이터 JSON 형태로 추가
-      formData.append('createBoardDTO', new Blob([JSON.stringify({
-        boardTitle: this.title,
-        boardContent: content,
-        boardYN: this.boardYN,
-        
-      })], { type: 'application/json' }));
-
-      // 파일 데이터를 formData에 추가
-      this.boardFiles.forEach((file) => {
-        formData.append('files', file); // 파일 데이터를 'files'라는 동일한 이름으로 추가
-      });
-
-      console.log('formData:', [...formData.entries()]); // formData 내용 확인
-
-      const accessToken = localStorage.getItem('access');
-      console.log('formData', formData);
-
-      // API로 데이터 전송
       try {
+
+        const formData = new FormData();
+        console.log('this.postContent', this.postContent);
+
+        const createBoardDTO = {
+          boardTitle: this.title,
+          boardContent: this.postContent,
+        };
+
+        formData.append("createBoardDTO", new Blob([JSON.stringify(createBoardDTO)], {
+          type: "application/json"
+        }));
+
+
+        this.files.forEach(file => {
+          formData.append("files", file);
+        });
+
         const response = await this.$axios.post('/admin/boards', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `${accessToken}`, // Bearer 토큰 방식으로 Authorization 헤더 설정
           }
         });
-
-        alert('Post submitted successfully!');
-        const boardId = response.data; // 게시글 ID
-        this.$router.push(`/admin/notice/${boardId}`); // 새로 생성된 게시글 페이지로 이동
+        const boardId = response.data;
+        console.log('등록된 boardId', boardId);
+        console.log('게시글 등록 성공');
+        alert('게시글이 성공적으로 등록 되었습니다.');
+        this.$router.push(`/admin/notice/${boardId}`);
       } catch (error) {
-        console.error('Error submitting post:', error);
-        alert('게시글 작성에 실패하였습니다. 관리자에게 문의해주세요.');
+        console.log('게시글 등록 실패', error);
       }
-    },
-
+    }
   },
-};
+}
+
+
 </script>
 
 <style scoped>
-#editor img {
-  max-width: 100%;
-  /* 이미지가 부모 요소를 넘어가지 않도록 설정 */
-  height: auto;
-  /* 비율을 유지하며 크기를 조정 */
+.notice-create {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.notice-create h2 {
+  margin-bottom: 20px;
+}
+
+.notice-create input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.notice-create input[type="file"] {
+  margin: 10px 0;
+}
+
+.notice-create button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
 }
 </style>

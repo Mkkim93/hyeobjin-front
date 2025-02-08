@@ -66,24 +66,22 @@ export async function refreshAccessToken($axios) {
 // 유효성 검증 및 리디렉션
 export async function handleAccessValidation($axios, $router) {
     const accessToken = localStorage.getItem("access");
-    console.log('$axios', $axios);
-    console.log('$router', $router);
-    console.log('handleAccessValidation : access token ', accessToken);
-    console.log('어디로 가나요');
-    // Access token이 없거나 만료된 경우 새로 발급받기
-    if (!accessToken || isAccessTokenExpired(accessToken)) {
+    console.log("✅ 현재 저장된 Access Token:", accessToken);
 
+    if (!accessToken || isAccessTokenExpired(accessToken)) {
         const newAccessToken = await refreshAccessToken($axios);
+        
         if (!newAccessToken) {
-            console.log("Unable to refresh token. Redirecting to login.");
+            console.log("❌ 토큰 갱신 실패. 로그인 페이지로 이동");
+            // localStorage.setItem("redirectAfterLogin", $router.currentRoute.value.fullPath);
             $router.push("/login");
             return;
         }
     }
 
-    // 유효한 토큰으로 API 요청
+    // ✅ 유효한 토큰으로 API 요청 후, 현재 페이지 유지
     const tokenToUse = localStorage.getItem("access");
-    console.log('샌드 api 로 가는 access 토큰', tokenToUse);
+    console.log("✅ 최종 Access Token:", tokenToUse);
     await sendApiRequest($axios, tokenToUse, $router);
 }
 
@@ -97,14 +95,24 @@ export async function sendApiRequest($axios, accessToken, $router) {
             },
         });
 
-        if ($router.currentRoute.value.path !== "/admin") {
+        // ✅ 현재 경로 유지
+        const currentPath = $router.currentRoute.value.path;
+        console.log("✅ 현재 경로:", currentPath);
+
+        if (!currentPath.startsWith("/admin")) {
             $router.push("/admin");
+        } else {
+            console.log("✅ 현재 경로 유지: 이동하지 않음");
         }
 
         console.log("Admin page access granted", response.data);
     } catch (error) {
         console.error("Failed to access admin API:", error);
-        console.log('샌드 api 에서 엑세스토큰 검증', accessToken);
+        console.log("Access token 검증 실패:", accessToken);
+
+        // ✅ 현재 경로를 로그인 후 다시 복귀할 경로로 저장
+        localStorage.setItem("redirectAfterLogin", $router.currentRoute.value.fullPath);
+
         $router.push("/login");
     }
 }
