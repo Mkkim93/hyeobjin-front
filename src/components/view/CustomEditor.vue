@@ -150,7 +150,6 @@ const config = computed(() => {
 		ckfinder: {
 			uploadUrl: 'http://localhost:8080/image/upload',
 			withCredentials: true,
-			
 		},
 		licenseKey: LICENSE_KEY,
 		link: {

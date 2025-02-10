@@ -93,6 +93,7 @@ export default {
   created() {
     this.fetchManufacturers();
   },
+
   methods: {
     async fetchManufacturers() {
       try {
@@ -101,6 +102,7 @@ export default {
         });
         console.log('response', response);
         this.manufacturers = response.data;
+        this.emitter.emit('manufacturersLoaded', this.manufacturers);
       } catch (error) {
         console.error('Failed to fetch manufacturers:', error);
       }

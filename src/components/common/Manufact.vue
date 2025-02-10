@@ -78,12 +78,10 @@
         :src="`/item/${items.fileBoxes[0].fileName}`"
         alt="제품 이미지"
       />
-      
     </div>
     <div v-if="items">
-    <div class="image-container" v-for="(item, index) in imgBox" :key="item">
-            <img :src="`/itemsub/${imgBox[index].fileName}`" alt="제품 이미지" v-if="!imgBox[index].isMain" />
-          </div>
+    
+          <div v-html="items.freeContent"></div>
         </div>
       </div>
     

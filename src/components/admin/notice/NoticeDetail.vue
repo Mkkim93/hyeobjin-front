@@ -33,7 +33,6 @@
       this.id = this.$route.params.id;
       this.fetchBoardDetailData(this.id);
     },
-
     watch: {
     // 🔥 id 값이 변경될 때마다 fetchBoardDetailData() 실행
     id(newId) {

@@ -86,7 +86,7 @@ const routes = [
       },
 
       {
-        path: 'admin/delete',
+        path: 'delete',
         name: 'delete',
         component: ItemDelete,
         props: true,
