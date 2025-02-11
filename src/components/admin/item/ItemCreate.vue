@@ -32,10 +32,10 @@
           </div>
 
           <div class="col-md-6 mb-3">
-            <label for="itemType" class="form-label">제품 타입</label>
-            <select id="itemType" v-model="itemType" class="form-control">
+            <label for="itemTypeId" class="form-label">제품 타입</label>
+            <select id="itemTypeId" v-model="itemTypeId" class="form-control">
               <option value="">제품 타입 선택</option>
-              <option v-for="type in ItemTypeData" :key="type.itemTypeId" :value="type.itemTypeName">
+              <option v-for="type in ItemTypeData" :key="type.itemTypeId" :value="type.itemTypeId">
                 {{ type.itemTypeName }}
               </option>
             </select>
@@ -68,10 +68,10 @@
 
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="itemSpec" class="form-label">유리 사용 두께(mm)</label>
-            <select id="itemSpec" v-model="itemSpec" class="form-control">
+            <label for="glassSpecId" class="form-label">유리 사용 두께(mm)</label>
+            <select id="glassSpecId" v-model="glassSpecId" class="form-control">
               <option value="">유리 두께 선택</option>
-              <option v-for="type in GlassTypeData" :key="type.glassSpecId" :value="type.glassSpecSize">
+              <option v-for="type in GlassTypeData" :key="type.glassSpecId" :value="type.glassSpecId">
                 {{ type.glassSpecSize }}
               </option>
             </select>
@@ -141,6 +141,8 @@ export default {
       freeContent: '',
       imageUrl: String,
       fileBoxes: [],
+      glassSpecId: '',
+      itemTypeId: '',
 
       selectedManu: '',
       updateManufactList: [],
@@ -232,7 +234,8 @@ export default {
       formData.append("itemDescription", this.itemDescription);
       formData.append("itemYN", this.itemYN);
       formData.append("freeContent", this.freeContent);
-
+      formData.append("glassSpecId", this.glassSpecId);
+      formData.append("itemTypeId", this.itemTypeId);
 
       // 메인 이미지가 먼저 저장 된다.
       if (this.fileBoxes.length > 0) {
@@ -242,6 +245,7 @@ export default {
       }
 
       try {
+        console.log('formData', formData);
         await this.$axios.post('/admin/items', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'

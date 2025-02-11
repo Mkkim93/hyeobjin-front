@@ -1,41 +1,33 @@
 <template>
   <nav class="category-nav">
     <ul>
-      <li><a href="#!">단창</a></li>
-      <li><a href="#!">터닝도어</a></li>
+      <button v-for="(types) in itemTypeList" :key="types.itemTypeId" @click="fetchItemNamesData(types.itemTypeId)"
+        class="category-btn">
+        {{ types.itemTypeName }}
+      </button>
     </ul>
   </nav>
 
   <!-- 하위 소카테고리: 예시로 pill 형태 -->
   <nav class="sub-category-nav">
     <div class="product-versions">
-        <ul>
-          <li
-            v-for="(item, index) in itemsNumList"
-            :key="item.itemNum"
-            class="itemCard"
-          >
-            <!-- 클릭된 버튼만 active 클래스를 부여 -->
-            <button
-              class="version-btn"
-              :class="{ active: selectedIndex === index }"
-              @click="fetchItemDetails(item.manuId, item.itemId)">
-              {{ item.itemNum }}
-            </button>
-          </li>
-        </ul>
-      </div>
+      <ul>
+        <!-- TODO 현재 위의 반복문과 KEY 값 중복으로 경고뜸 나중에 DTO 키 필드값 변경해야 할듯 -->
+        <li v-for="(item) in itemTypeNames" :key="item.itemTypeId" class="itemCard"> 
+          <button class="version-btn"
+            @click="fetchItemDetails(item.itemId)">
+            {{ item.itemName }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <!-- 실제 제품 상세 영역 -->
   <div class="product-wrapper">
     <!-- 좌측 텍스트 영역 -->
-    <div class="product-info">
-      <!-- 상단 탭 버튼 예시 (itemsNumList) -->
-      
-
-      <!-- items가 존재할 때만 상세 영역 표시 -->
-      <div v-if="items">
+    <div v-if="items">
+      <div class="product-info">
         <h2 class="product-title">{{ items.itemName }}</h2>
         <div class="product-features">
           <h3>특징</h3>
@@ -60,7 +52,7 @@
               </tr>
               <tr>
                 <th>유리사용두께</th>
-                <td>{{ items.itemSpec }}</td>
+                <td>{{ items.glassSize }}</td>
               </tr>
               <tr>
                 <th>창틀 폭</th>
@@ -71,25 +63,19 @@
         </div>
       </div>
     </div>
-
-    <!-- 우측 이미지 영역 -->
-    <div class="product-image-area" v-if="items && items.fileBoxes && items.fileBoxes.length > 0">
-      <img
-        :src="`/item/${items.fileBoxes[0].fileName}`"
-        alt="제품 이미지"
-      />
-    </div>
-    <div v-if="items">
-    
-          <div v-html="items.freeContent"></div>
-        </div>
+      <!-- 우측 이미지 영역 -->
+      <div class="product-image-area" v-if="items && items.fileBoxes && items.fileBoxes.length > 0">
+        <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" class="product-image" />
       </div>
-    
+      <div v-if="items">
+        <div v-html="items.freeContent"></div>
+      </div>
+    </div>
+  
+
 </template>
 
 <script>
-
-
 export default {
   name: 'Manufact',
   data() {
@@ -99,12 +85,17 @@ export default {
       manuId: null,
       step: 0,
       imgBox: [],
+
+      itemTypeList: [],
+      itemTypeNames: [],
     };
   },
 
   created() {
     this.manuId = this.$route.params.id;
+    // this.itemTypeNames = null;
     this.fetchItems(this.manuId);
+    this.fetchItemTypeData(this.manuId);
   },
 
   watch: {
@@ -117,10 +108,27 @@ export default {
       this.itemsNumList = [];
       this.manuId = this.$route.params.id;
       console.log(`now manuId: ${this.manuId}`);
+      
       this.fetchItems(this.manuId);
+      this.fetchItemTypeData(this.manuId);
+    },
+
+    async fetchItemTypeData(manuId) {
+      
+
+      try {
+        const response = await this.$axios.get(`/type?manuId=${manuId}`);
+        
+        this.itemTypeList = response.data;
+        console.log('itemTypeList', this.itemTypeList);
+
+      } catch (error) {
+        console.log('fetchItemTypeData error', error);
+      }
     },
 
     async fetchItems(manuId) {
+      this.itemTypeNames = null
       try {
         // get 요청 시 json type 명시를 생략 가능 (단, post, put 요청 시에는 명시하는 것이 일반적)
         const response = await this.$axios.get(`/items/numbers?manuId=${manuId}`, {
@@ -132,21 +140,15 @@ export default {
         // await 를 사용해서 get(`/items/numbers?manuId...`) 가 완료될때까지 다음 코드를 중단 시킨다.
         // 즉, this.itemsNumList = response.data 가 실행되기 전에 get 요청을 기다리게 한다.
         this.itemsNumList = response.data;
-        console.log('response', response);
-        console.log('response-data', response.data);
-        console.log('this.itemsNumList', this.itemsNumList);
       } catch (error) {
-        console.error('Failed to fetch itemsList');
-        console.log('response', response);
-        console.log('response-data', response.data);
+        console.error('Failed to fetch itemsList', error);
       }
     },
 
-    async fetchItemDetails(manuId, itemId) {
+    async fetchItemDetails(itemId) {
       console.log('fetchItemDetails method start');
       try {
-        console.log('manuId', manuId);
-        const response = await this.$axios.get(`/items?manuId=${manuId}&itemId=${itemId}`, {
+        const response = await this.$axios.get(`/items?itemId=${itemId}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -165,13 +167,25 @@ export default {
       }
     },
 
+    async fetchItemNamesData(typeId) {
+
+      try {
+        const response = await this.$axios.get(`/type/category?itemTypeId=${typeId}&manuId=${this.manuId}`);
+        this.itemTypeNames = response.data;
+        console.log('this.itemTypeNames', this.itemTypeNames);
+      } catch (error) {
+        console.log('fetchItemNamesData error', error);
+      }
+
+    },
+
 
   },
 };
 </script>
 
 <style scoped>
-/***** 전체 리셋 & 기본 설정 *****/
+/* 전체 초기화 */
 * {
   margin: 0;
   padding: 0;
@@ -179,196 +193,182 @@ export default {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Arial', sans-serif;
   color: #333;
   background-color: #f8f8f8;
 }
 
-/***** 상단 큰 카테고리 *****/
+/***** 🔹 상위 카테고리 네비게이션 (아이콘 & 버튼 스타일) *****/
 .category-nav {
+  display: flex;
+  justify-content: center;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
 .category-nav ul {
   display: flex;
   list-style: none;
-  padding: 0.5rem 1rem;
+  gap: 15px;
 }
 
-.category-nav li {
-  margin-right: 1.5rem;
+.category-btn {
+  padding: 10px 20px;
+  background-color: #fff;
+  border: 2px solid #c2985e;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #c2985e;
+  transition: 0.3s;
 }
 
-.category-nav a {
-  text-decoration: none;
-  color: #333;
-  padding: 0.5rem;
-  font-weight: 500;
+.category-btn:hover {
+  background-color: #c2985e;
+  color: #fff;
 }
 
-/***** 하위 소카테고리 (pill 형태) *****/
+/***** 🔹 하위 소카테고리 (Pill 형태) *****/
 .sub-category-nav {
+  display: flex;
+  justify-content: center;
   background-color: #f9f9f9;
-  padding: 0.5rem 1rem;
+  padding: 10px 0;
 }
 
 .sub-category-nav ul {
   display: flex;
   list-style: none;
-}
-
-.sub-category-nav li {
-  margin-right: 1rem;
-}
-
-.sub-category-nav a {
-  text-decoration: none;
-  padding: 0.4rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.sub-category-nav a.active {
-  background-color: #000;
-  border-color: #000;
-  color: #fff;
-}
-
-/***** 제품 상세 메인 컨테이너 *****/
-.product-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  /* 반응형 고려 */
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 10px;
-  /* 임의로 그림자 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/***** 좌측 텍스트 영역 *****/
-.product-info {
-  flex: 1 1 50%;
-  /* 기본적으로 절반 넓이 */
-  padding: 1rem;
-}
-
-.product-versions {
-  margin-bottom: 1rem;
+  gap: 10px;
 }
 
 .version-btn {
   background-color: #eee;
   border: none;
-  padding: 0.4rem 0.8rem;
-  margin-right: 0.5rem;
-  cursor: pointer;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .version-btn.active {
   background-color: #c2985e;
-  /* 골드톤 예시 */
   color: #fff;
-  border: none;
 }
 
+/***** 🔹 제품 상세 페이지 (좌측 정보 & 우측 이미지) *****/
+.product-wrapper {
+  display: flex;
+  justify-content: space-between; /* ✅ 좌측(텍스트) + 우측(이미지) 정렬 */
+  align-items: flex-start; /* ✅ 위쪽 정렬 */
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 좌측 텍스트 영역 */
+.product-info,
+.product-image-area {
+  flex: 1 1 100%;
+  /* ✅ 전체 너비 사용 */
+}
+
+
+
 .product-title {
-  margin: 1rem 0;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .product-features ul {
   list-style: disc;
-  padding-left: 1.2rem;
-  margin-top: 0.5rem;
-  line-height: 1.6;
+  padding-left: 20px;
 }
 
 .product-spec table {
-  border-collapse: collapse;
   width: 100%;
-  margin-top: 1rem;
-}
-
-.product-spec th,
-.product-spec td {
-  padding: 0.5rem;
-  vertical-align: top;
-  text-align: left;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .product-spec th {
   width: 30%;
-  white-space: nowrap;
+  text-align: left;
   color: #666;
+  padding: 8px;
+  font-weight: bold;
 }
 
-.product-spec td p {
-  margin-bottom: 0.3rem;
+.product-spec td {
+  padding: 8px;
 }
 
-/***** 우측 이미지 영역 *****/
+/* 우측 이미지 영역 */
+
+
+/* 제품 이미지 크기 고정 */
+.product-image {
+  width: 100%; /* ✅ 고정된 크기 유지 */
+  max-width: 400px; /* ✅ 최대 크기 제한 */
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/***** 🔹 반응형 디자인 *****/
+/***** 🔹 반응형 디자인 *****/
+@media (max-width: 768px) {
+  .product-wrapper {
+    flex-direction: column; /* ✅ 모바일에서 세로 배치 */
+    align-items: center; /* ✅ 중앙 정렬 */
+  }
+
+  .category-nav ul,
+  .sub-category-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+
+
+.product-info {
+  flex: 1; /* ✅ 왼쪽 영역이 자동으로 확장됨 */
+  padding: 20px;
+}
+
+
+
+/* 우측 이미지 영역 */
 .product-image-area {
-  flex: 1 1 50%;
+  flex: 0 0 400px; /* ✅ 고정된 너비 설정 */
   display: flex;
+  justify-content: flex-end; /* ✅ 오른쪽 정렬 */
   align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  padding: 20px;
 }
 
-.product-image-area img {
-  max-width: 90%;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
+/***** 🔹 반응형 디자인 *****/
+@media (max-width: 768px) {
+  .product-wrapper {
+    flex-direction: column; /* ✅ 모바일에서 세로 배치 */
+    align-items: center; /* ✅ 중앙 정렬 */
+  }
 
-.image-container img{
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.itemCard {
-  list-style: none;
-}
-
-.product-versions ul {
-  display: flex;        /* 수평으로 배치 */
-  align-items: center;  /* 세로 정렬 (옵션) */
-  gap: 0.5rem;            /* 아이템 간 간격 1rem */
-  list-style: none;     /* 불필요한 기본 li 스타일 제거 */
-  margin: 0;            /* ul 기본 여백 제거 */
-  padding: 0;           /* ul 기본 패딩 제거 */
-}
-
-.version-btn {
-  background-color: #eee;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.version-btn.active {
-  background-color: #c2985e; /* 선택 상태 배경색 */
-  color: #fff;
-}
-
-/* 마우스 오버 시 hover 효과 */
-.version-btn:hover {
-  background-color: #ccc; /* 원하는 컬러로 변경 */
-  color: #333;            /* hover 시 텍스트 색상 */
+  .product-info,
+  .product-image-area {
+    flex: 1 1 100%; /* ✅ 전체 너비 사용 */
+    text-align: center; /* ✅ 텍스트 중앙 정렬 */
+  }
+  .product-image-area {
+    justify-content: center; /* ✅ 모바일에서는 중앙 정렬 */
+  }
 }
 </style>

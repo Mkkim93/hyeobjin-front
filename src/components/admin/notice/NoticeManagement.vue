@@ -56,7 +56,7 @@
             <!-- Previous Button -->
             <li :class="{ 'pointer-events-none': currentPage === 0 }">
               <a class="px-3 py-1 border border-gray-300 rounded" href="#" @click.prevent="changePage(currentPage - 1)">
-                Previous
+                이전
               </a>
             </li>
 
@@ -73,7 +73,7 @@
             <!-- Next Button -->
             <li :class="{ 'pointer-events-none': currentPage === totalPages - 1 }">
               <a class="px-3 py-1 border border-gray-300 rounded" href="#" @click.prevent="changePage(currentPage + 1)">
-                Next
+                다음
               </a>
             </li>
           </ul>

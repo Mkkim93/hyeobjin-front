@@ -1,53 +1,6 @@
 <template>
     <!-- 송장 & 결제 방법 -->
-    <div class="row my-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-white fw-bold">1:1 문의</div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
-                                width="40" />
-                            **** **** **** 7852
-                        </div>
-                        <button class="btn btn-outline-secondary btn-sm">✏️</button>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mt-3">
-                        <div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" width="40" />
-                            **** **** **** 5248
-                        </div>
-                        <button class="btn btn-outline-secondary btn-sm">✏️</button>
-                    </div>
-                    <button class="btn btn-dark mt-3 w-100">+ Add New Card</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-white fw-bold">A/S 요청</div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="d-flex justify-content-between align-items-center">
-                            <span>March 01, 2020</span>
-                            <span class="text-muted">#MS-415646</span>
-                            <span>$180</span>
-                            <a href="#" class="text-primary">📄 PDF</a>
-                        </li>
-                        <li class="d-flex justify-content-between align-items-center mt-2">
-                            <span>February 10, 2021</span>
-                            <span class="text-muted">#RY-126749</span>
-                            <span>$250</span>
-                            <a href="#" class="text-primary">📄 PDF</a>
-                        </li>
-                    </ul>
-                    <button class="btn btn-outline-success w-100">View All</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- 카드 정보 섹션 -->
 
     <div class="col-12">
@@ -83,44 +36,9 @@
                 비공개
             </label>
 
-            <div class="modal-buttons">
-                <button class="btn btn-primary" @click="addEvent">추가</button>
-                <button class="btn btn-secondary" @click="closeModal">취소</button>
-            </div>
+            
         </div>
     </div>
-
-    <!-- 청구 정보 -->
-    <!-- <div class="card my-4">
-        <div class="card-header bg-white fw-bold">공지 사항</div>
-        <div class="card-body">
-            <div v-for="(customer, index) in customers" :key="index" class="border-bottom pb-3 mb-3">
-                <h6>{{ customer.name }}</h6>
-                <p class="mb-0">Company: {{ SSS }}</p>
-                <p class="mb-0">Email: TEST@NAVER.COM</p>
-                <p>VAT Number: {{ customer.vat }}</p>
-                <button class="btn btn-danger btn-sm">Delete</button>
-                <button class="btn btn-outline-secondary btn-sm ms-2">Edit</button>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- 최근 거래 내역 -->
-    <!-- <div class="card">
-        <div class="card-header bg-white fw-bold d-flex justify-content-between">
-            <span>기타 문의 요청</span>
-            <span class="text-muted">📅 23 - 30 March 2020</span>
-        </div>
-        <div class="card-body">
-            <div v-for="(transaction, index) in transactions" :key="index" class="d-flex justify-content-between mb-2">
-                <span>{{ transaction.name }}</span>
-                <span class="text-muted">{{ transaction.date }}</span>
-                <span :class="transaction.amount > 0 ? 'text-success' : 'text-danger'">
-                    {{ transaction.amount > 0 ? '+ ' : '- ' }}${{ Math.abs(transaction.amount) }}
-                </span>
-            </div>
-        </div>
-    </div> -->
 </template>
 
 <script>

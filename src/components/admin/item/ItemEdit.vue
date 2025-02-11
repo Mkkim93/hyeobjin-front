@@ -271,6 +271,12 @@ export default {
         console.log("Updated mainFile:", this.mainFile);
       }
     },
+
+    async itemYNChange() {
+      if (this.ItemDetailData.itemYN == 'Y') {
+        return this.ItemDetailData.itemYN == 'N';
+      }
+    }
   }
 }
 </script>

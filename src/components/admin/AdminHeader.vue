@@ -1,12 +1,12 @@
 <template>
-<div class="container my-4">
+  <div class="container my-4">
     <!-- 카드 정보 섹션 -->
     <div class="row">
       <div class="col-md-6">
         <div class="card credit-card">
-            <VCalendar expanded>
-              
-            </VCalendar>
+          <VCalendar :attributes="attributes" expanded>
+
+          </VCalendar>
         </div>
       </div>
       <div class="col-md-3">
@@ -110,32 +110,70 @@
       </div>
     </div>
   </div>
-  </template>
-  
-  <script>
-  
-  export default {
-      name: 'AdminHeader',
-      data() {
-        return {
-          customers: [],
-          transactions: [],
-        }
-      },
-  
-      setup() {
-          // 컴포넌트가 마운트되었을 때 콘솔 로그 출력
-          console.log("AdminHeader 컴포넌트가 랜더링 되었습니다.");
-      },
-  
-      components: {
+</template>
+
+<script>
+
+export default {
+  name: 'AdminHeader',
+  data() {
+    return {
+      customers: [],
+      transactions: [],
+
+      attributes: [],
     }
+  },
+
+  setup() {
+    // 컴포넌트가 마운트되었을 때 콘솔 로그 출력
+    console.log("AdminHeader 컴포넌트가 랜더링 되었습니다.");
+  },
+
+  created() {
+    this.fetchCalendarData();
+  },
+
+  methods: {
+    async fetchCalendarData() {
+
+      try {
+        const response = await this.$axios.get('/admin/calendar');
+        if (!Array.isArray(response.data)) {
+          console.error("❌ API 응답 데이터가 배열이 아닙니다:", response.data);
+          return;
+        }
+        this.attributes = response.data
+          .filter(event => event.startTime && event.endTime)
+          .map(event => ({
+            key: event.calendarId,
+            highlight: 'red',
+
+            dates: {
+              start: event.startTime || event.createAt,  // ✅ start 값이 없으면 기본값으로 등록 시간 사용
+              end: event.endTime || event.startTime || event.createAt, // ✅ end 값이 없으면 start 값으로 설정
+            },
+
+            popover: {
+              label: event.title || "제목 없음",  // ✅ title이 없으면 기본값 설정
+              visibility: 'hover',
+              placement: 'bottom'
+            },
+          }))
+      } catch (error) {
+        console.log('fetchCalendarData error', error);
+      }
+    }
+  },
+
+  components: {
   }
-  
-  
-  </script>
-  
-  <style>
+}
+
+
+</script>
+
+<style>
 /* Wrapper */
 #wrapper {
   display: flex;
@@ -174,10 +212,13 @@
 }
 
 /* Fade 효과 */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s ease;
 }
-.fade-enter, .fade-leave-to {
+
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

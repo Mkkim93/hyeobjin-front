@@ -26,7 +26,5 @@ export default defineConfig({
     port: 3000, // 프론트엔드 포트 설정
     host: 'localhost',
     open: true, // 브라우저 자동 열기
-    cors: true,
-    allowedHosts: ['.ngrok-free.app'],
   },
 });

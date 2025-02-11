@@ -5,69 +5,28 @@
     </div>
   </div>
 
-  <!-- 📌 일정 상세 보기 모달 -->
-  <div v-if="showEventDetailModal" class="custom-modal-overlay">
-    <div class="custom-modal">
-      <h3>일정 상세</h3>
-      <p>선택한 날짜: {{ selectedEvent.createAt }}</p>
-      <p><strong>제목:</strong> {{ selectedEvent.title }}</p>
-      <p><strong>설명:</strong> {{ selectedEvent.description }}</p>
-      <p><strong>기간:</strong> {{ selectedEvent.startTime }} ~ {{ selectedEvent.endTime }}</p>
-      <p><strong>공개 여부:</strong> {{ selectedEvent.calendarYN === 'Y' ? '공개' : '비공개' }}</p>
-
-      <div class="modal-buttons">
-        <button class="btn btn-primary" @click="openAddEventModal">추가</button>
-        <button class="btn btn-secondary" @click="closeModal">닫기</button>
-      </div>
-    </div>
-  </div>
-
   <!-- 📌 일정 추가 모달 -->
-  <div v-if="modalOpen" class="custom-modal-overlay">
-    <div class="custom-modal">
-      <h3>일정 추가</h3>
-      <p>선택한 날짜: {{ createAt }}</p>
+  <!-- <div v-if="modalOpen" class="custom-modal-overlay"> -->
+  <!-- <CreateCalendar :modalOpen="modalOpen" /> -->
+  <!-- </div> -->
 
-      <label>일정 제목:</label>
-      <input v-model="newTitle" class="form-control mb-2" type="text" placeholder="제목 입력">
+  <CalendarDetail v-if="modalOpen" :event="dayOfEventsData" :modalOpen="modalOpen" @close="modalOpen = false" />
 
-      <label>일정 설명:</label>
-      <textarea v-model="newDescription" class="form-control mb-2" placeholder="설명 입력"></textarea>
-
-      <label>시작 날짜:</label>
-      <input v-model="newStartTime" class="form-control mb-2" type="date" placeholder="시작 날짜 입력">
-
-      <label>종료 날짜:</label>
-      <input v-model="newEndTime" class="form-control mb-2" type="date" placeholder="종료 날짜 입력">
-
-      <label>
-        <input type="radio" name="newCalendarYN" value="Y" v-model="newCalendarYN" />
-        공개
-      </label>
-
-      <label>
-        <input type="radio" name="newCalendarYN" value="N" v-model="newCalendarYN" />
-        비공개
-      </label>
-
-      <div class="modal-buttons">
-        <button class="btn btn-primary" @click="addEvent">추가</button>
-        <button class="btn btn-primary" @click="showEventDetailModal">상세</button>
-        <button class="btn btn-secondary" @click="closeModal">취소</button>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
+import CalendarDetail from './CalendarDetail.vue';
+// import CreateCalendar from './CreateCalendar.vue';
+
 export default {
   name: 'CalendarManageMent',
+
 
   data() {
     return {
       modalOpen: false, // 일정 추가 모달 상태
       showEventDetailModal: false, // 일정 상세 모달 상태
-      selectedEvent: {}, // 선택한 일정 정보
+
       attributes: [],
 
       // 신규 일정 추가를 위한 데이터
@@ -77,6 +36,20 @@ export default {
       newStartTime: '',
       newEndTime: '',
       newCalendarYN: 'Y',
+      newLocation: '',
+
+      postcode: '',
+      address: '',
+
+      selectedEventId: null,
+      selectedEvent: {
+
+        createAt: '',
+
+      },
+
+      dayOfEventsData: [],
+
     };
   },
 
@@ -84,7 +57,79 @@ export default {
     await this.fetchCalendarDataAdmin();
   },
 
+  components: {
+    CalendarDetail,
+    // CreateCalendar,
+  },
+
+
+
   methods: {
+
+    // 📌 일정 클릭 시 상세 모달 오픈
+
+    async openEventDetailModal(day) {
+      console.log("📅 클릭한 날짜:", day);
+
+      // 시작시간: 해당 날짜의 00:00:00
+      const startTime = `${day.id}T00:00:00`;
+
+      // 종료시간: 해당 날짜의 23:59:59
+      const endTime = `${day.id}T23:59:59`;
+
+      // 선택된 이벤트 저장
+      this.selectedEvent = {
+        createAt: day.id,
+        startTime: startTime,
+        endTime: endTime
+      };
+
+      console.log('createAt:', this.selectedEvent.createAt);
+      console.log('startTime:', this.selectedEvent.startTime);
+      console.log('endTime:', this.selectedEvent.endTime);
+
+      try {
+
+        const response = await this.$axios.get(`/admin/calendar/detail?startTime=${this.selectedEvent.startTime}&endTime=${this.selectedEvent.endTime}`);
+        console.log('response data', response.data);
+        // 📌 API 호출 (startTime과 endTime을 파라미터로 전달)
+        // this.fetchDetailStartTimeBetween(startTime, endTime);
+        
+        this.dayOfEventsData = response.data;
+        console.log('dayOfEventsData', this.dayOfEventsData);
+
+        this.modalOpen = true;
+      } catch (error) {
+        console.log('openEventDetailModal error', error);
+      }
+    },
+
+    // openEventDetailModal(day) {
+    //   console.log("📅 클릭한 날짜:", day);
+
+    //   const eventData = toRaw(this.attributes.find(event => event.dates.start === day.id) || {});
+
+    //   if (eventData.title) {
+
+    //     this.selectedEvent = {
+    //       createAt: day.id,
+    //       title: eventData.title,
+    //       description: eventData.popover?.label || '',
+    //       startTime: eventData.dates.start,
+    //       endTime: eventData.dates.end || eventData.dates.start,
+    //       calendarYN: eventData.calendarYN || 'N'
+    //     }
+    //   } else {
+    //     this.createAt = day.id;
+    //     this.modalOpen = true;
+
+    //   }
+    // },
+
+    async fetchDetailStartTimeBetween() {
+
+
+    },
 
     async fetchCalendarDataAdmin() {
 
@@ -96,7 +141,7 @@ export default {
           return;
         }
 
-        console.log('response.data', response.data);
+        console.log('fetchCalendarDataAdmin.response.data', response.data);
 
         this.attributes = response.data
           .filter(event => event.startTime && event.endTime) // ✅ startTime, endTime이 없는 데이터 제거
@@ -112,110 +157,19 @@ export default {
             popover: {
               label: event.title || "제목 없음",  // ✅ title이 없으면 기본값 설정
               visibility: 'hover',
-              placement: 'top'
-            }
+              placement: 'bottom'
+            },
           }));
         console.log('response calendar data', this.attributes);
+
       } catch (error) {
         console.log('admin call calendar fetch error', error);
       }
     },
 
-    // 📌 일정 클릭 시 상세 모달 오픈
-    openEventDetailModal(day) {
-      console.log("📅 클릭한 날짜:", day);
+  }
+}
 
-      // 기존 일정 중 클릭한 날짜의 데이터 가져오기
-      const eventData = this.attributes.find(event => event.dates.start === day.id) || {};
-
-      // 이벤트 데이터가 있다면 상세 모달 열기
-      if (eventData.title) {
-        this.selectedEvent = {
-          createAt: day.id,
-          title: eventData.title,
-          description: eventData.popover?.label || '',
-          startTime: eventData.dates.start,
-          endTime: eventData.dates.end || eventData.dates.start,
-          calendarYN: eventData.calendarYN || 'N',
-        };
-        this.showEventDetailModal = true;
-      } else {
-        // 기존 일정이 없으면 바로 추가 모달 열기
-        this.createAt = day.id;
-        this.openAddEventModal();
-      }
-    },
-
-    // 📌 상세 모달에서 추가 버튼을 누르면 일정 추가 모달로 전환
-    openAddEventModal() {
-      this.showEventDetailModal = false; // 상세 모달 닫기
-      this.modalOpen = true; // 추가 모달 열기
-    },
-
-    // 📌 일정 추가
-    addEvent() {
-      if (!this.newTitle.trim()) {
-        alert("일정 제목을 입력하세요.");
-        return;
-      }
-
-      try {
-
-      const newEvent = {
-
-        key: this.formatDateTime(new Date()),
-        highlight: 'blue',
-        startTime: this.formatDateTime(this.newStartTime),
-        endTime: this.formatDateTime(this.newEndTime),
-        createAt: this.formatDateTime(new Date()),
-        title: this.newTitle,
-        description: this.newDescription,
-        calendarYN: this.newCalendarYN,
-      };
-
-      // 프론트엔드 일정 데이터에 추가
-      this.attributes.push(newEvent);
-      console.log("✅ 추가된 일정:", newEvent);
-
-      // 서버에 일정 저장 요청
-      this.$axios.post('/admin/calendar', newEvent, {
-        headers: { 'Content-Type': 'application/json' },
-      })
-      console.log('일정 추가 성공');
-      alert('일정이 추가되었습니다.');
-      this.$router.push('/admin/calendar');
-
-    } catch(error) {
-      console.log('일정 추가 실패', error);
-    }
-    this.fetchCalendarDataAdmin();
-    this.closeModal(); // 모달 닫기
-    },
-
-    // 📌 모달 닫기
-    closeModal() {
-      this.modalOpen = false;
-      this.showEventDetailModal = false;
-    },
-
-    formatDateTime(date) {
-    if (!date) return null; // ✅ date 값이 없으면 null 반환 (오류 방지)
-
-    const d = new Date(date);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T00:00:00`;
-  },
-
-    showEventDetailModal() {
-
-    },
-
-    
-
-
-  },
-
-
-};
 </script>
 
 <style scoped>
@@ -297,5 +251,11 @@ export default {
 
 .bi {
   width: 80%;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
 }
 </style>

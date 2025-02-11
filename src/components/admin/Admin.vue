@@ -6,8 +6,8 @@
       <div class="list-group list-group-flush">
         <router-link to="/admin/item" class="list-group-item list-group-item-action">제품 관리</router-link>
         <router-link to="/admin/manu" class="list-group-item list-group-item-action">제조사 관리</router-link>
-        <router-link to="/admin/notice" class="list-group-item list-group-item-action">공지사항</router-link>
-        <router-link to="/admin/calendar" class="list-group-item list-group-item-action">일정</router-link>
+        <router-link to="/admin/notice" class="list-group-item list-group-item-action">공지 사항</router-link>
+        <router-link to="/admin/calendar" class="list-group-item list-group-item-action">일정 관리</router-link>
         <a href="#" class="list-group-item list-group-item-action">설정</a>
       </div>
     </div>
