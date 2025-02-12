@@ -78,7 +78,7 @@
                                     <h2 class="h4 fw-bolder">A/S 및 1:1 문의</h2>
                                     <p class="mb-1">A/S 접수 및 1:1 문의입니다.
                                     </p>
-                                    <a class="text-decoration-none" href="#!">
+                                    <a class="text-decoration-none" href="/asform">
                                         바로가기
                                         <i class="bi bi-arrow-right"></i></a>
                                 </div>
@@ -93,8 +93,8 @@
                                 </div>
                                 <div class="ms-4">
                                     <h2 class="h4 fw-bolder">기타 문의</h2>
-                                    <p class="mb-1">궁금하신 내용을 작성해주시면 빠르게 답변 드리겠습니다.</p>
-                                    <a class="text-decoration-none" href="#!">
+                                    <p class="mb-1">자주 하는 질문 확인</p>
+                                    <a class="text-decoration-none" href="/faq">
                                         바로가기
                                         <i class="bi bi-arrow-right"></i></a>
                                 </div>

@@ -112,6 +112,7 @@ export default {
       selectedIds: [],
       boardList: [],
       searchKeyword: null,
+
       currentPage: 0, // 현재 페이지 (0부터 시작)
       totalPages: null, // 전체 페이지 수
       pageSize: 5, // 한 페이지당 게시물 수

@@ -32,13 +32,12 @@
               <!-- Dropdown -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                  Dropdown
+                  Menu
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">내정보</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="#">로그아웃</a></li>
                 </ul>
               </li>
             </ul>
@@ -48,7 +47,7 @@
 
       <!-- ✅ AdminHeader: "/admin"에서만 표시 -->
       <div class="header-content" v-if="showAdminHeader">
-        <AdminHeader />
+        <AdminHeader :BoardDataList="BoardDataList"/>
       </div>
 
       <!-- Main Content -->
@@ -72,12 +71,15 @@ export default {
     return {
       isToggled: false, // Sidebar toggle 상태
       showAdminHeader: false, // AdminHeader 표시 여부
+
+      BoardDataList: [],
     };
   },
 
   created() {
     this.handleAccessValidation();
     this.updateAdminHeaderVisibility();
+    this.fetchBoardListData();
   },
 
   components: {
@@ -103,6 +105,18 @@ export default {
     // ✅ AdminHeader 표시 여부를 결정하는 함수
     updateAdminHeaderVisibility() {
       this.showAdminHeader = this.$route.path === "/admin";
+    },
+
+    async fetchBoardListData() {
+
+      try {
+        const response = await this.$axios.get('/admin/boards/simple');
+        console.log('response board data', response.data);
+        this.BoardDataList = response.data;
+        console.log('this.BoardDataList', this.BoardDataList);
+      } catch (error) {
+        console.log('fetchBoardListData error', error);
+      }
     },
   },
 };

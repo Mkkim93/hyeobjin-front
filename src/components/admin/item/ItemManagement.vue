@@ -56,7 +56,7 @@
               <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
               <td class="border border-gray-300 p-2">{{ formatDate(item.itemRegDate) }}</td>
               <td class="border border-gray-300 p-2">{{ formatDate(item.itemUpdate) }}</td>
-              <td class="border border-gray-300 p-2">{{ item.itemYN === 'Y' ? '등록' : '미등록' }}</td>
+              <td class="border border-gray-300 p-2">{{ item.itemYN === TRUE ? '등록' : '미등록' }}</td>
               <td class="border border-gray-300 p-2">{{ item.manuName }}</td>
             </tr>
           </tbody>

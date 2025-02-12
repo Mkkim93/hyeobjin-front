@@ -5,27 +5,33 @@
     </div>
   </div>
 
-  <!-- 📌 일정 추가 모달 -->
-  <!-- <div v-if="modalOpen" class="custom-modal-overlay"> -->
-  <!-- <CreateCalendar :modalOpen="modalOpen" /> -->
-  <!-- </div> -->
+  <CalendarCreate v-if="createModalOpen" :key="createModalOpen" :createModalOpen="createModalOpen" @close="createModalOpen = false"/>
 
-  <CalendarDetail v-if="modalOpen" :event="dayOfEventsData" :modalOpen="modalOpen" @close="modalOpen = false" />
+  <div>
+    <CalendarDetail v-if="modalOpen" :dayOfEventsData="dayOfEventsData" :modalOpen="modalOpen"
+      @close="modalOpen = false" />
+  </div>
+
+  <div>
+    <CalendarEdit v-if="editModalOpen" :newModifyCalendarData="newModifyCalendarData" :modalOpen="editModalOpen"
+      @close="editModalOpen = false" />
+  </div>
 
 </template>
 
 <script>
 import CalendarDetail from './CalendarDetail.vue';
-// import CreateCalendar from './CreateCalendar.vue';
+import CalendarCreate from './CalendarCreate.vue';
+import CalendarEdit from './CalendarEdit.vue';
 
 export default {
   name: 'CalendarManageMent',
 
-
   data() {
     return {
       modalOpen: false, // 일정 추가 모달 상태
-      showEventDetailModal: false, // 일정 상세 모달 상태
+      createModalOpen: false,
+      editModalOpen: false,
 
       attributes: [],
 
@@ -50,6 +56,10 @@ export default {
 
       dayOfEventsData: [],
 
+      newModifyCalendarData: null,
+
+
+
     };
   },
 
@@ -59,15 +69,43 @@ export default {
 
   components: {
     CalendarDetail,
-    // CreateCalendar,
+    CalendarCreate,
+    CalendarEdit,
   },
+
+  mounted() {
+    this.emitter.on('modifyCalendarObject', (modifyCalendarData) => {
+      console.log("📢 받은 calendarId:", modifyCalendarData);
+      this.newModifyCalendarData = modifyCalendarData;
+      console.log('부모 컴포넌트의 에미터 id:', this.newModifyCalendarData);
+
+      // 📌 Detail 모달 닫고 Edit 모달 열기
+      this.modalOpen = false;  // Detail 닫기
+      this.$nextTick(() => {
+        this.editModalOpen = true; // Edit 열기
+      });
+    });
+
+    this.emitter.on('createModalOpen', () => {
+      console.log('📢 받은 createModalOpen 이벤트');
+      this.modalOpen = false;
+      this.editModalOpen = false;
+
+      this.$nextTick(() => {
+        this.createModalOpen = true; // ✅ 강제로 true 설정
+        this.$forceUpdate(); // ✅ 강제로 UI 업데이트
+        console.log('부모에서 createModalOpen 값:', this.createModalOpen);
+      });
+
+    });
+  },
+
 
 
 
   methods: {
 
     // 📌 일정 클릭 시 상세 모달 오픈
-
     async openEventDetailModal(day) {
       console.log("📅 클릭한 날짜:", day);
 
@@ -76,6 +114,8 @@ export default {
 
       // 종료시간: 해당 날짜의 23:59:59
       const endTime = `${day.id}T23:59:59`;
+
+      console.log('day.dates', day.attributes);
 
       // 선택된 이벤트 저장
       this.selectedEvent = {
@@ -90,11 +130,11 @@ export default {
 
       try {
 
-        const response = await this.$axios.get(`/admin/calendar/detail?startTime=${this.selectedEvent.startTime}&endTime=${this.selectedEvent.endTime}`);
-        console.log('response data', response.data);
+        const response = await this.$axios.get(`/admin/calendar/detail?startTime=${this.selectedEvent.startTime}`);
+        console.log('between data', response.data);
         // 📌 API 호출 (startTime과 endTime을 파라미터로 전달)
         // this.fetchDetailStartTimeBetween(startTime, endTime);
-        
+
         this.dayOfEventsData = response.data;
         console.log('dayOfEventsData', this.dayOfEventsData);
 
@@ -102,33 +142,6 @@ export default {
       } catch (error) {
         console.log('openEventDetailModal error', error);
       }
-    },
-
-    // openEventDetailModal(day) {
-    //   console.log("📅 클릭한 날짜:", day);
-
-    //   const eventData = toRaw(this.attributes.find(event => event.dates.start === day.id) || {});
-
-    //   if (eventData.title) {
-
-    //     this.selectedEvent = {
-    //       createAt: day.id,
-    //       title: eventData.title,
-    //       description: eventData.popover?.label || '',
-    //       startTime: eventData.dates.start,
-    //       endTime: eventData.dates.end || eventData.dates.start,
-    //       calendarYN: eventData.calendarYN || 'N'
-    //     }
-    //   } else {
-    //     this.createAt = day.id;
-    //     this.modalOpen = true;
-
-    //   }
-    // },
-
-    async fetchDetailStartTimeBetween() {
-
-
     },
 
     async fetchCalendarDataAdmin() {

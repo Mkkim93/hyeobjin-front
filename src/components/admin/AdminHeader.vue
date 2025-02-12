@@ -33,22 +33,31 @@
     <div class="row my-4">
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header bg-white fw-bold">공지 사항</div>
+          <div class="card-header bg-white fw-bold">공지 사항<router-link>더보기</router-link></div>
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" width="40" />
-                **** **** **** 7852
-              </div>
-              <button class="btn btn-outline-secondary btn-sm">✏️</button>
+              <table>
+                <thead>
+                  <tr>
+                  <th>제목</th>
+                  <th>작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="boards in BoardDataList" :key="boards">
+                    <td> 
+                      <p @click="$router.push('/admin/notice/' + boards.boardId)">
+                        {{ boards.boardTitle }} 
+                      </p>
+                    </td>
+                    <td>{{ formatDateTime(boards.boardUpdate) }}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+                
             </div>
-            <div class="d-flex align-items-center justify-content-between mt-3">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" width="40" />
-                **** **** **** 5248
-              </div>
-              <button class="btn btn-outline-secondary btn-sm">✏️</button>
-            </div>
+            
             <button class="btn btn-dark mt-3 w-100">+ Add New Card</button>
           </div>
         </div>
@@ -113,8 +122,9 @@
 </template>
 
 <script>
-
+import dayjs from 'dayjs';
 export default {
+  
   name: 'AdminHeader',
   data() {
     return {
@@ -132,6 +142,10 @@ export default {
 
   created() {
     this.fetchCalendarData();
+  },
+
+  props: {
+    BoardDataList: Array,
   },
 
   methods: {
@@ -163,7 +177,11 @@ export default {
       } catch (error) {
         console.log('fetchCalendarData error', error);
       }
-    }
+    },
+
+    formatDateTime(date) {
+      return dayjs(date).format('YYYY-MM-DD'); 
+       }
   },
 
   components: {
