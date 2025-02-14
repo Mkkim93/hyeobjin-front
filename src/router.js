@@ -23,9 +23,10 @@ import NoticeCreate from "./components/admin/notice/NoticeCreate.vue";
 import NoticeEdit from "./components/admin/notice/NoticeEdit.vue";
 import CalendarManageMent from "./components/admin/calender/CalendarManageMent.vue";
 import FAQ from "./components/common/FAQ.vue";
+import InquiryManagement from "./components/admin/inquiry/InquiryManagement.vue";
 
 const routes = [
-  { path: '/', component: Main },
+  { path: '/', component: Main, props: true, },
 
   {
     path: '/admin',
@@ -33,6 +34,13 @@ const routes = [
     props: true,
 
     children: [
+
+      {
+        path: 'inquiry',
+        name: 'InquiryManagement',
+        component: InquiryManagement,
+        props: true,
+      },
 
       {
         path: 'user',
@@ -138,7 +146,9 @@ const routes = [
 
   {
     path: '/manu/:id',
+    name: 'Manufact',
     component: Manufact,
+    props: true,
   },
 
   { path: '/asform', component: ASForm },

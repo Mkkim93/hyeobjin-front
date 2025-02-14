@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="card credit-card">
-          <VCalendar :attributes="attributes" expanded>
+          <VCalendar :attributes="attributes" expanded title-position="right">
 
           </VCalendar>
         </div>

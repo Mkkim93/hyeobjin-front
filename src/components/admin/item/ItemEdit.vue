@@ -31,8 +31,8 @@
 
             <div class="col-md-6 mb-3">
               <label for="itemType" class="form-label">제품 타입</label>
-              <select id="itemType" v-model="ItemDetailData.itemTypeId" class="form-control" @focus="showItemTypeOptions = true"
-                @blur="showItemTypeOptions = false">
+              <select id="itemType" v-model="ItemDetailData.itemTypeId" class="form-control"
+                @focus="showItemTypeOptions = true" @blur="showItemTypeOptions = false">
                 <!-- 현재 선택된 값 (셀렉트 박스가 닫혀 있을 때) -->
                 <option v-if="!showItemTypeOptions" :value="ItemDetailData.itemTypeId">
                   {{ ItemDetailData.itemType }}
@@ -44,7 +44,7 @@
                 </option>
               </select>
             </div>
-            
+
           </div>
 
           <div class="row">
@@ -72,8 +72,8 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="itemType" class="form-label">제품 타입</label>
-              <select id="itemType" v-model="ItemDetailData.glassSpecId" class="form-control" @focus="showGlassOptions = true"
-                @blur="showGlassOptions = false">
+              <select id="itemType" v-model="ItemDetailData.glassSpecId" class="form-control"
+                @focus="showGlassOptions = true" @blur="showGlassOptions = false">
                 <!-- 현재 선택된 값 (셀렉트 박스가 닫혀 있을 때) -->
                 <option v-if="!showGlassOptions" :value="ItemDetailData.glassSpecId">
                   {{ ItemDetailData.glassSize }}
@@ -108,8 +108,17 @@
       <!-- 오른쪽: 제품 이미지 -->
       <div class="col-md-5 d-flex justify-content-center align-items-center">
         <div class="position-relative bg-white p-4 rounded shadow-sm">
-          <span class="badge bg-warning text-dark position-absolute top-0 end-0 mt-2 me-2">VBF260</span>
-          <img class="img-fluid w-100" :src="mainFile.mainPreviewUrl || `/item/${mainFile.fileName}`" alt="프라임 이중창 260">
+          <div v-if="ItemDetailData.itemYN == true">
+            <span class="badge bg-success text-dark position-absolute top-0 end-0 mt-2 me-2">
+              등록
+            </span>
+          </div>
+          <div v-else>
+            <span class="badge bg-warning text-dark position-absolute top-0 end-0 mt-2 me-2">미등록</span>
+          </div>
+
+          <img class="img-fluid w-100" :src="ItemFileData.mainPreviewUrl || `/item/${ItemFileData.fileName}`"
+            alt="프라임 이중창 260">
           <div class="mt-3">
             <label for="imageUrl" class="form-label">제품 이미지 업로드</label>
             <input type="file" id="imageUrl" class="form-control" @change="handleMainFileUpload" />
@@ -118,7 +127,7 @@
       </div>
     </div>
 
-    
+
   </section>
 
 
@@ -132,7 +141,8 @@ export default {
   data() {
     return {
       ItemDetailData: {},
-      ItemFileData: [],
+
+      ItemFileData: {},
       modifyItemId: null,
       mainFile: {},
       fileDeleted: false,
@@ -166,14 +176,17 @@ export default {
 
         this.ItemDetailData = response.data;
         console.log('response', response);
-        console.log('response.data', response.data);
+        // console.log('response.data', response.data);
+        // this.mainFile = response.data.fileBoxes;
         this.ItemFileData = response.data.fileBoxes;
-        console.log('this.ItemFileData', this.ItemFileData);
+
+        console.log('this.mainFile', this.mainFile);
         if (!this.ItemDetailData.freeContent) {
           this.ItemDetailData.freeContent = "";
         }
 
-        this.mainFile = this.ItemFileData.find(file => file.isMain === true);
+        // this.mainFile = this.ItemFileData.find(file => file.isMain === true);
+
       } catch (error) {
         console.log('error', error);
       }
@@ -217,20 +230,22 @@ export default {
         itemDescription: this.ItemDetailData.itemDescription,
         itemYN: this.ItemDetailData.itemYN,
         freeContent: this.ItemDetailData.freeContent,
-        fileBoxId: this.mainFile.fileBoxId,
-
+        fileBoxId: this.ItemFileData.fileBoxId,
         itemTypeId: this.ItemDetailData.itemTypeId,
         glassSpecId: this.ItemDetailData.glassSpecId,
       }
 
-      formData.append("mainFile", this.mainFile.file);
+      console.log('fileBoxId', updateItemDTO.fileBoxId);
+
+      formData.append("mainFile", this.ItemFileData.file);
 
       formData.append("updateItemDTO", new Blob([JSON.stringify(updateItemDTO)], {
         type: "application/json"
       }));
 
       try {
-        console.log('formData', formData);
+        console.log('수정할 폼 데이타 formData', formData);
+        // console.log('수정할 fileBoxId', fileBoxId);
 
         await this.$axios.post("/admin/items/update", formData, {
           headers: { "Content-Type": "multipart/form-data" }
@@ -246,31 +261,21 @@ export default {
     handleFocus() { },
     handleBlur() { },
 
-    async removeSubFile(index, fileBoxId) {
-      // 만약 기존 파일(이미 DB에 저장된)이면, 삭제 처리 플래그를 별도 배열에 저장하는 방식도 고려
-      console.log('index', index);
-      console.log('delete fileBoxId', fileBoxId);
-      this.subFile.splice(index, 1);
 
-      try {
-        await this.$axios.delete(`/item/files?fileBoxId=${fileBoxId}`);
-      } catch (error) {
-        console.log('error', error);
-      }
-
-    },
 
     async handleMainFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
-        this.mainFile = {
+        this.ItemFileData = {
+          ...this.ItemFileData, // ✅ 기존 fileBoxId 유지
           file,
           fileName: file.name,
           mainPreviewUrl: URL.createObjectURL(file)
         };
-        console.log("Updated mainFile:", this.mainFile);
       }
+      console.log("Updated mainFile:", this.ItemFileData);
     },
+
 
     async itemYNChange() {
       if (this.ItemDetailData.itemYN == 'Y') {

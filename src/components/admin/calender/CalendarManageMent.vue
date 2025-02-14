@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-container">
-    <div class="col-12">
-      <VCalendar :attributes="attributes" expanded @dayclick="openEventDetailModal"></VCalendar>
+    <div class="w-100 mx-auto">
+      <VCalendar :attributes="attributes" expanded @dayclick="openEventDetailModal" />
     </div>
   </div>
 
@@ -270,5 +270,9 @@ label {
   display: block;
   text-align: left;
   margin-bottom: 5px;
+}
+
+:deep(.vc-container .vc-weekday-1, .vc-container .vc-weekday-7) {
+  color: red;
 }
 </style>

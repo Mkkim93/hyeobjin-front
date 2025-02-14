@@ -1,4 +1,9 @@
 <template>
+   <!-- 상위 카테고리 네비게이션 -->
+   
+
+  <ManuIntro :step="Number(step)" />
+
   <nav class="category-nav">
     <ul>
       <button v-for="(types) in itemTypeList" :key="types.itemTypeId" @click="fetchItemNamesData(types.itemTypeId)"
@@ -13,9 +18,8 @@
     <div class="product-versions">
       <ul>
         <!-- TODO 현재 위의 반복문과 KEY 값 중복으로 경고뜸 나중에 DTO 키 필드값 변경해야 할듯 -->
-        <li v-for="(item) in itemTypeNames" :key="item.itemTypeId" class="itemCard"> 
-          <button class="version-btn"
-            @click="fetchItemDetails(item.itemId)">
+        <li v-for="(item, index) in itemTypeNames" :key="`${item.itemTypeId}-${index}`" class="itemCard">
+          <button class="version-btn" @click="fetchItemDetails(item.itemId)">
             {{ item.itemName }}
           </button>
         </li>
@@ -30,7 +34,7 @@
       <div class="product-info">
         <h2 class="product-title">{{ items.itemName }}</h2>
         <div class="product-features">
-          <h3>특징</h3>
+          <strong>특징</strong>
           <ul>
             <li>{{ items.itemDescription }}</li>
           </ul>
@@ -63,19 +67,21 @@
         </div>
       </div>
     </div>
-      <!-- 우측 이미지 영역 -->
-      <div class="product-image-area" v-if="items && items.fileBoxes && items.fileBoxes.length > 0">
-        <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" class="product-image" />
-      </div>
-      <div v-if="items">
-        <div v-html="items.freeContent"></div>
-      </div>
+    <!-- 우측 이미지 영역 -->
+    <div class="product-image-area" v-if="items && items.fileBoxes && items.fileBoxes.length > 0">
+      <img :src="`/item/${items.fileBoxes[0].fileName}`" alt="제품 이미지" class="product-image" />
     </div>
-  
+    <div v-if="items">
+      <div v-html="items.freeContent"></div>
+    </div>
+  </div>
+
 
 </template>
 
 <script>
+import ManuIntro from './ManuIntro.vue';
+
 export default {
   name: 'Manufact',
   data() {
@@ -83,42 +89,64 @@ export default {
       items: null,
       itemsNumList: [],
       manuId: null,
-      step: 0,
+      step: null,
       imgBox: [],
 
       itemTypeList: [],
       itemTypeNames: [],
+
+     
+
     };
   },
 
+  props: ['id'],
+
   created() {
-    this.manuId = this.$route.params.id;
-    // this.itemTypeNames = null;
-    this.fetchItems(this.manuId);
-    this.fetchItemTypeData(this.manuId);
+    console.log("Before manuId:", this.id); // ✅ 1. 확인
+    this.manuId = this.id;
+    console.log("After manuId:", this.id); // ✅ 2. 확인
+    this.stepSave(this.id); // ✅ 3. 실행 후 step 값 확인
+
+    console.log("After stepSave, step:", this.step); // ✅ 4. step 값이 변하는지 확인
+
+    this.fetchItems(this.id);
+    this.fetchItemTypeData(this.id);
   },
 
+
   watch: {
+    id() {
+      this.step = this.id;
+    },
+
     '$route.params.id': 'handleManuIdChange',
   },
 
+  components: {
+    ManuIntro,
+  },
+
   methods: {
-    handleManuIdChange() {
+
+    
+
+    async handleManuIdChange() {
       this.items = null;
       this.itemsNumList = [];
-      this.manuId = this.$route.params.id;
+      this.manuId = Number(this.$route.params.id);
       console.log(`now manuId: ${this.manuId}`);
-      
+
       this.fetchItems(this.manuId);
       this.fetchItemTypeData(this.manuId);
     },
 
     async fetchItemTypeData(manuId) {
-      
+
 
       try {
         const response = await this.$axios.get(`/type?manuId=${manuId}`);
-        
+
         this.itemTypeList = response.data;
         console.log('itemTypeList', this.itemTypeList);
 
@@ -176,10 +204,18 @@ export default {
       } catch (error) {
         console.log('fetchItemNamesData error', error);
       }
-
     },
 
-
+    async stepSave(manuId) {
+      if (manuId == 1) {
+        this.step = 1;
+      } else if (manuId == 2) {
+        this.step = 2;
+      } else if (manuId == 3) {
+        this.step = 3;
+      }
+      console.log('Updated step:', this.step);
+    },
   },
 };
 </script>
@@ -262,8 +298,10 @@ body {
 /***** 🔹 제품 상세 페이지 (좌측 정보 & 우측 이미지) *****/
 .product-wrapper {
   display: flex;
-  justify-content: space-between; /* ✅ 좌측(텍스트) + 우측(이미지) 정렬 */
-  align-items: flex-start; /* ✅ 위쪽 정렬 */
+  justify-content: space-between;
+  /* ✅ 좌측(텍스트) + 우측(이미지) 정렬 */
+  align-items: flex-start;
+  /* ✅ 위쪽 정렬 */
   max-width: 1200px;
   margin: 2rem auto;
   padding: 20px;
@@ -315,8 +353,10 @@ body {
 
 /* 제품 이미지 크기 고정 */
 .product-image {
-  width: 100%; /* ✅ 고정된 크기 유지 */
-  max-width: 400px; /* ✅ 최대 크기 제한 */
+  width: 100%;
+  /* ✅ 고정된 크기 유지 */
+  max-width: 400px;
+  /* ✅ 최대 크기 제한 */
   height: auto;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -326,8 +366,10 @@ body {
 /***** 🔹 반응형 디자인 *****/
 @media (max-width: 768px) {
   .product-wrapper {
-    flex-direction: column; /* ✅ 모바일에서 세로 배치 */
-    align-items: center; /* ✅ 중앙 정렬 */
+    flex-direction: column;
+    /* ✅ 모바일에서 세로 배치 */
+    align-items: center;
+    /* ✅ 중앙 정렬 */
   }
 
   .category-nav ul,
@@ -340,7 +382,8 @@ body {
 
 
 .product-info {
-  flex: 1; /* ✅ 왼쪽 영역이 자동으로 확장됨 */
+  flex: 1;
+  /* ✅ 왼쪽 영역이 자동으로 확장됨 */
   padding: 20px;
 }
 
@@ -348,9 +391,11 @@ body {
 
 /* 우측 이미지 영역 */
 .product-image-area {
-  flex: 0 0 400px; /* ✅ 고정된 너비 설정 */
+  flex: 0 0 400px;
+  /* ✅ 고정된 너비 설정 */
   display: flex;
-  justify-content: flex-end; /* ✅ 오른쪽 정렬 */
+  justify-content: flex-end;
+  /* ✅ 오른쪽 정렬 */
   align-items: center;
   padding: 20px;
 }
@@ -358,17 +403,26 @@ body {
 /***** 🔹 반응형 디자인 *****/
 @media (max-width: 768px) {
   .product-wrapper {
-    flex-direction: column; /* ✅ 모바일에서 세로 배치 */
-    align-items: center; /* ✅ 중앙 정렬 */
+    flex-direction: column;
+    /* ✅ 모바일에서 세로 배치 */
+    align-items: center;
+    /* ✅ 중앙 정렬 */
   }
 
   .product-info,
   .product-image-area {
-    flex: 1 1 100%; /* ✅ 전체 너비 사용 */
-    text-align: center; /* ✅ 텍스트 중앙 정렬 */
+    flex: 1 1 100%;
+    /* ✅ 전체 너비 사용 */
+    text-align: center;
+    /* ✅ 텍스트 중앙 정렬 */
   }
+
   .product-image-area {
-    justify-content: center; /* ✅ 모바일에서는 중앙 정렬 */
+    justify-content: center;
+    /* ✅ 모바일에서는 중앙 정렬 */
   }
 }
+
+/***** 🔹 상위 카테고리 네비게이션 바 (메인) *****/
+
 </style>

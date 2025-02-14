@@ -12,9 +12,7 @@ export default defineConfig({
     vueDevTools(),
     ckeditor5( { theme: require.resolve( '@ckeditor/ckeditor5-theme-lark' ) } )
   ],
-
- 
- 
+  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -24,7 +22,9 @@ export default defineConfig({
 
   server: {
     port: 3000, // 프론트엔드 포트 설정
-    host: 'localhost',
+    host: '0.0.0.0',
     open: true, // 브라우저 자동 열기
+    strictPort: true,
+    allowedHosts: ['.ngrok-free.app', 'localhost'],
   },
 });

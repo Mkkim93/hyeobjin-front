@@ -1,6 +1,6 @@
 <template>
     <!-- Header-->
-  <header class="bg-dark py-5">
+  <header class="header-container bg-black py-5">
     <div class="container px-5">
       <div class="row gx-5 justify-content-center">
         <div class="col-lg-6">
@@ -32,5 +32,8 @@
   </script>
     
     <style scoped>
+    .header-container {
+      /* background: #f75748; */
+    }
     
     </style>

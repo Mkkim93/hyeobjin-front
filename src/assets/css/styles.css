@@ -4141,10 +4141,10 @@ textarea.form-control-lg {
   --bs-navbar-color: rgba(255, 255, 255, 0.55);
   --bs-navbar-hover-color: rgba(255, 255, 255, 0.75);
   --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
-  --bs-navbar-active-color: #fff;
-  --bs-navbar-brand-color: #fff;
-  --bs-navbar-brand-hover-color: #fff;
-  --bs-navbar-toggler-border-color: rgba(255, 255, 255, 0.1);
+  --bs-navbar-active-color: black;
+  --bs-navbar-brand-color: black;
+  --bs-navbar-brand-hover-color: black;
+  --bs-navbar-toggler-border-color: white(255, 255, 255, 0.1);
   --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
@@ -4528,12 +4528,20 @@ textarea.form-control-lg {
   display: block;
   padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
   font-size: var(--bs-pagination-font-size);
-  color: var(--bs-pagination-color);
+  color: #333; /* 기본 텍스트 색상 (어두운 회색) */
   text-decoration: none;
-  background-color: var(--bs-pagination-bg);
+  background-color: #f8f9fa; /* 기본 배경색 (밝은 회색) */
   border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+/* ✅ Hover 시 색상 변경 */
+.page-link:hover {
+  color: white; /* 글씨색을 흰색으로 */
+  background-color: #6c757d !important; /* hover 시 배경색 (어두운 회색) */
+  border-color: #6c757d !important; /* hover 시 테두리 색 변경 */
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-link {
     transition: none;

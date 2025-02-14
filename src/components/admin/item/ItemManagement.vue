@@ -1,13 +1,15 @@
 <template>
-  <div class="max-w-5xl mx-auth my-10">
-    <button @click="itemAddForm">제품 등록</button>
-
-   
-    <button @click="itemDeleteForm">{{deleteYN}}</button>
+  <div class="max-w-5xl mx-auto my-10">
 
 
+    <p class="d-inline-flex gap-1">
+      <button class="btn btn-dark" @click="itemAddForm">제품 등록</button>
+      <a href="#" class="btn btn-secondary active" role="button" data-bs-toggle="button" aria-pressed="true"
+        @click="itemDeleteForm">{{ deleteYN }}</a>
+
+    </p>
     <div v-show="handleSelected">
-      <button @click="handleSelectedItems">선택한 제품 삭제</button>
+      <button class="btn btn-outline-danger my-1" @click="handleSelectedItems">선택한 제품 삭제</button>
     </div>
     <!-- 카드 스타일 섹션 -->
     <div class="bg-white shadow-md rounded-lg p-6">
@@ -16,7 +18,7 @@
 
       <!-- 제품 목록 테이블 -->
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse border border-gray-300">
+        <table class="w-full border-collapse border border-gray-300 table table-hover">
           <thead class="bg-gray-200">
             <tr>
               <th class="border border-gray-300 p-2" v-if="showCheckBox">
@@ -48,23 +50,24 @@
               <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1 }}</td>
               <td class="border border-gray-300 p-2">{{ item.itemNum }}</td>
               <td class="border border-gray-300 p-2">
-                <p @click="$router.push(`/admin/item/${item.itemId}`)"
-                  class="cursor-pointer text-blue-500 hover:underline">
+                <router-link :to="`/admin/item/${item.itemId}`" class="text-blue-500 hover:underline cursor-pointer">
                   {{ item.itemName }}
-                </p>
+                </router-link>
               </td>
               <td class="border border-gray-300 p-2">{{ item.itemType }}</td>
               <td class="border border-gray-300 p-2">{{ formatDate(item.itemRegDate) }}</td>
               <td class="border border-gray-300 p-2">{{ formatDate(item.itemUpdate) }}</td>
-              <td class="border border-gray-300 p-2">{{ item.itemYN === TRUE ? '등록' : '미등록' }}</td>
+              <td class="border border-gray-300 p-2">{{ item.itemYN === true ? '등록' : '미등록' }}</td>
               <td class="border border-gray-300 p-2">{{ item.manuName }}</td>
             </tr>
           </tbody>
         </table>
+
       </div>
 
       <!-- 페이지네이션 섹션 -->
-      <div class="flex justify-center items-center mt-5">
+      <div class="container d-flex flex-column align-items-center my-3">
+
         <nav aria-label="Page navigation example">
           <ul class="flex space-x-2">
             <li class="page-item" :class="{ 'opacity-50 pointer-events-none': currentPage === 0 }">
@@ -80,6 +83,7 @@
           </ul>
         </nav>
       </div>
+
     </div>
   </div>
 </template>
@@ -109,7 +113,7 @@ export default {
       handleSelected: false,
 
       deleteYN: '제품선택',
-      
+
     };
   },
 
@@ -137,7 +141,7 @@ export default {
     }
   },
 
- 
+
 
   methods: {
     ...mapActions(['updateManufacturers']),
@@ -193,17 +197,17 @@ export default {
       this.handleSelected = true;
 
       if (this.deleteYN === '제품선택') {
-       
+
         this.deleteYN = '취소';
-        
-      } 
-      
-      else if (this.deleteYN === '취소'){
+
+      }
+
+      else if (this.deleteYN === '취소') {
         this.handleSelected = false;
         this.deleteYN = '제품선택';
-        
+
       }
-      
+
       this.showCheckBox = !this.showCheckBox;
       if (!this.showCheckBox) {
         this.selectedItems = [];
@@ -211,7 +215,7 @@ export default {
       console.log('단일 선택 체크박스', this.selectedItems);
     },
 
-    toggleSelectAll() {
+    async toggleSelectAll() {
       if (this.allSelected) {
         this.selectedItems = this.ItemListData.map(item => item.itemId);
         console.log('전체 선택 체크박스', this.selectedItems);
@@ -234,9 +238,9 @@ export default {
       if (inConfirmed) {
         try {
 
-          await this.$axios.delete(`/admin/items`, 
-          {data: ids}
-        )
+          await this.$axios.delete(`/admin/items`,
+            { data: ids }
+          )
           console.log('삭제 성공');
           alert('제품이 삭제 되었습니다.');
           this.$router.push('/admin/item');

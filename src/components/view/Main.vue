@@ -8,8 +8,12 @@
                         <img src="@/assets/images/KCC_CI.png" class="bi bi-collection">
                     </div>
                     <h2 class="h4 fw-bolder">KCC</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another
-                        sentence and probably just keep going until we run out of words.</p>
+                    <small>"당사는 KCC 창호의 공식 협력업체로서, 최고의 품질과 기술력을 바탕으로 KCC 창호 제품의 제작 및 설치를 전문적으로 수행하고 있습니다.
+
+                        KCC 창호는 우수한 단열 성능과 기밀성, 세련된 디자인을 갖춘 고품질 창호 제품으로, 주거공간부터 상업시설까지 다양한 건축 환경에서 최적의 성능을 발휘합니다.
+
+                        고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
+                    <br>
                     <a class="text-decoration-none" href="#!">
                         바로가기
                         <i class="bi bi-arrow-right"></i>
@@ -20,8 +24,12 @@
                         <img src="@/assets/images/hu.png" class="bi bi-building">
                     </div>
                     <h2 class="h4 fw-bolder">휴그린</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another
-                        sentence and probably just keep going until we run out of words.</p>
+                    <small>"당사는 휴그린린 창호의 공식 협력업체로서, 최고의 품질과 기술력을 바탕으로 KCC 창호 제품의 제작 및 설치를 전문적으로 수행하고 있습니다.
+
+                        KCC 창호는 우수한 단열 성능과 기밀성, 세련된 디자인을 갖춘 고품질 창호 제품으로, 주거공간부터 상업시설까지 다양한 건축 환경에서 최적의 성능을 발휘합니다.
+
+                        고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
+                    <br>
                     <a class="text-decoration-none" href="#!">
                         바로가기
                         <i class="bi bi-arrow-right"></i>
@@ -32,9 +40,15 @@
                         <img src="@/assets/images/Yerim.png" class="bi bi-toggles2">
                     </div>
                     <h2 class="h4 fw-bolder">예림</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another
-                        sentence and probably just keep going until we run out of words.</p>
+
+                    <small>"당사는 예림 창호의 공식 협력업체로서, 최고의 품질과 기술력을 바탕으로 KCC 창호 제품의 제작 및 설치를 전문적으로 수행하고 있습니다.
+
+                        KCC 창호는 우수한 단열 성능과 기밀성, 세련된 디자인을 갖춘 고품질 창호 제품으로, 주거공간부터 상업시설까지 다양한 건축 환경에서 최적의 성능을 발휘합니다.
+
+                        고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
+                    <br>
                     <a class="text-decoration-none" href="#!">
+
                         바로가기
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -43,19 +57,18 @@
         </div>
     </section>
     <!-- Pricing section-->
-    <section class="bg-light py-5 border-bottom">
+    <section class="py-5 border-bottom">
         <div class="container px-5 my-6">
-            <div class="text-center mb-5">
+            <div class="text-center mb-0">
                 <h2 class="fw-bolder mb-5">일정</h2>
                 <p class="lead mb-0"> </p>
-                
-                <div class="calendar-wrapper">
-                    <VCalendar expanded :attributes="attributes"></VCalendar>
-                </div>
 
             </div>
 
             <div class="row gx-5 justify-content-center">
+                <div class="calendar-wrapper">
+                    <VCalendar expanded :attributes="attributes"></VCalendar>
+                </div>
             </div>
         </div>
     </section>
@@ -135,20 +148,23 @@ export default {
                     return;
                 }
 
-                this.attributes = response.data.map(event => ({
-                    key: event.calenderId,
-                    highlight: 'red',
-
-                    dates: {
-                        start: event.findStartTime,
-                        end: event.findEndTime,
-                    },
-                    popover: {
-                        title: event.findTitle,
-                    },
-                }));
-                console.log('response calendar data', this.attributes);
-
+                this.attributes = response.data.
+                    filter(event => event.findStartTime && event.findEndTime)
+                    .map(event => ({
+                        key: event.calendarId,
+                        highlight: {
+                            color: 'red',
+                        },
+                        dates: {
+                            start: event.findStartTime || event.findCreateAt,  // ✅ start 값이 없으면 기본값으로 등록 시간 사용
+                            end: event.findEndTime || event.findStartTime || event.findCreateAt, // ✅ end 값이 없으면 start 값으로 설정
+                        },
+                        popover: {
+                            label: event.findTitle || "제목 없음",  // ✅ title이 없으면 기본값 설정
+                            visibility: 'hover',
+                            placement: 'bottom'
+                        },
+                    }));
             } catch (error) {
                 console.log('fetch vc data error', error);
             }
@@ -167,7 +183,7 @@ export default {
 :deep(.vc-day) {
     cursor: pointer;
     padding: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 :deep(.calendar-wrapper) {
@@ -177,6 +193,9 @@ export default {
     /* 최대 너비 설정 (필요시 조정) */
     margin: 10 auto;
     /* 가운데 정렬 */
+    border-radius: 5px;
+    /* ✅ 둥근 모서리 */
+    transition: 0.3s;
 }
 
 :deep(.vc-container) {

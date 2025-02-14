@@ -2,9 +2,9 @@
     <p>제조사 관리 페이지 입니다.</p>
     <div class="button-container">
         <button type="button" @click="changeStep(0)" class="btn btn-secondary">제조사 목록</button>
-        <button type="button" @click="changeStep(1)" class="btn btn-secondary">제조사 등록</button>
-        <button type="button" @click="changeStep(2)" class="btn btn-secondary">제조사 수정</button>
-        <button type="button" @click="changeStep(3)" class="btn btn-secondary">제조사 삭제</button>
+        <button class="btn btn-dark" type="button" @click="changeStep(1)">제조사 등록</button>
+        <button type="button" @click="changeStep(2)" class="btn btn-warning">제조사 수정</button>
+        <button type="button" @click="changeStep(3)" class="btn btn-danger">제조사 삭제</button>
     </div>
     <div>
         <!-- 자식 컴포넌트에 데이터 전달 -->
@@ -131,7 +131,6 @@ th {
 }
 
 .button-container .btn:hover {
-    background-color: #007bff;
     color: white;
 }
 </style>

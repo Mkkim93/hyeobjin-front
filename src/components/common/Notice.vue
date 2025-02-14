@@ -1,14 +1,14 @@
 <template>
 
   <div class="max-w-4xl mx-auto my-10 text-center">
-    <h2 class="notice-title fw-bolder py-5">공지사항</h2>
+    <h2 class="notice-title fw-bolder my-5">공지사항</h2>
     <br>
     <div class="text-center mb-5">
 
       <!-- 검색 기능: 오른쪽 상단에 위치 -->
       <div class="mt-3 d-flex justify-content-end mb-3">
         <div class="d-flex align-items-center">
-          <input v-model="searchKeyword" class="form-control w-100 mx-3 my-2" type="text" placeholder="검색어를 입력해주세요" />
+          <input v-model="searchKeyword" class="form-control w-125 mx-4 my-3" type="text" placeholder="검색어를 입력해주세요" />
           <button @click="fetchBoardList" class="btn btn-primary btn-lg w-50 py-1">
             검색
           </button>
@@ -32,7 +32,9 @@
             {{ this.currentPage * this.pageSize + count + 1 }}
           </td>
           <td class="border border-gray-300 p-1 text-left align-middle">
-            <p @click="$router.push('/notice/' + post.boardId)" tag="td">{{ post.boardTitle }}</p>
+            <router-link :to="`/notice/${post.boardId}`" class="text-blue-500 hover:underline cursor-pointer">
+              {{ post.boardTitle }}
+            </router-link>
           </td>
           <td class="border border-gray-300 p-1 align-middle">
             {{ post.writer }}
@@ -54,9 +56,9 @@
           <!-- Previous Button -->
           <li class="page-item" :class="{ 'disabled': currentPage === 0 }">
             <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">이전
-              </a>
+            </a>
           </li>
-          
+
           <!-- 페이지 번호들 동적으로 생성 -->
           <li v-for="page in totalPages" :key="page" class="page-item" :class="{ 'active': currentPage === page - 1 }">
             <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
@@ -143,4 +145,16 @@ export default {
   padding-bottom: 5px;
   margin-bottom: 10px;
 }
+
+a {
+  text-decoration: none !important; /* 밑줄 제거 */
+  color: inherit !important; /* 기본 색상 유지 */
+}
+
+.page-link.active, .active > .page-link {
+  background-color: #e0e0e0 !important; /* ✅ 현재 페이지 배경색 (밝은 회색) */
+  color: #333 !important; /* ✅ 글자 색 검은색 */
+  border-color: #bdbdbd !important; /* ✅ 테두리 색상 중간 회색 */
+}
+
 </style>

@@ -75,11 +75,16 @@
 
       <div class="col-md-5 d-flex justify-content-center align-items-center">
         <div class="position-relative bg-white p-4 rounded shadow-sm">
-          <span class="badge bg-warning text-dark position-absolute top-0 end-0 mt-2 me-2">NEW</span>
+          <div v-if="ItemDetailData.itemYN == true">
+          <span class="badge bg-success text-dark position-absolute top-0 end-0 mt-2 me-2">등록</span>
+        </div>
+        <div v-else>
+          <span class="badge bg-danger text-dark position-absolute top-0 end-0 mt-2 me-2">미등록</span>
+        </div>
 
           <div v-if="isLoading" class="text-center">로딩 중...</div>
 
-          <img v-else class="img-fluid w-100" :src="`/item/${fileBoxesData[0].fileName}`" alt="제품 이미지" />
+          <img v-else class="img-fluid w-100" :src="`/item/${fileBoxesData.fileName}`" alt="제품 이미지" />
         </div>
       </div>
 
@@ -99,7 +104,7 @@ export default {
     return {
       DetailItemId: null,
       ItemDetailData: {},
-      fileBoxesData: [],
+      fileBoxesData: {},
       itemIdsToDelete: [],
 
       isLoading: true,
@@ -127,7 +132,7 @@ export default {
 
         console.log('itemDetailData', this.ItemDetailData);
         console.log('this.fileBoxesData', this.fileBoxesData);
-        console.log('fileBoxesData.fileName', this.fileBoxesData[0]?.fileName);
+        console.log('fileBoxesData.fileName', this.fileBoxesData.fileName);
       } catch (error) {
         console.error('fetch Data Detail failed', error);
         this.ItemDetailData = { fileBoxes: [] };

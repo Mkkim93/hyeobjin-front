@@ -1,22 +1,20 @@
 <template>
- 
   <div class="swiper-container">
-   
     <div class="swiper-wrapper">
-     
       <div class="swiper-slide">
-        <img src="@/assets/images/test01.jpg" alt="Logo 1" />
+        <img :src="img1" alt="Logo 1" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/images/test02.jpg" alt="Logo 2" />
+        <img :src="img2" alt="Logo 2" />
       </div>
       <div class="swiper-slide">
-        <img src="@/assets/images/test03.jpg" alt="Logo 3" />
+        <img :src="img3" alt="Logo 3" />
       </div>
     </div>
     <!-- If we need pagination -->
 
     <!-- If we need navigation buttons -->
+    <!-- <div class="swiper-scrollbar"></div> -->
     <!-- <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div> -->
 
@@ -25,49 +23,48 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle'; // Swiper 스타일 추가
 
-import 'swiper/css/bundle';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import img1 from '@/assets/images/slide01.png';
+import img2 from '@/assets/images/slide02.jpg';
+import img3 from '@/assets/images/slide03.jpg';
 
 export default {
-  name: "MySwifer",
-  data() {
-    return {
-    
-    };
-  },
-
-  mounted() {
-    var swiper = new Swiper('.swiper-container', {
-      loop: true,
+  setup() {
+    // Swiper 초기화
+    onMounted(() => {
+      const swiper = new Swiper('.swiper-container', {
+        loop: true,
 
       autoplay: {
         delay: 3000, 
         disableOnInteraction: false,
       },
 
-      slidesPerView: 1,
-      spaceBetween: 0,
- 
       pagination: {
         el: '.swiper-pagination',
         clickable: true, 
       },
 
-     
       scrollbar: {
         el: '.swiper-scrollbar',
         draggable: true, 
       },
+
+      });
     });
+
+    return {
+      img1,
+      img2,
+      img3,
+    };
   },
 };
 </script>
-
-<style>
-
+<style scoped>
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -76,7 +73,7 @@ export default {
 
 .swiper-container {
   width: 100%;      
-  height: 45vh;   
+  height: 60vh;   
   overflow: hidden;
   position: relative;  
   top: 0;

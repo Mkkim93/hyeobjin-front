@@ -4,11 +4,13 @@
     <div class="bg-light border-end" :class="{ 'toggled': isToggled }" id="sidebar-wrapper">
       <div class="sidebar-heading text-center py-4"><a href="/admin">관리자 페이지</a></div>
       <div class="list-group list-group-flush">
-        <router-link to="/admin/item" class="list-group-item list-group-item-action">제품 관리</router-link>
-        <router-link to="/admin/manu" class="list-group-item list-group-item-action">제조사 관리</router-link>
-        <router-link to="/admin/notice" class="list-group-item list-group-item-action">공지 사항</router-link>
-        <router-link to="/admin/calendar" class="list-group-item list-group-item-action">일정 관리</router-link>
-        <a href="#" class="list-group-item list-group-item-action">설정</a>
+        <router-link to="/admin/item" class="list-group-item list-group-item-action"><i class="bi bi-diagram-3-fill">제품 관리</i></router-link>
+        <router-link to="/admin/manu" class="list-group-item list-group-item-action"><i class="bi bi-buildings-fill">제조사 관리</i></router-link>
+        <router-link to="/admin/notice" class="list-group-item list-group-item-action"><i class="bi bi-pencil-square">공지 사항</i></router-link>
+        <router-link to="/admin/calendar" class="list-group-item list-group-item-action"><i class="bi bi-calendar-day-fill">일정 관리</i></router-link>
+        <router-link to="/admin/inquiry" class="list-group-item list-group-item-action"><i class="bi bi-calendar-day-fill">고객 문의</i></router-link>
+        <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-gear-fill"></i>설정</a>
+        
       </div>
     </div>
 

@@ -3,7 +3,7 @@
   <HomeView v-if="!isAdminPage" />
   <Header v-if="!isMainPage" />
   <div class="main-content">
-    
+    <FormCategory />
     <div :class="{ 'main-content': !isAdminPage, 'admin-content': isAdminPage }">
       <router-view />
     </div>
@@ -16,13 +16,14 @@
 import Footer from './components/view/Footer.vue';
 import HomeView from './components/view/HomeView.vue';
 import Header from './components/view/Header.vue';
-
+import FormCategory from './components/view/FormCategory.vue';
 export default {
   name: 'App',
 
   data() {
     return {
       step: 0,
+      category: '',
     }
   },
 
@@ -41,6 +42,7 @@ export default {
     HomeView,
     Header,
     Footer,
+    FormCategory,
   }
 }
 </script>

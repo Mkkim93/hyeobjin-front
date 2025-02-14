@@ -25,6 +25,7 @@
     <div class="container px-5 my-5">
       <div class="text-center mb-5">
         <h2 class="fw-bolder">' ? '</h2>
+        <img :src="emaxContent" alt="content-img">
         <p class="lead mb-5">' ? '</p>
       </div>
     </div>
@@ -48,11 +49,13 @@
 
 <script>
 import emaxIntro from '@/assets/images/emax-intro.png';
+import emaxContent from '@/assets/images/emax-content.jpg';
 export default {
   name: 'About',
   data() {
     return {
       emaxIntro,
+      emaxContent,
     };
   },
 }
