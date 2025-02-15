@@ -31,9 +31,15 @@
                                 <!-- <td class="border border-gray-300 p-2" v-if="showCheckBox">
                                     <input type="checkbox" v-model="selectedInquirys" :value="inquiry.inquiryId">
                                 </td> -->
-                                <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1}}
+                                <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1
+                                    }}
                                 </td>
-                                <td class="border border-gray-300 p-2">{{ inquiry.title }}</td>
+                                <td>
+                                    <p @click="$router.push('inquiry/' + inquiry.inquiryId)"
+                                        class="cursor-pointer hover:underline">
+                                        {{ inquiry.title }}
+                                    </p>
+                                </td>
                                 <td class="border border-gray-300 p-2">{{ inquiry.writer }}</td>
                                 <td class="border border-gray-300 p-2">{{ formatDate(inquiry.createAt) }}</td>
                             </tr>
@@ -95,7 +101,7 @@ export default {
     },
 
     created() {
-        this.fetchInquiryListData(this.currentPage);
+        this.fetchInquiryListData();
     },
 
     watch: {
@@ -106,12 +112,12 @@ export default {
 
     methods: {
 
-        async fetchInquiryListData(page) {
+        async fetchInquiryListData() {
 
             try {
 
                 const params = {
-                    page: page,
+                    page: this.currentPage,
                     size: this.pageSize,
                 };
 
@@ -123,7 +129,7 @@ export default {
                 console.log('this.InquiryList', this.InquiryList);
                 this.pageData = response.data;
                 this.totalPages = this.pageData.totalPages;
-            
+
             } catch (error) {
                 console.log('fetchInquiryListData error', error);
             }
@@ -132,6 +138,13 @@ export default {
         formatDate(date) {
             return dayjs(date).format('YYYY-MM-DD');
         },
+
+        changePage(pageNumber) {
+            if (pageNumber >= 0 && pageNumber < this.totalPages) {
+                this.currentPage = pageNumber;
+                this.fetchInquiryListData(); // ✅ 올바른 메서드 호출
+            }
+        }
     }
 }
 </script>

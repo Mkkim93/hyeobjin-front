@@ -1,27 +1,38 @@
 <template>
-    <p>제조사 관리 페이지 입니다.</p>
-    <div class="button-container">
-        <button type="button" @click="changeStep(0)" class="btn btn-secondary">제조사 목록</button>
-        <button class="btn btn-dark" type="button" @click="changeStep(1)">제조사 등록</button>
-        <button type="button" @click="changeStep(2)" class="btn btn-warning">제조사 수정</button>
-        <button type="button" @click="changeStep(3)" class="btn btn-danger">제조사 삭제</button>
-    </div>
-    <div>
-        <!-- 자식 컴포넌트에 데이터 전달 -->
-        <div v-if="step == 0">
-            <ManufactList :ManufactListData="ManufactListData" />
-        </div>
-        <!-- 제조사 추가 버튼 -->
-        <div v-if="step == 1">
-            <ManufactAdd />
-        </div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white text-center py-3">
+                <h4 class="mb-0">제조사 관리 페이지</h4>
+            </div>
 
-        <div v-if="step == 2">
-            <ManufactEdit :ManufactListData="ManufactListData" />
-        </div>
+            <div class="card-body">
+                <!-- 버튼 그룹 -->
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    <button type="button" @click="changeStep(0)" class="btn btn-secondary">제조사 목록</button>
+                    <button class="btn btn-dark" type="button" @click="changeStep(1)">제조사 등록</button>
+                    <button type="button" @click="changeStep(2)" class="btn btn-warning">제조사 수정</button>
+                    <button type="button" @click="changeStep(3)" class="btn btn-danger">제조사 삭제</button>
+                </div>
 
-        <div v-if="step == 3">
-            <ManufactDelete :ManufactListData="ManufactListData" />
+                <!-- 데이터 출력 영역 -->
+                <div>
+                    <div v-if="step === 0">
+                        <ManufactList :ManufactListData="ManufactListData" />
+                    </div>
+
+                    <div v-if="step === 1">
+                        <ManufactAdd />
+                    </div>
+
+                    <div v-if="step === 2">
+                        <ManufactEdit :ManufactListData="ManufactListData" />
+                    </div>
+
+                    <div v-if="step === 3">
+                        <ManufactDelete :ManufactListData="ManufactListData" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -36,34 +47,29 @@ export default {
     name: 'ManufactManagement',
     data() {
         return {
-            step: Number,
-            ManufactListData: [],  // 배열로 초기화
-        }
+            step: 0,
+            ManufactListData: [],
+        };
     },
 
     components: {
-        ManufactList,  // 자식 컴포넌트 등록
+        ManufactList,
         ManufactAdd,
         ManufactDelete,
         ManufactEdit,
     },
 
     created() {
-        // 컴포넌트가 생성될 때 데이터를 fetch
         this.fetchManuList();
-        this.step = 0;
     },
 
     methods: {
         async fetchManuList() {
             try {
                 const response = await this.$axios.get('/admin/manu/count');
-                // 받아온 데이터를 ManufactListData에 할당
                 this.ManufactListData = response.data;
-                console.log('response', response);
-                console.log('response.data', response.data);
             } catch (error) {
-                console.log('fetchManuCountData get error', error);
+                console.error('fetchManuCountData get error', error);
             }
         },
 
@@ -71,25 +77,46 @@ export default {
             this.step = newStep;
         },
 
-        // 제조사 추가 메서드 (예시)
         async addManuFacturer() {
             try {
-                await this.$axios.post('/admin.manu', {
+                await this.$axios.post('/admin/manu', {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
-                // 성공적으로 추가 후 데이터를 다시 fetch하거나, 추가된 데이터를 리스트에 반영
                 this.fetchManuList();
             } catch (error) {
-                console.log('addManuFacturer error', error);
+                console.error('addManuFacturer error', error);
             }
         },
     }
-}
+};
 </script>
 
 <style scoped>
+/* 컨테이너 크기 조정 */
+.container {
+    max-width: 900px;
+}
+
+/* 카드 스타일 */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 그룹 스타일 */
+.d-flex.flex-wrap {
+    justify-content: center;
+}
+
+/* 버튼 hover 효과 */
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* 데이터 출력 영역 스타일 */
 .table-container {
     display: flex;
     justify-content: center;
@@ -98,39 +125,28 @@ export default {
     padding: 20px;
 }
 
+/* 테이블 스타일 */
 table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
     text-align: center;
+    border: 1px solid #ddd;
 }
 
-th,
-td {
-    padding: 8px 12px;
-    text-align: center;
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #f8f9fa;
+    font-weight: bold;
 }
 
-/* 버튼을 가로로 정렬하고 스타일 개선 */
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* 버튼 간격 */
-    margin-bottom: 20px;
-}
-
-.button-container .btn {
-    width: 150px; /* 버튼의 고정 너비 */
-    padding: 10px;
-    font-size: 14px;
-    text-align: center;
-}
-
-.button-container .btn:hover {
-    color: white;
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
 }
 </style>

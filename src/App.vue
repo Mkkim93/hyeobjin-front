@@ -1,14 +1,13 @@
 <template>
-
-  <HomeView v-if="!isAdminPage" />
+  <HomeView v-if="!isAdminPage" @updateCategoryStep="updateCategoryStep" />
   <Header v-if="!isMainPage" />
   <div class="main-content">
-    <FormCategory />
     <div :class="{ 'main-content': !isAdminPage, 'admin-content': isAdminPage }">
+      <!-- FormCategory에 categoryStep을 props로 전달 -->
+      <FormCategory :categoryStep="categoryStep" v-if="isMainPage"/>
       <router-view />
     </div>
   </div>
-
   <Footer />
 </template>
 
@@ -17,14 +16,14 @@ import Footer from './components/view/Footer.vue';
 import HomeView from './components/view/HomeView.vue';
 import Header from './components/view/Header.vue';
 import FormCategory from './components/view/FormCategory.vue';
+
 export default {
   name: 'App',
 
   data() {
     return {
-      step: 0,
-      category: '',
-    }
+      categoryStep: 0, // 기본값 설정
+    };
   },
 
   computed: {
@@ -35,7 +34,12 @@ export default {
     isMainPage() {
       return this.$route.path !== '/';
     }
+  },
 
+  methods: {
+    updateCategoryStep(step) {
+      this.categoryStep = step; // ✅ HomeView에서 받은 값을 저장
+    }
   },
 
   components: {
@@ -44,7 +48,7 @@ export default {
     Footer,
     FormCategory,
   }
-}
+};
 </script>
 
 <style>

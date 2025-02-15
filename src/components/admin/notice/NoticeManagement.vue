@@ -1,121 +1,105 @@
 <template>
-  <div class="max-w-4xl mx-auto my-10">
-    <div class="table-container text-center">
-      <h1 class="text-2xl font-bold mb-5">공지사항</h1>
-      <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
-      <button @click="handleSelectedBoards" class="mb-4 px-4 py-2 bg-red-500 text-white rounded">
-        선택된 항목 삭제
-      </button>
+  <div class="container my-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white text-center">
+        <h3 class="mb-0">📌 공지사항 관리</h3>
+      </div>
 
-      <!-- 테이블을 감싸는 div로 overflow 설정 -->
+      <div class="card-body">
+        <!-- 선택 삭제 버튼 -->
+        <div class="text-end mb-3">
+          <button @click="handleSelectedBoards" class="btn btn-danger btn-sm">
+            🗑 선택 삭제
+          </button>
+        </div>
 
-      <table class="w-full mx-auto table-auto border-collapse border border-gray-300">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="px-4 py-2">선택</th>
-            <th class="px-4 py-2">번호</th>
-            <th class="px-4 py-2">게시글유형</th>
-            <th class="px-4 py-2">제목</th>
-            <th class="px-4 py-2">작성자</th>
-            <th class="px-4 py-2">등록일</th>
-            <th class="px-4 py-2">수정일</th>
-            <th class="px-4 py-2">공개여부</th>
-            <th class="px-4 py-2">조회</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(post, count) in boardList" :key="post.boardId" class="hover:bg-gray-100">
-            <td class="px-4 py-2">
-              <input type="checkbox" class="ck" v-model="selectedIds" :value="post.boardId" />
-            </td>
-            <td class="px-4 py-2">
-              {{ currentPage * pageSize + count + 1 }}
-            </td>
-            <td class="px-4 py-2">{{ post.boardType }}</td>
-            <td class="px-4 py-2 text-left">
-              <p @click="$router.push('notice/' + post.boardId)" class="cursor-pointer hover:underline">
-                {{ post.boardTitle }}
-              </p>
-            </td>
-            <td class="px-4 py-2">{{ post.writer }}</td>
-            <td class="px-4 py-2">{{ formatDate(post.boardRegDate) }}</td>
-            <td class="px-4 py-2">{{ formatDate(post.boardUpdate) }}</td>
-            <td class="px-4 py-2">
-              {{ post.boardYN === 'Y' ? '공개' : '비공개' }}
-            </td>
-            <td class="px-4 py-2">{{ post.boardViewCount }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <!-- 테이블 -->
+        <div class="table-responsive">
+          <table class="table table-hover text-center">
+            <thead class="table-light">
+              <tr>
+                <th><input type="checkbox" @click="selectAll" /></th>
+                <th>No</th>
+                <th>유형</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+                <th>수정일</th>
+                <th>공개여부</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(post, count) in boardList" :key="post.boardId">
+                <td>
+                  <input type="checkbox" class="form-check-input" v-model="selectedIds" :value="post.boardId" />
+                </td>
+                <td>{{ currentPage * pageSize + count + 1 }}</td>
+                <td>{{ post.boardType }}</td>
+                <td class="text-start">
+                  <router-link :to="'/admin/notice/' + post.boardId" class="text-primary fw-bold text-decoration-none">
+                    {{ post.boardTitle }}
+                  </router-link>
+                </td>
+                <td>{{ post.writer }}</td>
+                <td>{{ formatDate(post.boardRegDate) }}</td>
+                <td>{{ formatDate(post.boardUpdate) }}</td>
+                <td>{{ post.boardYN === 'Y' ? '✅ 공개' : '❌ 비공개' }}</td>
+                <td>{{ post.boardViewCount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-
-      <!-- 페이지네이션: 가로 정렬 및 리스트 스타일 제거 -->
-      <div class="flex justify-center mt-5 pagenavigation">
-        <nav aria-label="Page navigation example">
-          <ul class="flex list-none space-x-2">
-            <!-- Previous Button -->
-            <li :class="{ 'pointer-events-none': currentPage === 0 }">
-              <a class="px-3 py-1 border border-gray-300 rounded" href="#" @click.prevent="changePage(currentPage - 1)">
-                이전
-              </a>
+        <!-- 페이지네이션 -->
+        <nav class="d-flex justify-content-center my-4">
+          <ul class="pagination">
+            <li class="page-item" :class="{ disabled: currentPage === 0 }">
+              <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">이전</a>
             </li>
 
-            <!-- 페이지 번호 -->
-            <li v-for="page in totalPages" :key="page" :class="{
-              'bg-blue-500 text-white': currentPage === page - 1,
-              'bg-white text-black': currentPage !== page - 1
-            }">
-              <a class="px-3 py-1 border border-gray-300 rounded" href="#" @click.prevent="changePage(page - 1)">
-                {{ page }}
-              </a>
+            <li v-for="page in totalPages" :key="page" class="page-item"
+                :class="{ active: currentPage === page - 1 }">
+              <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
             </li>
 
-            <!-- Next Button -->
-            <li :class="{ 'pointer-events-none': currentPage === totalPages - 1 }">
-              <a class="px-3 py-1 border border-gray-300 rounded" href="#" @click.prevent="changePage(currentPage + 1)">
-                다음
-              </a>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+              <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">다음</a>
             </li>
           </ul>
         </nav>
-      </div>
 
-      <!-- 검색 기능 -->
-      <div class="mt-5 flex justify-center">
-        <input v-model="searchKeyword" class="border border-gray-300 p-2 rounded-md" type="text"
-          placeholder="검색어를 입력해주세요" />
-        <button @click="fetchBoardList" class="ml-2 bg-blue-500 text-white p-2 rounded-md">
-          검색
-        </button>
-      </div>
+        <!-- 검색 기능 -->
+        <div class="input-group mb-4">
+          <input v-model="searchKeyword" type="text" class="form-control" placeholder="검색어를 입력하세요" />
+          <button @click="fetchBoardList" class="btn btn-outline-primary">검색</button>
+        </div>
 
-      <!-- 글쓰기 버튼 -->
-      <div class="mt-5 flex justify-center">
-        <router-link to="/admin/notice/add">
-          <button type="button" class="bg-green-500 text-white px-4 py-2 rounded-md">
-            글쓰기
-          </button>
-        </router-link>
+        <!-- 글쓰기 버튼 -->
+        <div class="text-center">
+          <router-link to="/admin/notice/add">
+            <button class="btn btn-success">📝 글쓰기</button>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export default {
-  name: 'NoticeManagement',
+  name: "NoticeManagement",
 
   data() {
     return {
       selectedIds: [],
       boardList: [],
       searchKeyword: null,
-
-      currentPage: 0, // 현재 페이지 (0부터 시작)
-      totalPages: null, // 전체 페이지 수
-      pageSize: 5, // 한 페이지당 게시물 수
+      currentPage: 0,
+      totalPages: null,
+      pageSize: 5,
       pageData: null,
     };
   },
@@ -136,24 +120,20 @@ export default {
           params.searchKeyword = this.searchKeyword;
         }
 
-        const response = await this.$axios.get(`/admin/boards`, { params }, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await this.$axios.get(`/admin/boards`, { params });
+
         this.boardList = response.data.content;
         this.pageData = response.data;
         this.totalPages = this.pageData.totalPages;
       } catch (error) {
-        console.error('게시판 목록을 불러오는 중 오류 발생:', error);
+        console.error("게시판 목록을 불러오는 중 오류 발생:", error);
       }
     },
 
     formatDate(date) {
-      return dayjs(date).format('YYYY-MM-DD');
+      return dayjs(date).format("YYYY-MM-DD");
     },
 
-    // 페이지 변경 처리
     changePage(pageNumber) {
       if (pageNumber >= 0 && pageNumber < this.totalPages) {
         this.currentPage = pageNumber;
@@ -166,17 +146,28 @@ export default {
     },
 
     async deleteBoards(ids) {
-      const isConfirmed = confirm('삭제 시 모든 게시글과 파일이 삭제됩니다. 계속 하시겠습니까?');
+      if (ids.length === 0) {
+        alert("삭제할 게시글을 선택하세요.");
+        return;
+      }
+
+      const isConfirmed = confirm("선택한 게시글을 삭제하시겠습니까?");
       if (isConfirmed) {
         try {
-          await this.$axios.delete('/admin/boards', { data: ids });
-          alert('선택한 게시글이 모두 삭제 되었습니다.');
-          window.location.href = '/admin/notice';
+          await this.$axios.delete("/admin/boards", { data: { boardIds: ids } });
+          alert("게시글이 삭제되었습니다.");
+          this.fetchBoardList();
         } catch (error) {
-          console.error('게시글 삭제 중 오류 발생:', error);
+          console.error("게시글 삭제 오류:", error);
         }
+      }
+    },
+
+    selectAll() {
+      if (this.selectedIds.length === this.boardList.length) {
+        this.selectedIds = [];
       } else {
-        alert('삭제가 취소되었습니다.');
+        this.selectedIds = this.boardList.map((post) => post.boardId);
       }
     },
   },
@@ -184,10 +175,45 @@ export default {
 </script>
 
 <style scoped>
-/* pagination의 ul에 기본 리스트 스타일을 제거합니다. */
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* ✅ 테이블 스타일 */
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ✅ 체크박스 스타일 */
+.form-check-input {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* ✅ 페이지네이션 스타일 */
+.page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ✅ 버튼 스타일 */
+.btn {
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* ✅ 반응형 */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
 }
 </style>

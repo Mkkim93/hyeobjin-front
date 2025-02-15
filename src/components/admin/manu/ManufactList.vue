@@ -1,70 +1,84 @@
 <template>
-  <h1>제조사 목록</h1>
-    
-    <table border="1">
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th>제조사명</th>
-          <th>등록된 제품 수</th>
-          <th>등록 여부</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr v-for="(manu, index) in ManufactListData" :key="index">
-          <td>{{ ManufactListData[index].manuId }}</td>
-          <td>{{ ManufactListData[index].manuName }}</td>
-          <td>{{ ManufactListData[index].itemCount }}</td>
-          <td>{{ ManufactListData[index].manuYN === 'N' ? '미등록' : '등록' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container my-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark text-white text-center">
+        <h3 class="mb-0">제조사 목록</h3>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover text-center">
+            <thead class="table-light">
+              <tr>
+                <th>No.</th>
+                <th>제조사명</th>
+                <th>등록된 제품 수</th>
+                <th>등록 여부</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(manu, index) in ManufactListData" :key="index">
+                <td>{{ manu.manuId }}</td>
+                <td class="text-primary fw-bold">{{ manu.manuName }}</td>
+                <td>{{ manu.itemCount }}</td>
+                <td>
+                  <span :class="manu.manuYN === 'N' ? 'badge bg-danger' : 'badge bg-success'">
+                    {{ manu.manuYN === 'N' ? '미등록' : '등록' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'ManufactList',
-    data() {
-        return { 
-        }
-    },
-    created() {
-        
-    },
-
-    props: {
-        ManufactListData: Array,
-    },
-
-    
-}
-
+  name: 'ManufactList',
+  props: {
+    ManufactListData: Array,
+  },
+};
 </script>
 
 <style scoped>
-.table-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
+/* 컨테이너 스타일 */
+.container {
+  max-width: 900px;
 }
 
-table {
-  width: 80%;
+/* 카드 스타일 */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 스타일 */
+.table {
   border-collapse: collapse;
+  width: 100%;
   margin-top: 20px;
-  text-align: center;
 }
 
 th, td {
-  padding: 8px 12px;
-  text-align: center;
+  padding: 12px;
+  border: 1px solid #ddd;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: center;
 }
 
+/* 반응형 */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
 </style>

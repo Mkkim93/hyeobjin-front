@@ -298,6 +298,8 @@ export default {
 
       try {
 
+        
+
         const response = await this.$axios.post('/inquiry', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'

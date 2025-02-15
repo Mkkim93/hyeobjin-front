@@ -2,10 +2,12 @@
     <nav class="category-nav-main justify-center">
         <ul>
             <li v-for="(category, index) in categories" :key="index">
-                <button class="category-btn" :class="{ active: selectedCategory === category }"
-                    @click="selectCategory(category)">
-                    {{ category }}
-                </button>
+                <router-link :to="category.path">
+                    <button class="category-btn" :class="{ active: selectedCategory === category.name }"
+                        @click="selectCategory(category.name)">
+                        {{ category.name }}
+                    </button>
+                </router-link>
             </li>
         </ul>
     </nav>
@@ -13,29 +15,56 @@
 
 <script>
 export default {
-    name: 'FormCategory',
+    name: "FormCategory",
+
+    props: {
+        categoryStep: Number, // ✅ 부모(App.vue)에서 받은 값
+    },
+
     data() {
         return {
-            categories: ["온라인상담", "공지사항", "견적&실측문의", "고객상담실", "A/S 문의"],
-            selectedCategory: "온라인상담",
+            selectedCategory: "회사소개",
+
+            cate01: [
+                { path: "/about", name: "인사말" },
+                { path: "/history", name: "연혁" },
+                { path: "/location", name: "오시는 길" }
+            ],
+
+            cate02: [
+                { path: "/manu/1", name: "KCC" },
+                { path: "/manu/2", name: "휴그린" },
+                { path: "/manu/3", name: "예림" }
+            ],
+
+            cate03: [
+                { path: "/notice", name: "공지사항" }
+            ],
+
+            cate04: [
+                { path: "/asform", name: "1:1문의" },
+                { path: "/faq", name: "FAQ" }
+            ]
+        };
+    },
+
+    computed: {
+        categories() {
+            // ✅ categoryStep 값에 따라 적절한 리스트 반환
+            if (this.categoryStep === 1) return this.cate01;
+            if (this.categoryStep === 2) return this.cate02;
+            if (this.categoryStep === 3) return this.cate03;
+            if (this.categoryStep === 4) return this.cate04;
+            return [];
         }
     },
 
-    created() {
-
-    },
-
-    props: {
-        categories
-    },
-
     methods: {
-        async selectCategory(category) {
+        selectCategory(category) {
             this.selectedCategory = category;
-            // console.log(`선택된 카테고리: ${category}`);
-        },
+        }
     }
-}
+};
 </script>
 
 <style scoped>

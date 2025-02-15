@@ -1,6 +1,4 @@
 <template>
-   <!-- 상위 카테고리 네비게이션 -->
-   
 
   <ManuIntro :step="Number(step)" />
 
@@ -94,10 +92,10 @@ export default {
 
       itemTypeList: [],
       itemTypeNames: [],
-
-     
-
     };
+  },
+
+  components: {
   },
 
   props: ['id'],

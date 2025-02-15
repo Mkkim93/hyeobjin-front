@@ -5,7 +5,7 @@ function decodeBase64Url(base64Url) {
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     try {
         return decodeURIComponent(
-            escape(window.atob(base64)) // UTF-8 안전한 디코딩
+            escape(window.atob(base64)) // UTF-8 디코딩
         );
     } catch (e) {
         console.error("Base64 decoding error:", e);

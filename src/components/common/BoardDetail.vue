@@ -1,42 +1,39 @@
 <template>
-  <div class="container my-5">
-    <!-- 페이지 제목 -->
-    <div class="text-center mb-5">
-      <h2 class="notice-title fw-bold">공지사항</h2>
+
+  <div class="page-title">
+    <div class="container">
+      <h3>공지사항</h3>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <!-- 제목 및 메타 정보 -->
+    <div class="notice-meta">
+      <h2 class="notice-title">{{ boardDetail.boardTitle }}</h2>
+      <div class="meta-info">
+        <span class="comments">💬 {{ boardDetail.commentCount || 0 }}건</span>
+        <span class="views">👀 {{ boardDetail.boardViewCount || 0 }}회</span>
+        <span class="date">작성일 {{ formatDate(boardDetail.boardUpdate) }}</span>
+        <span class="date">작성자 {{ boardDetail.writer }}</span>
+      </div>
     </div>
 
-    <!-- 게시판 카드 -->
-    <div class="card shadow-sm">
+    <!-- 이미지 포함된 내용 -->
+    <div class="card">
+      <div v-if="boardDetail.boardImage" class="image-container">
+        <img :src="boardDetail.boardImage" alt="게시글 이미지" class="board-image">
+      </div>
       <div class="card-body">
-        <!-- 게시글 제목 -->
-        <h1 class="card-title text-primary fw-bold mb-3">{{ BoardDetail.boardTitle }}</h1>
+        <div class="content" v-html="boardDetail.boardContent"></div>
 
-        <!-- 작성자 및 날짜 -->
-        <div class="d-flex justify-content-between text-muted small mb-4">
-          <span>✍ 작성자: <strong class="text-dark">{{ BoardDetail.writer }}</strong></span>
-          <span>📅 작성일: <strong class="text-dark">{{ formatDate(BoardDetail.boardRegdate) }}</strong></span>
-        </div>
-
-        <!-- 게시글 내용 -->
-        <div class="border p-3 bg-light rounded">
-          <div class="text-dark" v-html="BoardDetail.boardContent"></div>
-        </div>
-
-        <!-- 첨부 파일 -->
-        <div v-if="BoardDetail.files && BoardDetail.files.length" class="mt-4 p-3 border rounded bg-white">
-          <h5 class="fw-bold">📎 첨부 파일</h5>
-          <ul class="list-group list-group-flush">
-            <li v-for="(file, index) in BoardDetail.files" :key="index" class="list-group-item">
-              <a :href="file.url" target="_blank" class="text-primary text-decoration-none">
-                {{ file.name }}
-              </a>
+        <!-- 첨부파일 리스트 -->
+        <div v-if="boardDetail.boardFiles && boardDetail.boardFiles.length" class="mt-3">
+          <h6 class="mb-2">📎 첨부파일</h6>
+          <ul class="file-list">
+            <li v-for="file in boardDetail.boardFiles" :key="file.id">
+              <a :href="file.fileUrl" target="_blank">{{ file.fileName }}</a>
             </li>
           </ul>
-        </div>
-
-        <!-- 버튼 그룹 -->
-        <div class="mt-4 d-flex justify-content-between">
-          <button @click="$router.push('/notice')" class="btn btn-outline-secondary">⬅ 목록으로</button>
         </div>
       </div>
     </div>
@@ -44,62 +41,161 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
-
 export default {
-  name: 'BoardDetail',
+  name: 'NoticeDetail',
   data() {
     return {
-      BoardDetail: {},
+      id: null,
+      boardDetail: {
+        boardTitle: "",
+        boardContent: "",
+        boardImage: "",
+        boardFiles: [],
+        commentCount: 0,
+        boardViewCount: 0,
+        boardUpdate: "",
+        category: "공지사항",
+      },
     };
   },
   created() {
-    this.fetchBoardDetails(this.$route.params.id);
-    console.log('this.$route.params.id', this.$route.params.id);
+    this.id = this.$route.params.id;
+    this.fetchBoardDetailData(this.id);
+  },
+  watch: {
+    id(newId) {
+      if (newId) {
+        this.fetchBoardDetailData(newId);
+      }
+    }
   },
   methods: {
-    async fetchBoardDetails(id) {
+    async fetchBoardDetailData(id) {
       try {
-        const response = await this.$axios.get(`/boards/detail?boardId=${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        this.BoardDetail = response.data;
+        const response = await this.$axios.get(`/admin/boards/detail/${id}`);
+        this.boardDetail = response.data;
       } catch (error) {
-        console.log('error', error);
+        console.error('게시글 상세 데이터 오류', error);
       }
     },
     formatDate(date) {
-      return dayjs(date).format('YYYY-MM-DD');
-    },
-  },
+      if (!date) return "날짜 없음";
+      return new Date(date).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* 페이지 제목 스타일 */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ✅ 제목 & 메타 정보 */
+.notice-meta {
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.category {
+  color: #555;
+  font-weight: bold;
+}
+
 .notice-title {
-  display: inline-block;
-  border-bottom: 3px solid #0078ff;
-  padding-bottom: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
-/* 카드 스타일 */
+.meta-info {
+  font-size: 14px;
+  color: #777;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* ✅ 카드 스타일 */
 .card {
-  max-width: 100%;
-  margin: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
-/* 본문 스타일 */
-.text-dark {
-  font-size: 16px;
+.card-body {
+  padding: 20px;
+}
+
+.content {
+  font-size: 1rem;
   line-height: 1.6;
+  color: #333;
 }
 
-/* 첨부 파일 스타일 */
-.list-group-item a:hover {
+/* ✅ 이미지 컨테이너 */
+.image-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.board-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* ✅ 첨부파일 리스트 */
+.file-list {
+  list-style: none;
+  padding: 0;
+}
+
+.file-list li {
+  padding: 6px 0;
+}
+
+.file-list a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.file-list a:hover {
   text-decoration: underline;
+}
+
+/* ✅ 반응형 스타일 */
+@media (max-width: 768px) {
+  .notice-title {
+    font-size: 20px;
+  }
+
+  .meta-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+}
+
+.page-title {
+  margin-bottom: 40px;
+}
+.page-title h3 {
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
 }
 </style>

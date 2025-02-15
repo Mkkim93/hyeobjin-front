@@ -24,10 +24,11 @@ import NoticeEdit from "./components/admin/notice/NoticeEdit.vue";
 import CalendarManageMent from "./components/admin/calender/CalendarManageMent.vue";
 import FAQ from "./components/common/FAQ.vue";
 import InquiryManagement from "./components/admin/inquiry/InquiryManagement.vue";
+import InquiryDetail from "./components/admin/inquiry/InquiryDetail.vue";
 
 const routes = [
   { path: '/', component: Main, props: true, },
-
+  
   {
     path: '/admin',
     component: Admin,
@@ -39,6 +40,13 @@ const routes = [
         path: 'inquiry',
         name: 'InquiryManagement',
         component: InquiryManagement,
+        props: true,
+      },
+
+      {
+        path:'inquiry/:id',
+        name: 'InquiryDetail',
+        component: InquiryDetail,
         props: true,
       },
 
