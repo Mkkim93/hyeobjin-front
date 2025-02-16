@@ -127,8 +127,6 @@ export default {
       this.isToggled = !this.isToggled;
     },
 
-    
-
     // ✅ AdminHeader 표시 여부를 결정하는 함수
     updateAdminHeaderVisibility() {
       this.showAdminHeader = this.$route.path === "/admin";

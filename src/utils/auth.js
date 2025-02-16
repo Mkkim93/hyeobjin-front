@@ -49,32 +49,62 @@ export async function refreshAccessToken($axios) {
     console.log("refreshAccessToken() 실행");
     try {
         localStorage.removeItem("access");
-        
+
         const response = await $axios.post("/auth", {}, { withCredentials: true });
+
         const newAccessToken = response.headers['authorization'];
+
+        if (!newAccessToken) {
+            throw new Error("응답에 새로운 토큰이 없음");
+        }
 
         localStorage.setItem("access", newAccessToken);
 
         console.log("New access token set:", newAccessToken);
         return newAccessToken;
     } catch (error) {
+        const statusCode = error.response ? error.response.status : 500;
         console.error("Failed to refresh access token:", error);
-        return null;
+
+        // Vuex 상태 업데이트 (axios.js에서 에러 핸들링을 위해)
+        store.dispatch('setErrorStatus', statusCode);
+
+        return null; // 실패 시 null 반환
     }
 }
 
+
+// 유효성 검증 및 리디렉션
 // 유효성 검증 및 리디렉션
 export async function handleAccessValidation($axios, $router) {
     const accessToken = localStorage.getItem("access");
     console.log("✅ 현재 저장된 Access Token:", accessToken);
 
     if (!accessToken || isAccessTokenExpired(accessToken)) {
-        const newAccessToken = await refreshAccessToken($axios);
-        
-        if (!newAccessToken) {
-            console.log("❌ 토큰 갱신 실패. 로그인 페이지로 이동");
-            // localStorage.setItem("redirectAfterLogin", $router.currentRoute.value.fullPath);
-            $router.push("/login");
+        try {
+            const newAccessToken = await refreshAccessToken($axios);
+
+            if (!newAccessToken) {
+                console.log("❌ 토큰 갱신 실패. 상태 코드에 따라 라우팅");
+                const errorStatus = store.state.errorStatus; // Vuex 상태 코드 가져오기
+                
+                if (errorStatus === 400) {
+                    $router.push("/error/400");
+                } else if (errorStatus === 401) {
+                    $router.push("/error/401");
+                } else if (errorStatus === 404) {
+                    $router.push("/error/404");
+                } else if (errorStatus >= 500) {
+                    console.log('auth.js : errorStatus', errorStatus);
+                    $router.push("/error/500");
+                } else {
+                    $router.push("/login"); // 기본적으로 로그인 페이지로 이동
+                }
+                return;
+            }
+        } catch (error) {
+            console.error("handleAccessValidation: 토큰 갱신 중 오류 발생", error);
+            $router.push("/error/500");
             return;
         }
     }
@@ -84,6 +114,7 @@ export async function handleAccessValidation($axios, $router) {
     console.log("✅ 최종 Access Token:", tokenToUse);
     await sendApiRequest($axios, tokenToUse, $router);
 }
+
 
 // API 요청
 export async function sendApiRequest($axios, accessToken, $router) {

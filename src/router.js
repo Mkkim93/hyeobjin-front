@@ -25,9 +25,18 @@ import CalendarManageMent from "./components/admin/calender/CalendarManageMent.v
 import FAQ from "./components/common/FAQ.vue";
 import InquiryManagement from "./components/admin/inquiry/InquiryManagement.vue";
 import InquiryDetail from "./components/admin/inquiry/InquiryDetail.vue";
+import ForbiddenPage from "./components/error/ForbiddenPage.vue";
+import NotFoundPage from "./components/error/NotFoundPage.vue";
+import ServerErrorPage from "./components/error/ServerErrorPage.vue";
+import UnauthorizedPage from "./components/error/UnauthorizedPage.vue";
 
 const routes = [
   { path: '/', component: Main, props: true, },
+
+  { path: '/error/401', component:UnauthorizedPage },
+  { path: '/error/403', component:ForbiddenPage },
+  { path: '/error/404', component:NotFoundPage },
+  { path: '/error/500', component:ServerErrorPage },
   
   {
     path: '/admin',

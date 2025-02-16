@@ -107,7 +107,7 @@ export default {
     this.stepSave(this.id); // ✅ 3. 실행 후 step 값 확인
 
     console.log("After stepSave, step:", this.step); // ✅ 4. step 값이 변하는지 확인
-
+    
     this.fetchItems(this.id);
     this.fetchItemTypeData(this.id);
   },
