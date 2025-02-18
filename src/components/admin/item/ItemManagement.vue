@@ -35,7 +35,7 @@
                 제조사명
                 <select v-model="selectedManu" @change="filterByManu" class="border p-1 rounded-md ml-2">
                   <option value="">전체</option>
-                  <option v-for="manu in updateManufactList" :key="manu.manuId" :value="manu.manuName">
+                  <option v-for="manu in newManuList" :key="manu.manuId" :value="manu.manuName">
                     {{ manu.manuName }}
                   </option>
                 </select>
@@ -90,7 +90,6 @@
 
 <script>
 import dayjs from 'dayjs';
-import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'ItemManagement',
@@ -102,7 +101,6 @@ export default {
       pageSize: 5,
 
       pageData: null,
-      updateManufactList: [],
       selectedManu: '',
       filteredItemList: [],
 
@@ -114,25 +112,14 @@ export default {
 
       deleteYN: '제품선택',
 
+      newManuList: [],
+
     };
   },
 
   created() {
     this.fetchItemList(this.currentPage);
-  },
-
-  mounted() {
-    this.emitter.on('manufacturersLoaded', (manuList) => {
-      console.log('emit manufacturersLoaded', manuList);
-      this.updateManufacturers(manuList);
-    });
-  },
-
-  computed: {
-    ...mapState(['manufactList']),
-    updateManufactList() {
-      return this.manufactList;
-    }
+    this.manuListData();
   },
 
   watch: {
@@ -144,7 +131,6 @@ export default {
 
 
   methods: {
-    ...mapActions(['updateManufacturers']),
 
     async fetchItemList(page) {
       try {
@@ -171,6 +157,16 @@ export default {
         console.log(response.data);
       } catch (error) {
         console.log('page load error', error);
+      }
+    },
+
+    async manuListData() {
+
+      try {
+        const response = await this.$axios.get('/admin/manu/list');
+        this.newManuList = response.data;
+      } catch (error) {
+        console.log('manuListData error', error);
       }
     },
 

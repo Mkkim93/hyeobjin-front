@@ -100,7 +100,7 @@
 
           <div class="text-end">
             <button type="submit" class="btn btn-primary">수정</button>
-            <CustomEditor />
+            <Editor />
           </div>
         </form>
       </div>
@@ -117,8 +117,9 @@
             <span class="badge bg-warning text-dark position-absolute top-0 end-0 mt-2 me-2">미등록</span>
           </div>
 
-          <img class="img-fluid w-100" :src="ItemFileData.mainPreviewUrl || `/item/${ItemFileData.fileName}`"
-            alt="프라임 이중창 260">
+          <img class="img-fluid w-100"
+            :src="ItemFileData.mainPreviewUrl || (ItemFileData.fileName ? `/item/${ItemFileData.fileName}` : 'https://dummyimage.com/900x400/dee2e6/6c757d.jpg')"
+            alt="제품 이미지" />
           <div class="mt-3">
             <label for="imageUrl" class="form-label">제품 이미지 업로드</label>
             <input type="file" id="imageUrl" class="form-control" @change="handleMainFileUpload" />
@@ -134,7 +135,8 @@
 </template>
 
 <script>
-import CustomEditor from '@/components/view/CustomEditor.vue';
+import Editor from '@/components/view/Editor.vue';
+
 export default {
 
   name: "ItemEdit",
@@ -164,33 +166,32 @@ export default {
   },
 
   components: {
-    CustomEditor,
+    Editor,
   },
 
   methods: {
 
     async fetchItemDetailData(itemId) {
-
       try {
         const response = await this.$axios.get(`/admin/items/modify?itemId=${itemId}`);
 
         this.ItemDetailData = response.data;
         console.log('response', response);
-        // console.log('response.data', response.data);
-        // this.mainFile = response.data.fileBoxes;
-        this.ItemFileData = response.data.fileBoxes;
 
-        console.log('this.mainFile', this.mainFile);
+        // ✅ fileBoxes가 없으면 기본값 설정
+        this.ItemFileData = response.data.fileBoxes ? response.data.fileBoxes : { fileName: null };
+
+        console.log('this.ItemFileData', this.ItemFileData);
+
         if (!this.ItemDetailData.freeContent) {
           this.ItemDetailData.freeContent = "";
         }
-
-        // this.mainFile = this.ItemFileData.find(file => file.isMain === true);
 
       } catch (error) {
         console.log('error', error);
       }
     },
+
 
     async fetchItemTypeData() {
 

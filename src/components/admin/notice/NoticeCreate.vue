@@ -1,19 +1,40 @@
 <template>
-  <div class="notice-create">
-    <h2>공지 등록</h2>
-    <input type="text" v-model="title" placeholder="제목을 입력하세요" />
+  <div class="container mt-5">
+    <div class="card shadow-sm p-4">
+      <h2 class="text-center mb-4">공지 등록</h2>
 
-    <CustomEditor v-model="postContent" />
+      <!-- 제목 입력 -->
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" v-model="title" class="form-control" id="title" placeholder="제목을 입력하세요" />
+      </div>
 
-    <h3>미리보기</h3>
-    <div v-html="postContent"></div>
-    <input type="file" multiple @change="handleFileChange" />
-    <button @click="submitPost">게시글 등록</button>
+      <!-- 에디터 -->
+      <div class="mb-3">
+        <label class="form-label">내용</label>
+        <div class="border rounded p-2 shadow-sm">
+          <Editor v-model="postContent" />
+        </div>
+      </div>
+
+      <!-- 파일 업로드 -->
+      <div class="mb-3">
+        <label for="fileUpload" class="form-label">파일 업로드</label>
+        <input type="file" class="form-control" id="fileUpload" multiple @change="handleFileChange" />
+      </div>
+
+      <!-- 등록 버튼 -->
+      <div class="text-center">
+        <button class="btn btn-primary px-4 py-2" @click="submitPost">
+          <i class="bi bi-upload"></i> 게시글 등록
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import CustomEditor from '@/components/view/CustomEditor.vue';
+import Editor from '@/components/view/Editor.vue';
 export default {
 
   name: 'NoticeCreate',
@@ -27,7 +48,7 @@ export default {
   },
 
   components: {
-    CustomEditor,
+    Editor,
   },
 
   methods: {
@@ -103,5 +124,9 @@ export default {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 1em;
+}
+
+.container {
+  max-width: 600px;
 }
 </style>

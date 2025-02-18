@@ -89,7 +89,7 @@
             <label class="form-check-label" for="itemYN">공개 여부</label>
           </div>
           <div class="editor-container d-flex flex-column w-100">
-            <CustomEditor class="w-100" />
+            <Editor class="w-100" />
           </div>
 
 
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import CustomEditor from '@/components/view/CustomEditor.vue';
+import Editor from '@/components/view/Editor.vue';
 
 export default {
   name: 'ItemCreate',
@@ -155,7 +155,7 @@ export default {
   },
 
   components: {
-    CustomEditor,
+    Editor,
   },
 
   setup() {

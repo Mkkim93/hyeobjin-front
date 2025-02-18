@@ -155,6 +155,11 @@ export default {
                         highlight: {
                             color: 'red',
                         },
+
+                        dot: {
+                            color: 'red',  // ✅ 동그라미 색상 지정
+                            class: 'highlight-dot'
+                        },
                         dates: {
                             start: event.findStartTime || event.findCreateAt,  // ✅ start 값이 없으면 기본값으로 등록 시간 사용
                             end: event.findEndTime || event.findStartTime || event.findCreateAt, // ✅ end 값이 없으면 start 값으로 설정

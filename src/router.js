@@ -1,4 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
+import { handleAccessValidation } from "./utils/auth";
+import axios from "./plugins/axios.js";
 import About from "./components/common/About.vue";
 import Location from "./components/common/Location.vue";
 import History from "./components/common/History.vue";
@@ -42,6 +44,7 @@ const routes = [
     path: '/admin',
     component: Admin,
     props: true,
+    meta: {requiresAuth: true},
 
     children: [
 
@@ -200,6 +203,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) {
+      try {
+          await handleAccessValidation(router);
+          next(); // ✅ 인증 성공 → 정상 이동
+      } catch (error) {
+          console.error("❌ 인증 실패:", error);
+          next("/login"); // 🚨 인증 실패 → 로그인 페이지로 이동
+      }
+  } else {
+      next(); // ✅ 인증이 필요하지 않은 경로는 그대로 진행
+  }
 });
 
 

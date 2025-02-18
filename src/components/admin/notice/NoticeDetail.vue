@@ -26,13 +26,21 @@
         </div>
 
         <!-- 첨부파일 -->
-        <div v-if="boardDetail.boardFiles && boardDetail.boardFiles.length" class="mt-4">
+        <div class="mt-4">
           <h5 class="mb-3">📎 첨부파일</h5>
           <ul class="list-group">
-            <li v-for="file in boardDetail.boardFiles" :key="file.id" class="list-group-item">
+            <li v-for="file in boardDetail.adminBoardFiles" :key="file.id" class="list-group-item">
               <a :href="file.fileUrl" target="_blank" class="text-primary fw-bold text-decoration-none">
-                {{ file.fileName }}
+                {{ file.fileOrgName }}
               </a>
+              <a href="#" @click.prevent="preview(file.fileBoxId)" class="btn btn-outline-primary btn-sm">
+                미리보기 🔍
+              </a>
+
+              <button :href="`/inquiry/${file.fileName}`" @click="downloadFile(file.fileBoxId, file.fileOrgName)"
+                target="_blank" class="btn btn-outline-primary btn-sm">
+                다운로드 🔽
+              </button>
             </li>
           </ul>
         </div>
@@ -40,7 +48,7 @@
 
       <!-- 하단 네비게이션 -->
       <div class="card-footer text-end">
-        <router-link to="/notice" class="btn btn-outline-secondary btn-sm">⬅ 목록으로</router-link>
+        <router-link to="/admin/notice" class="btn btn-outline-secondary btn-sm">⬅ 목록으로</router-link>
       </div>
     </div>
   </div>
@@ -66,6 +74,7 @@ export default {
       try {
         const response = await this.$axios.get(`/admin/boards/detail/${id}`);
         this.boardDetail = response.data;
+        console.log('this.boardDetail', this.boardDetail);
       } catch (error) {
         console.error("게시글 상세 데이터 오류", error);
       }
@@ -97,7 +106,50 @@ export default {
           console.error("삭제 오류", error);
         });
       }
-    }
+    },
+
+    async downloadFile(id, fileName) {
+
+      try {
+        const response = await this.$axios.get(`/admin/boardfiles/download/${id}`,
+          {},
+          { responseType: 'blob' } // Blob 형식으로 응답 받기
+        );
+
+        // ✅ Blob 데이터를 사용하여 URL 생성
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const url = window.URL.createObjectURL(blob);
+
+        // ✅ a 태그를 동적으로 생성하여 다운로드 실행
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName); // 다운로드할 파일 이름 설정
+        document.body.appendChild(link);
+        link.click();
+
+        // ✅ 사용이 끝난 URL 해제
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+      } catch (error) {
+        console.error('파일 다운로드 실패:', error);
+      }
+    },
+
+    async preview(fileId) {
+            try {
+                const response = await this.$axios.get(`/admin/boardfiles/preview/${fileId}`, {
+                    responseType: 'blob'
+                });
+
+                const blob = new Blob([response.data], { type: response.headers['content-type'] });
+                const fileURL = URL.createObjectURL(blob);
+                window.open(fileURL, '_blank');
+
+            } catch (error) {
+                console.error('파일 미리보기 실패:', error);
+            }
+        }
   }
 };
 </script>

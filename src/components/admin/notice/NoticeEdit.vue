@@ -43,7 +43,7 @@
         </h1>
 
         <div>
-          <CustomEditor v-model="editorContent" />
+          <Editor v-model="editorContent" />
         </div>
       </div>
       <button type="submit">수정</button>
@@ -53,7 +53,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import CustomEditor from '@/components/view/CustomEditor.vue';
+import Editor from '@/components/view/Editor.vue';
 
 export default {
   name: 'NoticeEdit',
@@ -71,7 +71,7 @@ export default {
     this.fetchModifyData(this.id);
   },
   components: {
-    CustomEditor,
+    Editor,
   },
 
   methods: {
@@ -102,10 +102,9 @@ export default {
         console.log('this.id', this.id);
         const updateBoardDTO = {
           boardId: this.id,
-          
           boardTitle: this.EditBoardData.boardTitle,
           boardContent: this.editorContent,
-
+          boardYN: this.EditBoardData.boardYN,
         };
 
         formData.append("updateBoardDTO", new Blob([JSON.stringify(updateBoardDTO)], {

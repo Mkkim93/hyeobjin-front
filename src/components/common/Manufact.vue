@@ -101,16 +101,21 @@ export default {
   props: ['id'],
 
   created() {
-    console.log("Before manuId:", this.id); // ✅ 1. 확인
-    this.manuId = this.id;
-    console.log("After manuId:", this.id); // ✅ 2. 확인
-    this.stepSave(this.id); // ✅ 3. 실행 후 step 값 확인
+  console.log("Before manuId:", this.id); 
+  this.manuId = this.id;
+  console.log("After manuId:", this.id); 
 
-    console.log("After stepSave, step:", this.step); // ✅ 4. step 값이 변하는지 확인
-    
-    this.fetchItems(this.id);
-    this.fetchItemTypeData(this.id);
-  },
+  this.stepSave(this.id);
+  console.log("After stepSave, step:", this.step);
+  
+  this.fetchItems(this.id);
+  this.fetchItemTypeData(this.id).then(() => {
+    // ✅ 첫 번째 카테고리가 존재하면 자동으로 아이템 로드
+    if (this.itemTypeList.length > 0) {
+      this.fetchItemNamesData(this.itemTypeList[0].itemTypeId);
+    }
+  });
+},
 
 
   watch: {
@@ -140,7 +145,6 @@ export default {
     },
 
     async fetchItemTypeData(manuId) {
-
 
       try {
         const response = await this.$axios.get(`/type?manuId=${manuId}`);

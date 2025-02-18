@@ -1,26 +1,27 @@
 <template>
     <div class="login-container">
-      <h1>Login</h1>
+
+      <p>관리자 로그인</p>
       
       <form @submit.prevent="handleLogin">
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">아이디</label>
           <input 
             type="text" 
             id="username" 
             v-model="username" 
-            placeholder="Enter your username" 
+            placeholder="아이디를 입력해주세요" 
             required 
           />
         </div>
   
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">비밀번호</label>
           <input 
             type="password" 
             id="password" 
             v-model="password" 
-            placeholder="Enter your password" 
+            placeholder="비밀번호를 입력해주세요" 
             required 
           />
         </div>
@@ -42,7 +43,9 @@
       return {
         username: '',
         password: '',
-        errorMessage: ''
+        errorMessage: '',
+
+
       };
     },
     methods: {

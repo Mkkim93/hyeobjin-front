@@ -121,6 +121,7 @@ export default {
                 );
                 this.inquiryDetail = response.data;
                 this.inquiryFilesList = response.data.inquiryFiles;
+                console.log('inquiryDetail', this.inquiryDetail);
                 console.log('inquiryFilesList', this.inquiryFilesList);
             } catch (error) {
                 console.error('fetchInquiryDetailData error', error);

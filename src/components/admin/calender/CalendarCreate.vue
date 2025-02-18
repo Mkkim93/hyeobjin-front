@@ -23,6 +23,11 @@
                     <input class="form-control mb-2" v-model="address" placeholder="주소">
                 </div>
 
+                <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" v-model="newHolidays" id="newHolidays">
+                    <label class="form-check-label" for="newHolidays">휴무일 여부</label>
+                </div>
+
                 <label>상세 주소</label>
                 <input class="form-control mb-2" v-model="newLocation" type="text" placeholder="상세 주소 입력" />
                 <button class="btn btn-dark" type="button" @click="openPostcodePopup">주소 검색</button><br>
@@ -39,7 +44,7 @@
                 <button type="submit" class="btn btn-success">등록</button>
                 <button class="btn btn-danger" @click="closeModal">닫기</button>
             </form>
-            
+
         </div>
     </div>
 
@@ -60,6 +65,7 @@ export default {
             address: '',
             newLocation: '',
             newCalendarYN: '',
+            newHolidays: '',
         }
     },
 
@@ -97,6 +103,7 @@ export default {
                     description: this.newDescription,
                     calendarYN: this.newCalendarYN,
                     location: this.address.concat(this.newLocation),
+                    holidays: this.newHolidays,
                 };
 
                 // 프론트엔드 일정 데이터에 추가
@@ -111,11 +118,11 @@ export default {
                 alert('일정이 추가되었습니다.');
                 this.closeModal();
                 this.$router.go('/admin/calendar');
-                
+
             } catch (error) {
                 console.log('일정 추가 실패', error);
             }
-            
+
         },
 
         openPostcodePopup() {

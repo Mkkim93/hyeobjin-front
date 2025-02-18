@@ -11,7 +11,6 @@
     <div class="notice-meta">
       <h2 class="notice-title">{{ boardDetail.boardTitle }}</h2>
       <div class="meta-info">
-        <span class="comments">💬 {{ boardDetail.commentCount || 0 }}건</span>
         <span class="views">👀 {{ boardDetail.boardViewCount || 0 }}회</span>
         <span class="date">작성일 {{ formatDate(boardDetail.boardUpdate) }}</span>
         <span class="date">작성자 {{ boardDetail.writer }}</span>
@@ -30,8 +29,11 @@
         <div v-if="boardDetail.boardFiles && boardDetail.boardFiles.length" class="mt-3">
           <h6 class="mb-2">📎 첨부파일</h6>
           <ul class="file-list">
-            <li v-for="file in boardDetail.boardFiles" :key="file.id">
-              <a :href="file.fileUrl" target="_blank">{{ file.fileName }}</a>
+            <li v-for="file in boardDetail.boardFiles" :key="file.fileBoxId">
+              <button @click="downloadFile(file.fileBoxId, file.fileOrgName)" target="_blank"
+                class="btn btn-outline-primary btn-sm"> {{ file.fileOrgName }}
+                다운로드 🔽
+              </button>
             </li>
           </ul>
         </div>
@@ -43,23 +45,21 @@
 <script>
 export default {
   name: 'NoticeDetail',
+  props: ['id'], // ✅ id를 props로 받기
   data() {
     return {
-      id: null,
       boardDetail: {
         boardTitle: "",
         boardContent: "",
         boardImage: "",
         boardFiles: [],
-        commentCount: 0,
-        boardViewCount: 0,
+        boardViewCount: '',
         boardUpdate: "",
         category: "공지사항",
       },
     };
   },
   created() {
-    this.id = this.$route.params.id;
     this.fetchBoardDetailData(this.id);
   },
   watch: {
@@ -72,8 +72,9 @@ export default {
   methods: {
     async fetchBoardDetailData(id) {
       try {
-        const response = await this.$axios.get(`/admin/boards/detail/${id}`);
+        const response = await this.$axios.get(`/boards/detail/${id}`);
         this.boardDetail = response.data;
+        console.log('response.data', response.data);
       } catch (error) {
         console.error('게시글 상세 데이터 오류', error);
       }
@@ -85,7 +86,35 @@ export default {
         month: "short",
         day: "numeric",
       });
-    }
+    },
+
+    async downloadFile(fileBoxId, fileName) {
+      
+      try {
+        const response = await this.$axios.get(`/boardFiles/download/${fileBoxId}`,
+          {},
+          { responseType: 'blob' } // Blob 형식으로 응답 받기
+        );
+
+        // ✅ Blob 데이터를 사용하여 URL 생성
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const url = window.URL.createObjectURL(blob);
+
+        // ✅ a 태그를 동적으로 생성하여 다운로드 실행
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName); // 다운로드할 파일 이름 설정
+        document.body.appendChild(link);
+        link.click();
+
+        // ✅ 사용이 끝난 URL 해제
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+      } catch (error) {
+        console.error('파일 다운로드 실패:', error);
+      }
+    },
   }
 };
 </script>
@@ -192,6 +221,7 @@ export default {
 .page-title {
   margin-bottom: 40px;
 }
+
 .page-title h3 {
   font-size: 24px;
   color: #333;

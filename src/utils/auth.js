@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { hasRefreshToken } from './checktoken';
 
 // Base64 디코딩 (브라우저 환경에서도 안전하게 동작)
 function decodeBase64Url(base64Url) {
@@ -47,10 +48,13 @@ export function isAccessTokenExpired(token) {
 // 토큰 갱신
 export async function refreshAccessToken($axios) {
     console.log("refreshAccessToken() 실행");
+
     try {
         localStorage.removeItem("access");
 
         const response = await $axios.post("/auth", {}, { withCredentials: true });
+        console.log('response.status', response.status);
+        console.log('response.data.message', response.data.message);
 
         const newAccessToken = response.headers['authorization'];
 
@@ -64,7 +68,7 @@ export async function refreshAccessToken($axios) {
         return newAccessToken;
     } catch (error) {
         const statusCode = error.response ? error.response.status : 500;
-        console.error("Failed to refresh access token:", error);
+        console.error("Failed to refresh access token:", error.response.status.message);
 
         // Vuex 상태 업데이트 (axios.js에서 에러 핸들링을 위해)
         store.dispatch('setErrorStatus', statusCode);
@@ -72,80 +76,40 @@ export async function refreshAccessToken($axios) {
         return null; // 실패 시 null 반환
     }
 }
-
-
 // 유효성 검증 및 리디렉션
 // 유효성 검증 및 리디렉션
-export async function handleAccessValidation($axios, $router) {
+
+export async function handleAccessValidation($router) {
     const accessToken = localStorage.getItem("access");
     console.log("✅ 현재 저장된 Access Token:", accessToken);
 
+    // ✅ `hasRefreshToken()`을 `await`으로 호출해야 정확한 결과 확인 가능
+    if (!(await hasRefreshToken())) {
+        console.warn("🚨 Refresh token이 존재하지 않음. 자동 로그아웃 처리");
+        localStorage.removeItem("access"); // ✅ 액세스 토큰 삭제
+        $router.push("/login"); // ✅ 로그인 페이지로 이동
+        return Promise.reject(new Error("Refresh token not found"));
+    }
+
     if (!accessToken || isAccessTokenExpired(accessToken)) {
         try {
-            const newAccessToken = await refreshAccessToken($axios);
+            const newAccessToken = await refreshAccessToken(axios);
 
             if (!newAccessToken) {
-                console.log("❌ 토큰 갱신 실패. 상태 코드에 따라 라우팅");
-                const errorStatus = store.state.errorStatus; // Vuex 상태 코드 가져오기
-                
-                if (errorStatus === 400) {
-                    $router.push("/error/400");
-                } else if (errorStatus === 401) {
-                    $router.push("/error/401");
-                } else if (errorStatus === 404) {
-                    $router.push("/error/404");
-                } else if (errorStatus >= 500) {
-                    console.log('auth.js : errorStatus', errorStatus);
-                    $router.push("/error/500");
-                } else {
-                    $router.push("/login"); // 기본적으로 로그인 페이지로 이동
-                }
+                console.log("❌ 토큰 갱신 실패. 로그인 페이지로 이동");
+                $router.push("/login");
                 return;
             }
         } catch (error) {
             console.error("handleAccessValidation: 토큰 갱신 중 오류 발생", error);
-            $router.push("/error/500");
+            $router.push("/login");
             return;
         }
     }
 
-    // ✅ 유효한 토큰으로 API 요청 후, 현재 페이지 유지
-    const tokenToUse = localStorage.getItem("access");
-    console.log("✅ 최종 Access Token:", tokenToUse);
-    await sendApiRequest($axios, tokenToUse, $router);
+    console.log("✅ 인증 검증 완료. 토큰 유지됨.");
 }
 
 
-// API 요청
-export async function sendApiRequest($axios, accessToken, $router) {
-    try {
-        const response = await $axios.get("/admins", {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `${accessToken}`
-            },
-        });
-
-        // ✅ 현재 경로 유지
-        const currentPath = $router.currentRoute.value.path;
-        console.log("✅ 현재 경로:", currentPath);
-
-        if (!currentPath.startsWith("/admin")) {
-            $router.push("/admin");
-        } else {
-            console.log("✅ 현재 경로 유지: 이동하지 않음");
-        }
-
-        console.log("Admin page access granted", response.data);
-    } catch (error) {
-        console.error("Failed to access admin API:", error);
-        console.log("Access token 검증 실패:", accessToken);
-
-        // ✅ 현재 경로를 로그인 후 다시 복귀할 경로로 저장
-        localStorage.setItem("redirectAfterLogin", $router.currentRoute.value.fullPath);
-
-        $router.push("/login");
-    }
-}
 
 

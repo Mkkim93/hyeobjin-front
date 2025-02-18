@@ -19,7 +19,6 @@ export default defineConfig({
     },
   },
 
-
   server: {
     port: 3000, // 프론트엔드 포트 설정
     host: '0.0.0.0',

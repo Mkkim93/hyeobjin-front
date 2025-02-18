@@ -5,7 +5,8 @@
     </div>
   </div>
 
-  <CalendarCreate v-if="createModalOpen" :key="createModalOpen" :createModalOpen="createModalOpen" @close="createModalOpen = false"/>
+  <CalendarCreate v-if="createModalOpen" :key="createModalOpen" :createModalOpen="createModalOpen"
+    @close="createModalOpen = false" />
 
   <div>
     <CalendarDetail v-if="modalOpen" :dayOfEventsData="dayOfEventsData" :modalOpen="modalOpen"
@@ -100,9 +101,6 @@ export default {
     });
   },
 
-
-
-
   methods: {
 
     // 📌 일정 클릭 시 상세 모달 오픈
@@ -145,7 +143,6 @@ export default {
     },
 
     async fetchCalendarDataAdmin() {
-
       try {
         const response = await this.$axios.get('/admin/calendar');
 
@@ -156,29 +153,43 @@ export default {
 
         console.log('fetchCalendarDataAdmin.response.data', response.data);
 
-        this.attributes = response.data
-          .filter(event => event.startTime && event.endTime) // ✅ startTime, endTime이 없는 데이터 제거
+        const newAttributes = response.data
+          .filter(event => event.startTime && event.endTime)
           .map(event => ({
             key: event.calendarId,
-            highlight: 'red',
+
+            highlight: [{
+              color: event.holidays ? 'red' : 'blue',  // ✅ 조건에 따라 색상 변경
+              fillMode: 'solid'  // ✅ 'solid'로 채우기 (다른 옵션: 'light', 'outline')
+            }],
+
+            dot: {
+              color: event.holidays ? 'red' : 'blue',  // ✅ 동그라미 색상 지정
+              class: 'highlight-dot'
+            },
 
             dates: {
-              start: event.startTime || event.createAt,  // ✅ start 값이 없으면 기본값으로 등록 시간 사용
-              end: event.endTime || event.startTime || event.createAt, // ✅ end 값이 없으면 start 값으로 설정
+              start: event.startTime || event.createAt,
+              end: event.endTime || event.startTime || event.createAt,
             },
 
             popover: {
-              label: event.title || "제목 없음",  // ✅ title이 없으면 기본값 설정
+              label: event.title || "제목 없음",
               visibility: 'hover',
               placement: 'bottom'
-            },
+            }
           }));
-        console.log('response calendar data', this.attributes);
 
+
+        // ✅ 기존 데이터와 새로운 데이터 병합 후 중복 제거
+        const mergedAttributes = [...this.attributes, ...newAttributes];
+        this.attributes = Array.from(new Set(mergedAttributes.map(attr => JSON.stringify(attr)))).map(attr => JSON.parse(attr));
+
+        console.log('Merged attributes:', this.attributes);
       } catch (error) {
         console.log('admin call calendar fetch error', error);
       }
-    },
+    }
 
   }
 }

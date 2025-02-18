@@ -9,8 +9,9 @@
         <img :src="hugreen" alt="로고" class="company-logo" />
       </div>
 
-      <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -35,7 +36,8 @@
               aria-expanded="false"> 제품소개 </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownProducts">
               <li v-for="manufacturer in manufacturers" :key="manufacturer.manuId">
-                <router-link class="dropdown-item" :to="{ name: 'Manufact', params: {id: Number(manufacturer.manuId)} }" @click="setCategoryStep(2)">
+                <router-link class="dropdown-item" :to="{ name: 'Manufact', params: { id: Number(manufacturer.manuId) } }"
+                  @click="setCategoryStep(2)">
                   <slot>{{ manufacturer.manuName }}</slot>
                 </router-link>
               </li>
@@ -69,6 +71,8 @@ import hjlogo from '@/assets/images/hjlogo.png';
 
 export default {
   name: 'HomeView',
+  emits: ['updateCategoryStep'], // ✅ 올바른 방식 (methods 밖에서 선언)
+
   data() {
     return {
       manufacturers: [],
@@ -101,10 +105,8 @@ export default {
       }
     },
 
-    emits: ["updateCategoryStep"],
-
     setCategoryStep(step) {
-      this.$emit("updateCategoryStep", step); // ✅ App.vue에서 수신하여 categoryStep을 변경
+      this.$emit("updateCategoryStep", step); // ✅ 정상적인 이벤트 발생
     },
   },
 };
@@ -112,17 +114,21 @@ export default {
 
 <style scoped>
 .d-flex.align-items-center {
-  gap: 5px; /* ✅ 로고들 간 15px 간격 추가 */
+  gap: 5px;
+  /* ✅ 로고들 간 15px 간격 추가 */
 }
 
 /* 네비게이션 바 */
 .navbar {
   padding: 10px 0;
-  
+
 }
+
 .navbar-nav .nav-link.active {
-  color: #ff6600 !important; /* ✅ 원하는 색상 (주황색) */
-  font-weight: bold; /* ✅ 강조 효과 */
+  color: #ff6600 !important;
+  /* ✅ 원하는 색상 (주황색) */
+  font-weight: bold;
+  /* ✅ 강조 효과 */
 }
 
 
@@ -137,13 +143,15 @@ export default {
 
 /* 회사 로고 */
 .company-logo {
-  height: 30px; /* 로고 크기 조정 */
+  height: 30px;
+  /* 로고 크기 조정 */
   width: auto;
   object-fit: contain;
 }
 
 .main-company-logo {
-  height: 40px; /* 로고 크기 조정 */
+  height: 40px;
+  /* 로고 크기 조정 */
   width: auto;
   object-fit: contain;
 }
@@ -151,7 +159,8 @@ export default {
 .navbar-brand {
   font-size: 1.8rem;
   font-weight: bold;
-  background: linear-gradient(to right, #ff7e5f, #feb47b); /* 오렌지-핑크 그라디언트 */
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  /* 오렌지-핑크 그라디언트 */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -159,29 +168,40 @@ export default {
 .brand-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* 로고와 텍스트 사이 여백 */
+  gap: 10px;
+  /* 로고와 텍스트 사이 여백 */
 }
 
 .navbar-nav .nav-link {
-  color: black; /* 기본 글씨 색 */
+  color: black;
+  /* 기본 글씨 색 */
   transition: all 0.3s ease-in-out;
-  font-weight: bold; /* ✅ 강조 효과 */
-  
+  font-weight: bold;
+  /* ✅ 강조 효과 */
+
 }
 
 .navbar-nav .nav-link:hover {
-  color: #ff6600 !important; /* ✅ 원하는 색상 (주황색) */
-  border-radius: 5px; /* 모서리 부드럽게 */
-  padding: 5px 10px; /* 내부 여백 추가 */
+  color: #ff6600 !important;
+  /* ✅ 원하는 색상 (주황색) */
+  border-radius: 5px;
+  /* 모서리 부드럽게 */
+  padding: 5px 10px;
+  /* 내부 여백 추가 */
 }
 
 /* ✅ 드롭다운 메뉴 스타일 */
 .navbar-nav .dropdown-menu {
-  display: none; /* 기본적으로 숨김 */
-  opacity: 0; /* 투명도 0으로 설정 */
-  transform: translateY(-10px); /* 위에서 내려오는 효과 */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* 부드러운 애니메이션 */
-  min-width: 200px; /* 최소 너비 설정 */
+  display: none;
+  /* 기본적으로 숨김 */
+  opacity: 0;
+  /* 투명도 0으로 설정 */
+  transform: translateY(-10px);
+  /* 위에서 내려오는 효과 */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* 부드러운 애니메이션 */
+  min-width: 200px;
+  /* 최소 너비 설정 */
 }
 
 /* ✅ 마우스를 올리면 드롭다운 활성화 */
@@ -193,9 +213,12 @@ export default {
 
 /* ✅ 서브메뉴 항목 스타일 */
 .dropdown-menu {
-  background-color: white; /* 배경색 흰색 */
-  border-radius: 8px; /* 모서리 둥글게 */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+  background-color: white;
+  /* 배경색 흰색 */
+  border-radius: 8px;
+  /* 모서리 둥글게 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  /* 부드러운 그림자 효과 */
 }
 
 /* ✅ 서브메뉴 항목 스타일 */
@@ -207,14 +230,19 @@ export default {
 
 /* ✅ 서브메뉴 항목 호버 효과 */
 .dropdown-item:hover {
-  background-color: #f8f9fa; /* 연한 회색 배경 */
-  color: #ff6600 !important; /* ✅ 원하는 색상 (주황색) */
+  background-color: #f8f9fa;
+  /* 연한 회색 배경 */
+  color: #ff6600 !important;
+  /* ✅ 원하는 색상 (주황색) */
 }
 
 .navbar-nav .dropdown-menu {
-  width: auto; /* ✅ 메뉴 크기를 자동으로 조정 */
-  min-width: 200px; /* 최소 크기 유지 */
-  max-width: 250px; /* 최대 크기 제한 */
+  width: auto;
+  /* ✅ 메뉴 크기를 자동으로 조정 */
+  min-width: 200px;
+  /* 최소 크기 유지 */
+  max-width: 250px;
+  /* 최대 크기 제한 */
   text-align: left;
 }
 

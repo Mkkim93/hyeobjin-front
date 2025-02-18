@@ -25,8 +25,6 @@ const store = createStore({
         setErrorStatus({ commit }, status) { // 뮤테이션을 호출하도록 수정
             commit('setErrorStatus', status);
         }
-
-        
     }
 })
 export default store;

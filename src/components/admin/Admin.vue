@@ -71,8 +71,6 @@
 </template>
 
 <script>
-import { handleAccessValidation } from '@/utils/auth.js';
-import axios from '@/plugins/axios.js';
 import AdminHeader from './AdminHeader.vue';
 
 export default {
@@ -89,7 +87,7 @@ export default {
   },
 
   created() {
-    this.handleAccessValidation();
+    // this.handleAccessValidation();
     this.updateAdminHeaderVisibility();
     this.fetchBoardListData();
     this.fetchInquiryListData();
@@ -119,10 +117,11 @@ export default {
       }
     },
 
-    async handleAccessValidation() {
-      console.log('handleAccessValidation method 실행');
-      await handleAccessValidation(axios, this.$router);
-    },
+    // async handleAccessValidation() {
+    //   console.log('handleAccessValidation method 실행');
+    //   await handleAccessValidation(axios, this.$router);
+    // },
+
     toggleSidebar() {
       this.isToggled = !this.isToggled;
     },
