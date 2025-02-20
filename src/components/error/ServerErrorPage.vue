@@ -9,7 +9,7 @@
                 <h1 class="display-1">500</h1>
                 <p class="lead">Internal Server Error</p>
                 <p>서버로 부터 오류가 발생 하였습니다.</p>
-                <small>관리자에게 문의 해주세요</small>
+                <small>불편을 드려 죄송합니다. 최대한 빠르게 복구 하도록 하겠습니다.</small>
                 <router-link to="/">
                   <br>
                   <i class="fas fa-arrow-left me-2 my-5"></i>

@@ -6,9 +6,9 @@
           <div class="row justify-content-center">
             <div class="col-lg-6">
               <div class="text-center mt-4">
-                <h1 class="display-1">401</h1>
-                <p class="lead">Unauthorized</p>
-                <p>올바른 접근 경로가 아닙니다.</p>
+                <h1 class="display-1">403</h1>
+                <p class="lead">Forbidden</p>
+                <p>접근 권한이 없습니다.</p>
                 <router-link to="/">
                   <i class="fas fa-arrow-left me-1"></i>
                   메인 페이지로 돌아가기
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: "UnauthorizedPage",
+  name: "ForbiddenPage",
 };
 </script>
 

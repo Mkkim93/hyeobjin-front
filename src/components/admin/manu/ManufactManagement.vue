@@ -6,7 +6,6 @@
             </div>
 
             <div class="card-body">
-                <!-- 버튼 그룹 -->
                 <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
                     <button type="button" @click="changeStep(0)" class="btn btn-secondary">제조사 목록</button>
                     <button class="btn btn-dark" type="button" @click="changeStep(1)">제조사 등록</button>
@@ -14,7 +13,6 @@
                     <button type="button" @click="changeStep(3)" class="btn btn-danger">제조사 삭제</button>
                 </div>
 
-                <!-- 데이터 출력 영역 -->
                 <div>
                     <div v-if="step === 0">
                         <ManufactList :ManufactListData="ManufactListData" />
@@ -59,17 +57,19 @@ export default {
         ManufactEdit,
     },
 
-    created() {
-        this.fetchManuList();
-    },
+    created() { this.fetchManuList(); },
 
     methods: {
+
         async fetchManuList() {
+
             try {
                 const response = await this.$axios.get('/admin/manu/count');
+
                 this.ManufactListData = response.data;
+
             } catch (error) {
-                console.error('fetchManuCountData get error', error);
+                console.error('fetchManuCountData error: ', error);
             }
         },
 
@@ -78,15 +78,15 @@ export default {
         },
 
         async addManuFacturer() {
+
             try {
-                await this.$axios.post('/admin/manu', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                await this.$axios.post('/admin/manu',
+                    { headers: { 'Content-Type': 'application/json' } });
+
                 this.fetchManuList();
+
             } catch (error) {
-                console.error('addManuFacturer error', error);
+                console.error('addManuFacturer error: ', error);
             }
         },
     }
@@ -94,29 +94,24 @@ export default {
 </script>
 
 <style scoped>
-/* 컨테이너 크기 조정 */
 .container {
     max-width: 900px;
 }
 
-/* 카드 스타일 */
 .card {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 버튼 그룹 스타일 */
 .d-flex.flex-wrap {
     justify-content: center;
 }
 
-/* 버튼 hover 효과 */
 .btn:hover {
     opacity: 0.9;
 }
 
-/* 데이터 출력 영역 스타일 */
 .table-container {
     display: flex;
     justify-content: center;
@@ -125,7 +120,6 @@ export default {
     padding: 20px;
 }
 
-/* 테이블 스타일 */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -133,7 +127,8 @@ table {
     border: 1px solid #ddd;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     border: 1px solid #ddd;
 }
@@ -143,7 +138,6 @@ th {
     font-weight: bold;
 }
 
-/* 반응형 디자인 */
 @media (max-width: 768px) {
     .table-container {
         overflow-x: auto;

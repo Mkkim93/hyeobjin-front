@@ -6,8 +6,8 @@
       </div>
 
       <div class="card-body">
+        <p class="text-center text-secondary">제조사 동록 시, 해당 제조사가 페이지에 노출됩니다. (미등록 시 관리자 페이지에서만 확인)</p>
         <form @submit.prevent="submitForm">
-          <!-- 제조사명 입력 -->
           <div class="mb-3">
             <label for="manuName" class="form-label">📌 제조사명</label>
             <input
@@ -20,7 +20,6 @@
             />
           </div>
 
-          <!-- 등록 여부 선택 -->
           <div class="mb-4">
             <label for="manuYN" class="form-label">📋 등록 여부</label>
             <select id="manuYN" v-model="manuYN" class="form-select" required>
@@ -30,9 +29,8 @@
             </select>
           </div>
 
-          <!-- 버튼 그룹 -->
           <div class="text-center">
-            <button type="submit" class="btn btn-primary w-100">제조사 추가</button>
+            <button type="submit" class="btn btn-primary w-50">등록</button>
           </div>
         </form>
       </div>
@@ -45,12 +43,13 @@ export default {
   name: "ManufactAdd",
   data() {
     return {
-      manuName: "",
-      manuYN: "",
+      manuName: '',
+      manuYN: '',
     };
   },
 
   methods: {
+    
     async submitForm() {
       const manufactureDTO = {
         manuName: this.manuName,
@@ -60,10 +59,12 @@ export default {
       try {
         await this.$axios.post("/admin/manu", manufactureDTO);
         alert(`${this.manuName}의 제조사가 성공적으로 등록되었습니다.`);
+
         this.$router.push("/admin/manu"); // ✅ Vue Router로 페이지 이동
+      
       } catch (error) {
-        console.error("제조사 등록 실패", error);
-        alert("제조사 등록에 실패했습니다.");
+        console.error("submitForm error: ", error);
+        alert("알수 없는 이유로 제조사 등록에 실패했습니다. 관리자에게 문의 해주세요.");
       }
     },
   },
@@ -71,40 +72,34 @@ export default {
 </script>
 
 <style scoped>
-/* 컨테이너 설정 */
 .container {
   max-width: 500px;
 }
 
-/* 카드 스타일 */
 .card {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 입력 필드 스타일 */
 .form-control {
   border-radius: 8px;
   padding: 10px;
   font-size: 1rem;
 }
 
-/* 포커스 효과 */
 .form-control:focus,
 .form-select:focus {
   border-color: #007bff;
   box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
 }
 
-/* 드롭다운 스타일 */
 .form-select {
   border-radius: 8px;
   padding: 10px;
   font-size: 1rem;
 }
 
-/* 버튼 스타일 */
 .btn {
   padding: 12px;
   font-size: 1rem;
@@ -112,7 +107,6 @@ export default {
   border-radius: 8px;
 }
 
-/* 반응형 */
 @media (max-width: 768px) {
   .container {
     max-width: 100%;

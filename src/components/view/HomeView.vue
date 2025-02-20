@@ -50,7 +50,8 @@
             <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdownContact" role="button"
               data-bs-toggle="dropdown" aria-expanded="false"> 고객문의 </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownContact">
-              <li><router-link to="/asform" class="dropdown-item" @click="setCategoryStep(4)">1:1 문의</router-link></li>
+              <li><router-link to="/inquiry" class="dropdown-item" @click="setCategoryStep(4)">1:1 문의</router-link></li>
+              <li><router-link to="/help" class="dropdown-item" @click="setCategoryStep(4)">A/S 문의</router-link></li>
               <li><router-link to="/faq" class="dropdown-item" @click="setCategoryStep(4)">FAQ</router-link></li>
             </ul>
           </li>
@@ -71,7 +72,7 @@ import hjlogo from '@/assets/images/hjlogo.png';
 
 export default {
   name: 'HomeView',
-  emits: ['updateCategoryStep'], // ✅ 올바른 방식 (methods 밖에서 선언)
+  emits: ['updateCategoryStep'],
 
   data() {
     return {
@@ -97,16 +98,17 @@ export default {
         const response = await this.$axios.get('/manufacturers', {
           headers: { 'Content-Type': 'application/json' }
         });
-        console.log('response', response);
+
         this.manufacturers = response.data;
         this.emitter.emit('manufacturersLoaded', this.manufacturers);
+
       } catch (error) {
-        console.error('Failed to fetch manufacturers:', error);
+        console.error('fetchManufacturers error: ', error);
       }
     },
 
     setCategoryStep(step) {
-      this.$emit("updateCategoryStep", step); // ✅ 정상적인 이벤트 발생
+      this.$emit("updateCategoryStep", step);
     },
   },
 };
@@ -115,10 +117,8 @@ export default {
 <style scoped>
 .d-flex.align-items-center {
   gap: 5px;
-  /* ✅ 로고들 간 15px 간격 추가 */
 }
 
-/* 네비게이션 바 */
 .navbar {
   padding: 10px 0;
 
@@ -126,11 +126,8 @@ export default {
 
 .navbar-nav .nav-link.active {
   color: #ff6600 !important;
-  /* ✅ 원하는 색상 (주황색) */
   font-weight: bold;
-  /* ✅ 강조 효과 */
 }
-
 
 .navbar-brand:hover {
   color: black;
@@ -141,26 +138,24 @@ export default {
   border-bottom: 1px;
 }
 
-/* 회사 로고 */
 .company-logo {
   height: 30px;
-  /* 로고 크기 조정 */
   width: auto;
   object-fit: contain;
 }
 
 .main-company-logo {
   height: 40px;
-  /* 로고 크기 조정 */
   width: auto;
   object-fit: contain;
 }
 
 .navbar-brand {
+  font-family: 'KIMM_Bold', sans-serif;
+  color: #333;
   font-size: 1.8rem;
   font-weight: bold;
   background: linear-gradient(to right, #ff7e5f, #feb47b);
-  /* 오렌지-핑크 그라디언트 */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -169,81 +164,52 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  /* 로고와 텍스트 사이 여백 */
 }
 
 .navbar-nav .nav-link {
   color: black;
-  /* 기본 글씨 색 */
   transition: all 0.3s ease-in-out;
   font-weight: bold;
-  /* ✅ 강조 효과 */
-
 }
 
 .navbar-nav .nav-link:hover {
   color: #ff6600 !important;
-  /* ✅ 원하는 색상 (주황색) */
   border-radius: 5px;
-  /* 모서리 부드럽게 */
   padding: 5px 10px;
-  /* 내부 여백 추가 */
 }
 
-/* ✅ 드롭다운 메뉴 스타일 */
 .navbar-nav .dropdown-menu {
   display: none;
-  /* 기본적으로 숨김 */
   opacity: 0;
-  /* 투명도 0으로 설정 */
   transform: translateY(-10px);
-  /* 위에서 내려오는 효과 */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  /* 부드러운 애니메이션 */
+  width: auto;
   min-width: 200px;
-  /* 최소 너비 설정 */
+  max-width: 250px;
+  text-align: left;
 }
 
-/* ✅ 마우스를 올리면 드롭다운 활성화 */
 .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
   display: block;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ✅ 서브메뉴 항목 스타일 */
 .dropdown-menu {
   background-color: white;
-  /* 배경색 흰색 */
   border-radius: 8px;
-  /* 모서리 둥글게 */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  /* 부드러운 그림자 효과 */
 }
 
-/* ✅ 서브메뉴 항목 스타일 */
 .dropdown-item {
   font-weight: 500;
   padding: 10px 15px;
   transition: background 0.2s ease-in-out;
 }
 
-/* ✅ 서브메뉴 항목 호버 효과 */
 .dropdown-item:hover {
   background-color: #f8f9fa;
-  /* 연한 회색 배경 */
   color: #ff6600 !important;
-  /* ✅ 원하는 색상 (주황색) */
-}
-
-.navbar-nav .dropdown-menu {
-  width: auto;
-  /* ✅ 메뉴 크기를 자동으로 조정 */
-  min-width: 200px;
-  /* 최소 크기 유지 */
-  max-width: 250px;
-  /* 최대 크기 제한 */
-  text-align: left;
 }
 
 @font-face {
@@ -251,12 +217,5 @@ export default {
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-}
-
-/* ✅ 특정 요소에 폰트 적용 */
-.navbar-brand {
-  font-family: 'KIMM_Bold', sans-serif;
-  font-size: 20px;
-  color: #333;
 }
 </style>

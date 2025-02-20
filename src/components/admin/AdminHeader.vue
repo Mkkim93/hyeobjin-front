@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <!-- 📅 캘린더 & 주요 정보 -->
     <div class="row">
+
       <div class="col-lg-6">
         <div class="card shadow-sm calendar-card">
           <div class="card-body">
@@ -10,29 +10,17 @@
           </div>
         </div>
       </div>
-      
-      <div class="col-lg-3">
-        <div class="card info-card bg-success text-white">
-          <div class="card-body text-center">
-            <h6 class="fw-bold">💰 총 매출</h6>
-            <p class="small">최근 거래 내역</p>
-            <h4 class="fw-bold">+$2000</h4>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-lg-3">
-        <div class="card info-card bg-primary text-white">
-          <div class="card-body text-center">
-            <h6 class="fw-bold">💳 결제 내역</h6>
-            <p class="small">Freelance Payment</p>
-            <h4 class="fw-bold">$455.00</h4>
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">📊 문의 현황 (월)</h5>
+            <CustomChart />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 📌 공지사항 & 문의사항 -->
     <div class="row my-4">
       <div class="col-lg-6">
         <div class="card shadow-sm">
@@ -101,10 +89,9 @@
       </div>
     </div>
 
-    <!-- 💳 최근 거래 내역 -->
     <div class="card shadow-sm">
       <div class="card-header bg-white fw-bold d-flex justify-content-between">
-        <span>💳 최근 거래 내역</span>
+        <span>💳 최근 제품 등록 및 수정 현황</span>
         <span class="text-muted">📅 23 - 30 March 2020</span>
       </div>
       <div class="card-body">
@@ -121,10 +108,20 @@
 </template>
 
 <script>
+import CustomChart from './chart/CustomChart.vue';
 import dayjs from 'dayjs';
 
 export default {
   name: 'AdminHeader',
+  props: {
+    BoardDataList: Array,
+    InquiryDataList: Array,
+  },
+
+  components: {
+    CustomChart,
+  },
+
   data() {
     return {
       transactions: [],
@@ -132,31 +129,27 @@ export default {
     };
   },
 
-  created() {
-    this.fetchCalendarData();
-  },
-
-  props: {
-    BoardDataList: Array,
-    InquiryDataList: Array,
-  },
+  created() { this.fetchCalendarData(); },
 
   methods: {
+
     async fetchCalendarData() {
+
       try {
         const response = await this.$axios.get('/admin/calendar');
         if (!Array.isArray(response.data)) {
-          console.error("❌ API 응답 데이터가 배열이 아닙니다:", response.data);
           return;
         }
+
         this.attributes = response.data.map(event => ({
           key: event.calendarId,
           highlight: 'red',
           dates: { start: event.startTime || event.createAt, end: event.endTime || event.startTime || event.createAt },
           popover: { label: event.title || "제목 없음", visibility: 'hover', placement: 'bottom' },
         }));
+
       } catch (error) {
-        console.log('fetchCalendarData error', error);
+        console.error('fetchCalendarData error: ', error);
       }
     },
 
@@ -168,27 +161,23 @@ export default {
 </script>
 
 <style scoped>
-/* 🌟 전체 레이아웃 */
 .dashboard-container {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
-/* 🌟 카드 디자인 */
 .card {
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
-/* 🌟 캘린더 카드 */
 .calendar-card {
   background: #f9f9f9;
   padding: 15px;
 }
 
-/* 🌟 테이블 스타일 */
 .table {
   text-align: left;
 }
@@ -199,17 +188,14 @@ export default {
   font-size: 14px;
 }
 
-/* 🌟 버튼 스타일 */
 .btn {
   font-weight: bold;
 }
 
-/* 🌟 공지사항 & 문의사항 테이블 */
 .table-hover tbody tr:hover {
   background: #f1f1f1;
 }
 
-/* 🌟 반응형 디자인 */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 10px;
@@ -220,4 +206,20 @@ export default {
     font-size: 12px;
   }
 }
+
+.calendar-card, .chart-card {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+}
+
 </style>

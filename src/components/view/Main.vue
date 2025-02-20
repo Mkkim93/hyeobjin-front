@@ -1,5 +1,4 @@
 <template>
-    <!-- Features section-->
     <section class="py-5 border-bottom" id="features">
         <div class="container px-5 my-5">
             <div class="row gx-5">
@@ -14,7 +13,7 @@
 
                         고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
                     <br>
-                    <a class="text-decoration-none" href="#!">
+                    <a class="text-decoration-none" href="/manu/1">
                         바로가기
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -30,7 +29,7 @@
 
                         고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
                     <br>
-                    <a class="text-decoration-none" href="#!">
+                    <a class="text-decoration-none" href="/manu/2">
                         바로가기
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -47,7 +46,7 @@
 
                         고객의 요구에 맞춰 설계, 제작, 시공까지 서비스를 제공합니다."</small>
                     <br>
-                    <a class="text-decoration-none" href="#!">
+                    <a class="text-decoration-none" href="/manu/3">
 
                         바로가기
                         <i class="bi bi-arrow-right"></i>
@@ -56,11 +55,11 @@
             </div>
         </div>
     </section>
-    <!-- Pricing section-->
+
     <section class="py-5 border-bottom">
         <div class="container px-5 my-6">
             <div class="text-center mb-0">
-                <h2 class="fw-bolder mb-5">일정</h2>
+                <h2 class="fw-bolder mb-5">사내 일정 및 휴무일</h2>
                 <p class="lead mb-0"> </p>
 
             </div>
@@ -72,7 +71,7 @@
             </div>
         </div>
     </section>
-    <!-- Testimonials section-->
+
     <section class="py-5 border-bottom">
         <div class="container px-5 my-5 px-5">
             <div class="text-center mb-5">
@@ -81,7 +80,6 @@
             </div>
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
-                    <!-- Testimonial 1-->
                     <div class="card mb-4">
                         <div class="card-body p-4">
                             <div class="d-flex">
@@ -98,7 +96,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Testimonial 2-->
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="d-flex">
@@ -125,18 +122,9 @@ import 'v-calendar/style.css';
 export default {
     name: 'Main',
 
-    data() {
-        return {
-            attributes: [],
-        }
-    },
+    data() { return { attributes: [],} },
 
-    setup() {
-    },
-
-    created() {
-        this.fetchCalendarData();
-    },
+    created() { this.fetchCalendarData(); },
 
     methods: {
         async fetchCalendarData() {
@@ -144,7 +132,6 @@ export default {
                 const response = await this.$axios.get('/calendar');
 
                 if (!Array.isArray(response.data)) {
-                    console.error("❌ API 응답 데이터가 배열이 아닙니다:", response.data);
                     return;
                 }
 
@@ -155,23 +142,22 @@ export default {
                         highlight: {
                             color: 'red',
                         },
-
                         dot: {
-                            color: 'red',  // ✅ 동그라미 색상 지정
+                            color: 'red', 
                             class: 'highlight-dot'
                         },
                         dates: {
-                            start: event.findStartTime || event.findCreateAt,  // ✅ start 값이 없으면 기본값으로 등록 시간 사용
-                            end: event.findEndTime || event.findStartTime || event.findCreateAt, // ✅ end 값이 없으면 start 값으로 설정
+                            start: event.findStartTime || event.findCreateAt, 
+                            end: event.findEndTime || event.findStartTime || event.findCreateAt, 
                         },
                         popover: {
-                            label: event.findTitle || "제목 없음",  // ✅ title이 없으면 기본값 설정
+                            label: event.findTitle || "제목 없음",
                             visibility: 'hover',
                             placement: 'bottom'
                         },
                     }));
             } catch (error) {
-                console.log('fetch vc data error', error);
+                console.log('fetchCalendarData error: ', error);
             }
         }
     }
@@ -184,7 +170,6 @@ export default {
     height: 160px;
 }
 
-/* 2) 또 다른 예시: 달력 내부 셀 스타일 */
 :deep(.vc-day) {
     cursor: pointer;
     padding: 10px;
@@ -193,19 +178,14 @@ export default {
 
 :deep(.calendar-wrapper) {
     width: 100%;
-    /* 부모 컨테이너가 가득 차도록 설정 */
     max-width: 100%;
-    /* 최대 너비 설정 (필요시 조정) */
     margin: 10 auto;
-    /* 가운데 정렬 */
     border-radius: 5px;
-    /* ✅ 둥근 모서리 */
     transition: 0.3s;
 }
 
 :deep(.vc-container) {
     width: 100%;
-    /* 달력 컨테이너가 부모 크기에 맞게 조정됨 */
 }
 
 .bi {

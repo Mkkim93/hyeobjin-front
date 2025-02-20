@@ -1,10 +1,8 @@
 <template>
   <section class="container bg-light p-5 rounded shadow-lg">
-    <!-- 제품 정보 제목 -->
-    <h1 class="text-center fw-bold text-dark mb-4">제품 상세</h1>
+    <h1 class="text-center fw-bold text-dark mb-4">제품 상세 페이지</h1>
 
     <div class="row">
-      <!-- 왼쪽: 제품 정보 표시 -->
       <div class="col-md-7">
         <div class="row">
           <div class="col-md-6 mb-3">
@@ -76,17 +74,19 @@
       <div class="col-md-5 d-flex justify-content-center align-items-center">
         <div class="position-relative bg-white p-4 rounded shadow-sm">
           <div v-if="ItemDetailData.itemYN == true">
-          <span class="badge bg-success text-dark position-absolute top-0 end-0 mt-2 me-2">등록</span>
-        </div>
-        <div v-else>
-          <span class="badge bg-danger text-dark position-absolute top-0 end-0 mt-2 me-2">미등록</span>
-        </div>
+            <span class="badge bg-success text-dark position-absolute top-0 end-0 mt-2 me-2">등록</span>
+          </div>
+          <div v-else>
+            <span class="badge bg-danger text-dark position-absolute top-0 end-0 mt-2 me-2">미등록</span>
+          </div>
 
-          <div v-if="isLoading" class="text-center">로딩 중...</div>
+          <div v-if="isLoading" class="text-center">기다려 주세요...</div>
 
           <img v-else class="img-fluid w-100" :src="`/item/${fileBoxesData.fileName}`" alt="제품 이미지" />
         </div>
       </div>
+
+      
 
     </div>
 
@@ -94,47 +94,53 @@
       <button class="btn btn-dark btn-sm px-4 py-2" @click="modifyItems">수정</button>
       <button class="btn btn-danger btn-sm px-4 py-2 ml-3" @click="deleteItems">삭제</button>
     </div>
+    <div v-html="ItemDetailData.freeContent"></div>
   </section>
 </template>
 
 <script>
+import Editor from '@/components/view/Editor.vue';
+
 export default {
   name: 'ItemDetail',
   data() {
     return {
       DetailItemId: null,
+      isLoading: true,
+
       ItemDetailData: {},
       fileBoxesData: {},
       itemIdsToDelete: [],
-
-      isLoading: true,
     };
   },
 
   async created() {
-    console.log('ItemEdit 컴포넌트가 실행되었습니다.');
+
     this.DetailItemId = Number(this.$route.params.itemId) || null;
+
     if (this.DetailItemId) {
       await this.fetchItemDetailData(this.DetailItemId);
     }
-    this.isLoading = false; 
+
+    this.isLoading = false;
   },
 
+  components: { Editor },
+
   methods: {
+
     async fetchItemDetailData(itemId) {
+
       try {
-        this.isLoading = true; 
+        this.isLoading = true;
         const response = await this.$axios.get(`/admin/items/detail?itemId=${itemId}`);
 
-       
+
         this.ItemDetailData = response.data || {};
         this.fileBoxesData = response.data.fileBoxes || [];
 
-        console.log('itemDetailData', this.ItemDetailData);
-        console.log('this.fileBoxesData', this.fileBoxesData);
-        console.log('fileBoxesData.fileName', this.fileBoxesData.fileName);
       } catch (error) {
-        console.error('fetch Data Detail failed', error);
+        console.error('fetchItemDetailData error : ', error);
         this.ItemDetailData = { fileBoxes: [] };
       } finally {
         this.isLoading = false;
@@ -153,27 +159,22 @@ export default {
 
       if (isConfirmed) {
         this.itemIdsToDelete.push(this.DetailItemId);
-        console.log('this.deleteId', this.itemIdsToDelete);
 
         try {
-          const response = await this.$axios.delete(`/admin/items`, {
+          await this.$axios.delete(`/admin/items`, {
             data: this.itemIdsToDelete,
-            headers: {
-              'Content-Type': 'application/json',
-            }
+            headers: { 'Content-Type': 'application/json' }
           });
+
           alert('제품이 삭제 되었습니다.');
           this.$router.push('/admin/item');
-          console.log('response', response);
-        } catch (error) {
 
-          console.log('제품 삭제 실패', error);
+        } catch (error) {
+          console.log('deleteItems error: ', error);
         }
       } else {
         alert('삭제가 취소 되었습니다.');
       }
-
-
     },
   },
 };

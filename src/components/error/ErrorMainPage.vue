@@ -10,7 +10,7 @@
   import NotFoundPage from './NotFoundPage.vue';
   import ServerErrorPage from './ServerErrorPage.vue';
   import UnauthorizedPage from './UnauthorizedPage.vue';
-  import { mapState } from 'vuex'; // Vuex 상태 직접 가져오기
+  import { mapState } from 'vuex';
   
   export default {
     components: {
@@ -21,7 +21,7 @@
     },
   
     computed: {
-      ...mapState(['errorStatus']) // Vuex 상태를 직접 사용 (반응형)
+      ...mapState(['errorStatus']) 
     }
   }
   </script>

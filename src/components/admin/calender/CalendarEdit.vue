@@ -4,27 +4,36 @@
 
             <h3>📋 일정 수정</h3>
             <form @submit.prevent="editCalendarData">
-                <label>No</label>
-                <input v-model="newModifyCalendarData.calendarId" class="form-control mb-2" readonly>
+                <label for="calendarId">No</label>
+                <input id="calendarId" v-model="newModifyCalendarData.calendarId" class="form-control mb-2" readonly>
 
-                <label>일정 제목:</label>
-                <input v-model="newModifyCalendarData.title" class="form-control mb-2" type="text">
+                <label for="title">일정 제목:</label>
+                <input id="title" v-model="newModifyCalendarData.title" class="form-control mb-2" type="text">
 
-                <label>일정 내용용:</label>
-                <textarea v-model="newModifyCalendarData.description" class="form-control mb-2"></textarea>
 
-                <label>시작 날짜:</label>
-                <input v-model="newModifyCalendarData.startTime" class="form-control mb-2" type="datetime-local">
+                <label for="description">일정 내용:</label>
+                <textarea id="description" v-model="newModifyCalendarData.description"
+                    class="form-control mb-2"></textarea>
 
-                <label>종료 날짜:</label>
-                <input v-model="newModifyCalendarData.endTime" class="form-control mb-2" type="datetime-local">
+                <label for="startTime">시작 날짜:</label>
+                <input id="startTime" v-model="newModifyCalendarData.startTime" class="form-control mb-2"
+                    type="datetime-local">
 
-                <label>시공 장소</label>
-                <input v-model="newModifyCalendarData.location" class="form-control mb-2" type="text">
+                <label for="endTime">종료 날짜:</label>
+                <input id="endTime" v-model="newModifyCalendarData.endTime" class="form-control mb-2"
+                    type="datetime-local">
 
-                <label>공개 여부:</label>
-                <input type="radio" v-model="newModifyCalendarData.calendarYN" class="form-control mb-2">
-                
+                <label for="location">시공 장소</label>
+                <input id="location" v-model="newModifyCalendarData.location" class="form-control mb-2" type="text">
+
+                <label for="calenderY">
+                    <input id="calenderY" type="radio" v-model="newModifyCalendarData.calendarYN" value="Y">
+                    공개</label>
+                <label for="calendarN">
+                    <input id="calendarN" type="radio" v-model="newModifyCalendarData.calendarYN" value="N">
+                    비공개</label>
+                <br>
+                <br>
                 <button type="submit" class="btn btn-primary">수정</button>
                 <button class="btn btn-danger" @click="closeModal">닫기</button>
             </form>
@@ -34,16 +43,17 @@
 
 <script>
 export default {
+
     name: 'CalendarEdit',
+    props: {
+        editModalOpen: Boolean,
+        newModifyCalendarData: Object,
+    },
+
     data() {
         return {
             selectedEvent: [],
         }
-    },
-
-    props: {
-        editModalOpen: Boolean,
-        newModifyCalendarData: Object,
     },
 
     methods: {
@@ -52,10 +62,10 @@ export default {
         },
 
         closeModal() {
-            this.$emit('close'); // 부모 컴포넌트에서 `modalOpen = false` 처리
+            this.$emit('close');
         },
 
-       async editCalendarData() {
+        async editCalendarData() {
 
             const updateCalendarDTO = {
                 calendarId: this.newModifyCalendarData.calendarId,
@@ -75,18 +85,12 @@ export default {
                 this.$router.go(0);
 
             } catch (error) {
-                console.log('editCalendarData', error);
+                console.error('editCalendarData error: ', error);
             }
-
         },
-    },
-
-    computed: {
-
     },
 }
 </script>
-
 <style scoped>
 .event-list {
     list-style: none;
@@ -108,7 +112,6 @@ export default {
     color: white;
 }
 
-/* ✅ 모달 스타일 */
 .custom-modal-overlay {
     position: fixed;
     top: 0;
@@ -132,7 +135,6 @@ export default {
     text-align: center;
 }
 
-/* ✅ 버튼 스타일 */
 .modal-buttons {
     display: flex;
     justify-content: space-between;

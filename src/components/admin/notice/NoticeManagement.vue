@@ -6,14 +6,12 @@
       </div>
 
       <div class="card-body">
-        <!-- 선택 삭제 버튼 -->
         <div class="text-end mb-3">
           <button @click="handleSelectedBoards" class="btn btn-danger btn-sm">
-            🗑 선택 삭제
+            🗑 선택한 게시글 삭제
           </button>
         </div>
 
-        <!-- 테이블 -->
         <div class="table-responsive">
           <table class="table table-hover text-center">
             <thead class="table-light">
@@ -51,15 +49,13 @@
           </table>
         </div>
 
-        <!-- 페이지네이션 -->
         <nav class="d-flex justify-content-center my-4">
           <ul class="pagination">
             <li class="page-item" :class="{ disabled: currentPage === 0 }">
               <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">이전</a>
             </li>
 
-            <li v-for="page in totalPages" :key="page" class="page-item"
-                :class="{ active: currentPage === page - 1 }">
+            <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page - 1 }">
               <a class="page-link" href="#" @click.prevent="changePage(page - 1)">{{ page }}</a>
             </li>
 
@@ -69,13 +65,11 @@
           </ul>
         </nav>
 
-        <!-- 검색 기능 -->
         <div class="input-group mb-4">
           <input v-model="searchKeyword" type="text" class="form-control" placeholder="검색어를 입력하세요" />
           <button @click="fetchBoardList" class="btn btn-outline-primary">검색</button>
         </div>
 
-        <!-- 글쓰기 버튼 -->
         <div class="text-center">
           <router-link to="/admin/notice/add">
             <button class="btn btn-success">📝 글쓰기</button>
@@ -94,9 +88,11 @@ export default {
 
   data() {
     return {
+      searchKeyword: null,
+
       selectedIds: [],
       boardList: [],
-      searchKeyword: null,
+
       currentPage: 0,
       totalPages: null,
       pageSize: 5,
@@ -104,12 +100,12 @@ export default {
     };
   },
 
-  created() {
-    this.fetchBoardList();
-  },
+  created() { this.fetchBoardList(); },
 
   methods: {
+
     async fetchBoardList() {
+
       try {
         const params = {
           page: this.currentPage,
@@ -125,8 +121,9 @@ export default {
         this.boardList = response.data.content;
         this.pageData = response.data;
         this.totalPages = this.pageData.totalPages;
+
       } catch (error) {
-        console.error("게시판 목록을 불러오는 중 오류 발생:", error);
+        console.error("fetchBoardList error: ", error);
       }
     },
 
@@ -147,18 +144,25 @@ export default {
 
     async deleteBoards(ids) {
       if (ids.length === 0) {
-        alert("삭제할 게시글을 선택하세요.");
+        alert("삭제할 게시글을 선택해주세요.");
         return;
       }
 
       const isConfirmed = confirm("선택한 게시글을 삭제하시겠습니까?");
+
       if (isConfirmed) {
+
         try {
-          await this.$axios.delete("/admin/boards", { data: { boardIds: ids } });
-          alert("게시글이 삭제되었습니다.");
+          await this.$axios.delete("/admin/boards", {
+            headers: { "Content-Type": "application/json" },
+            data: ids
+          });
+
+          alert("게시글이 성공적으로 삭제되었습니다.");
           this.fetchBoardList();
+
         } catch (error) {
-          console.error("게시글 삭제 오류:", error);
+          console.error("deleteBoards error: ", error);
         }
       }
     },
@@ -175,19 +179,16 @@ export default {
 </script>
 
 <style scoped>
-/* ✅ 테이블 스타일 */
 .table {
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* ✅ 체크박스 스타일 */
 .form-check-input {
   transform: scale(1.2);
   cursor: pointer;
 }
 
-/* ✅ 페이지네이션 스타일 */
 .page-item.active .page-link {
   background-color: #007bff;
   border-color: #007bff;
@@ -199,14 +200,12 @@ export default {
   cursor: not-allowed;
 }
 
-/* ✅ 버튼 스타일 */
 .btn {
   font-size: 1rem;
   font-weight: bold;
   border-radius: 8px;
 }
 
-/* ✅ 반응형 */
 @media (max-width: 768px) {
   .container {
     max-width: 100%;

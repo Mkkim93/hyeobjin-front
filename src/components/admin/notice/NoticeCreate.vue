@@ -3,27 +3,36 @@
     <div class="card shadow-sm p-4">
       <h2 class="text-center mb-4">공지 등록</h2>
 
-      <!-- 제목 입력 -->
       <div class="mb-3">
         <label for="title" class="form-label">제목</label>
         <input type="text" v-model="title" class="form-control" id="title" placeholder="제목을 입력하세요" />
       </div>
 
-      <!-- 에디터 -->
       <div class="mb-3">
-        <label class="form-label">내용</label>
+        <label for="postContent" class="form-label">내용</label>
         <div class="border rounded p-2 shadow-sm">
           <Editor v-model="postContent" />
         </div>
       </div>
+       
+      <div>
+        <p>게시글 유형</p>
+        <label for="boardType">
+          <input type="radio" name="boardType" v-model="boardType" value="NOTICE">
+          공지사항</label>
 
-      <!-- 파일 업로드 -->
+         <label for="boardType">
+          <input type="radio" name="boardType" v-model="boardType" value="FAQ">
+         FAQ</label> 
+      </div>
+
+      <br>
+
       <div class="mb-3">
         <label for="fileUpload" class="form-label">파일 업로드</label>
         <input type="file" class="form-control" id="fileUpload" multiple @change="handleFileChange" />
       </div>
 
-      <!-- 등록 버튼 -->
       <div class="text-center">
         <button class="btn btn-primary px-4 py-2" @click="submitPost">
           <i class="bi bi-upload"></i> 게시글 등록
@@ -44,12 +53,11 @@ export default {
       title: '',
       postContent: '',
       files: [],
+      boardType: '',
     };
   },
 
-  components: {
-    Editor,
-  },
+  components: { Editor },
 
   methods: {
 
@@ -62,34 +70,39 @@ export default {
       try {
 
         const formData = new FormData();
-        console.log('this.postContent', this.postContent);
 
         const createBoardDTO = {
           boardTitle: this.title,
           boardContent: this.postContent,
+          boardType: this.boardType,
         };
 
-        formData.append("createBoardDTO", new Blob([JSON.stringify(createBoardDTO)], {
-          type: "application/json"
-        }));
+        formData.append("createBoardDTO", new Blob([JSON.stringify(createBoardDTO)],
+          { type: "application/json" }));
 
 
         this.files.forEach(file => {
           formData.append("files", file);
         });
 
-        const response = await this.$axios.post('/admin/boards', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        });
+        if (!boardType) {
+          alert('공개 또는 비공개를 선택해주세요');
+          return;
+        }
+
+        
+
+        const response = await this.$axios.post('/admin/boards', formData,
+          { headers: { 'Content-Type': 'multipart/form-data' } });
+
         const boardId = response.data;
-        console.log('등록된 boardId', boardId);
-        console.log('게시글 등록 성공');
+
         alert('게시글이 성공적으로 등록 되었습니다.');
+
         this.$router.push(`/admin/notice/${boardId}`);
+
       } catch (error) {
-        console.log('게시글 등록 실패', error);
+        console.log('submitPost error: ', error);
       }
     }
   },

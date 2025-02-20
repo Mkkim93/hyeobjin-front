@@ -1,5 +1,4 @@
 <template>
-    <!-- Header-->
   <header class="header-container bg-black py-5">
     <div class="container px-5">
       <div class="row gx-5 justify-content-center">
@@ -17,23 +16,8 @@
       </div>
     </div>
   </header>
-  </template>
-    
-    <script>
-    export default {
+</template>
 
-      name: 'Header',
-      data() {
-        return {
-    
-        }
-      },
-    }
-  </script>
-    
-    <style scoped>
-    .header-container {
-      /* background: #f75748; */
-    }
-    
-    </style>
+<script>
+export default { name: 'Header' }
+</script>

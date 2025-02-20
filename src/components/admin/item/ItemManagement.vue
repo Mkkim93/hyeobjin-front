@@ -11,12 +11,10 @@
     <div v-show="handleSelected">
       <button class="btn btn-outline-danger my-1" @click="handleSelectedItems">선택한 제품 삭제</button>
     </div>
-    <!-- 카드 스타일 섹션 -->
     <div class="bg-white shadow-md rounded-lg p-6">
       <h1 class="text-2xl font-bold text-center mb-6">제품 목록</h1>
       <p class="text-center">현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
 
-      <!-- 제품 목록 테이블 -->
       <div class="overflow-x-auto">
         <table class="w-full border-collapse border border-gray-300 table table-hover">
           <thead class="bg-gray-200">
@@ -65,7 +63,6 @@
 
       </div>
 
-      <!-- 페이지네이션 섹션 -->
       <div class="container d-flex flex-column align-items-center my-3">
 
         <nav aria-label="Page navigation example">
@@ -95,25 +92,22 @@ export default {
   name: 'ItemManagement',
   data() {
     return {
+      selectedManu: '',
+      deleteYN: '제품선택',
+
+      showCheckBox: false,
+      allSelected: false,
+      handleSelected: false,
+
       ItemListData: [],
+      filteredItemList: [],
+      selectedItems: [],
+      newManuList: [],
+
       currentPage: 0,
       totalPages: null,
       pageSize: 5,
-
       pageData: null,
-      selectedManu: '',
-      filteredItemList: [],
-
-      showCheckBox: false,
-      selectedItems: [],
-      allSelected: false, // 전체 선택 상태
-
-      handleSelected: false,
-
-      deleteYN: '제품선택',
-
-      newManuList: [],
-
     };
   },
 
@@ -133,6 +127,7 @@ export default {
   methods: {
 
     async fetchItemList(page) {
+
       try {
         const params = {
           page: page,
@@ -145,18 +140,17 @@ export default {
 
         const response = await this.$axios.get(`/admin/items`, {
           params,
-          headers: {
-            "Content-Type": "application/json",
-          }
+          headers: { "Content-Type": "application/json" }
         });
 
         this.ItemListData = response.data.content;
         this.filteredItemList = this.ItemListData;
+
         this.pageData = response.data;
         this.totalPages = this.pageData.totalPages;
-        console.log(response.data);
+
       } catch (error) {
-        console.log('page load error', error);
+        console.error('fetchItemList error: ', error);
       }
     },
 
@@ -164,9 +158,11 @@ export default {
 
       try {
         const response = await this.$axios.get('/admin/manu/list');
+
         this.newManuList = response.data;
+
       } catch (error) {
-        console.log('manuListData error', error);
+        console.error('manuListData error: ', error);
       }
     },
 
@@ -193,38 +189,31 @@ export default {
       this.handleSelected = true;
 
       if (this.deleteYN === '제품선택') {
-
         this.deleteYN = '취소';
-
       }
 
       else if (this.deleteYN === '취소') {
         this.handleSelected = false;
         this.deleteYN = '제품선택';
-
       }
 
       this.showCheckBox = !this.showCheckBox;
       if (!this.showCheckBox) {
         this.selectedItems = [];
       }
-      console.log('단일 선택 체크박스', this.selectedItems);
     },
 
     async toggleSelectAll() {
+
       if (this.allSelected) {
         this.selectedItems = this.ItemListData.map(item => item.itemId);
-        console.log('전체 선택 체크박스', this.selectedItems);
       } else {
         this.selectedItems = [];
       }
     },
 
     async handleSelectedItems() {
-
-      console.log('삭제할 아이디', this.selectedItems);
       this.deletedItems(this.selectedItems);
-
     },
 
     async deletedItems(ids) {
@@ -235,29 +224,24 @@ export default {
         try {
 
           await this.$axios.delete(`/admin/items`,
-            { data: ids }
-          )
-          console.log('삭제 성공');
-          alert('제품이 삭제 되었습니다.');
+            { data: ids })
+
+          alert('제품이 성공적으로 삭제 되었습니다.');
           this.$router.push('/admin/item');
+
         } catch (error) {
-          console.log('제품 삭제 실패', error);
+          console.error('deletedItems error: ', error);
         }
       }
     },
-
-
-
   }
 }
 </script>
 <style scoped>
-/* 기본 카드 스타일 */
 .bg-white {
   background-color: white;
 }
 
-/* 테이블 스타일 */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -270,7 +254,6 @@ td {
   text-align: center;
 }
 
-/* 페이지네이션 스타일 */
 .page-item {
   display: inline-block;
   margin: 0 4px;
@@ -286,7 +269,6 @@ td {
   background-color: #f3f3f3;
 }
 
-/* 선택된 페이지 */
 .page-item .font-bold {
   background-color: #007bff;
   color: white;

@@ -7,19 +7,24 @@
             </div>
 
             <div class="card-body">
-                <!-- 작성자 정보 -->
                 <div class="info-group">
                     <div>
                         <strong>👤 작성자:</strong> {{ inquiryDetail.writer }}
                     </div>
                     <div>
+                        <strong>📱 연락처:</strong> {{ inquiryDetail.tel }}
+                        
+                    </div>
+                    <div>
                         <strong>📅 작성일:</strong> {{ formatDate(inquiryDetail.createAt) }}
+                    </div>
+                    <div>
+                        <strong>✉️ 이메일:</strong> {{ inquiryDetail.email }}
                     </div>
                 </div>
 
                 <hr />
 
-                <!-- 제품 정보 -->
                 <div class="info-group">
                     <div>
                         <strong>🏷 제품명:</strong> {{ inquiryDetail.itemName }}
@@ -34,13 +39,11 @@
 
                 <hr />
 
-                <!-- 상세 내용 -->
                 <div class="content-box">
                     <h6 class="text-secondary">📜 문의 내용</h6>
                     <div class="content" v-html="inquiryDetail.content"></div>
                 </div>
 
-                <!-- 주소 정보 -->
                 <div class="info-group mt-3">
                     <div>
                         <strong>📍 주소:</strong> {{ inquiryDetail.addr }}
@@ -50,7 +53,6 @@
                     </div>
                 </div>
 
-                <!-- 첨부파일 목록 -->
                 <div v-if="inquiryFilesList && inquiryFilesList.length" class="mt-4">
                     <h6 class="text-secondary">📎 첨부파일</h6>
                     <table class="table table-sm table-hover">
@@ -113,18 +115,16 @@ export default {
     },
 
     methods: {
-        async fetchInquiryDetailData(id) {
+
+        async fetchInquiryDetailData(inquiryId) {
             try {
-                const response = await this.$axios.get(`/admin/inquiry/detail?inquiryId=${id}`,
+                const response = await this.$axios.get(`/admin/inquiry/detail?inquiryId=${inquiryId}`);
 
-
-                );
                 this.inquiryDetail = response.data;
                 this.inquiryFilesList = response.data.inquiryFiles;
-                console.log('inquiryDetail', this.inquiryDetail);
-                console.log('inquiryFilesList', this.inquiryFilesList);
+
             } catch (error) {
-                console.error('fetchInquiryDetailData error', error);
+                console.error('fetchInquiryDetailData error: ', error);
             }
         },
 
@@ -143,46 +143,43 @@ export default {
             console.log("삭제 기능 구현 예정");
         },
 
-        async downloadFile(id, fileName) {
+        async downloadFile(fileboxId, fileName) {
 
             try {
-                const response = await this.$axios.post(`/admin/inquiry/files/download/${id}`,
+                const response = await this.$axios.get(`/admin/inquiry/files/download/${fileboxId}`,
                     {},
-                    { responseType: 'blob' } // Blob 형식으로 응답 받기
+                    { responseType: 'blob' }
                 );
 
-                // ✅ Blob 데이터를 사용하여 URL 생성
                 const blob = new Blob([response.data], { type: response.headers['content-type'] });
                 const url = window.URL.createObjectURL(blob);
-
-                // ✅ a 태그를 동적으로 생성하여 다운로드 실행
                 const link = document.createElement('a');
+
                 link.href = url;
-                link.setAttribute('download', fileName); // 다운로드할 파일 이름 설정
+                link.setAttribute('download', fileName);
                 document.body.appendChild(link);
                 link.click();
 
-                // ✅ 사용이 끝난 URL 해제
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(link);
 
             } catch (error) {
-                console.error('파일 다운로드 실패:', error);
+                console.error('downloadFile error: ', error);
             }
         },
 
-        async preview(fileId) {
+        async preview(fileBoxId) {
             try {
-                const response = await this.$axios.get(`/admin/inquiry/files/preview/${fileId}`, {
-                    responseType: 'blob'
-                });
+                const response = await this.$axios.get(`/admin/inquiry/files/preview/${fileBoxId}`,
+                    { responseType: 'blob' });
 
                 const blob = new Blob([response.data], { type: response.headers['content-type'] });
                 const fileURL = URL.createObjectURL(blob);
+                
                 window.open(fileURL, '_blank');
 
             } catch (error) {
-                console.error('파일 미리보기 실패:', error);
+                console.error('preview error: ', error);
             }
         }
     }

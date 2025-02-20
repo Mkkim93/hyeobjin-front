@@ -1,8 +1,9 @@
 <template>
     <div v-if="currentStep == 1">
         <div class="product-section">
-            <!-- 좌측 텍스트 영역 -->
+            <img :src="logoKCC" alt="kcc_logo">
             <div class="product-text">
+                
                 <h2 class="product-title">{{ KCCItems.itemName }}</h2>
                 <p class="product-description">{{ KCCItems.itemDescription }}</p>
             </div>
@@ -14,7 +15,7 @@
     
     <div v-if="currentStep == 2">
         <div class="product-section">
-            <!-- 좌측 텍스트 영역 -->
+            <img :src="logoHugreen" alt="hu_logo">
             <div class="product-text">
                 <h2 class="product-title">{{ HugreenItems.itemName }}</h2>
                 <p class="product-description">{{ HugreenItems.itemDescription }}</p>
@@ -27,7 +28,7 @@
 
     <div v-if="currentStep == 3">
         <div class="product-section">
-            <!-- 좌측 텍스트 영역 -->
+            <img :src="logoYerim" alt="ye_logo">
             <div class="product-text">
                 <h2 class="product-title">{{ YerimItems.itemName }}</h2>
                 <p class="product-description">{{ YerimItems.itemDescription }}</p>
@@ -52,23 +53,29 @@ import infoImg07 from '@/assets/images/info_img07.png';
 import infoImg08 from '@/assets/images/info_img08.png';
 import infoImg09 from '@/assets/images/info_img09.png';
 
+import logoKCC from '@/assets/images/logo_kg01.png';
+import logoHugreen from '@/assets/images/logo_hugreen3.png';
+import logoYerim from '@/assets/images/logo_yerim.png';
+
 
 export default {
     name: "Manufact",
+    props: { step: Number },
     data() {
         return {
 
+            logoKCC,
+            logoHugreen,
+            logoYerim,
             currentStep: this.step,
 
             KCCItems: {
                 itemName: "KCC 일반 창호",
                 itemDescription:
                     "용도별로 다양한 종류를 갖춘 KCC 일반창호는 우수한 단열성능과 미려한 외관을 갖춘 고품질의 창호입니다.",
-
             },
 
             KCCImage: [
-
                 infoImg01,
                 infoImg02,
                 infoImg03,
@@ -92,7 +99,6 @@ export default {
                     "예림 창호는 완벽한 구조설계로 뛰어난 기밀성을 확보하여 외부의 영향을 최소화합니다. 다양한 두께의 유리적용과 우수한 열관류율로 에너지 손실을 줄이고 환경표지인증을 획득한 친환경 무납원료로 이상적인 주거환경을 제시합니다.우리집을 안전하게 지켜주는 예림 창호를 만나보세요.",
             },
 
-
             YerimImage: [
                 infoImg07,
                 infoImg08,
@@ -102,22 +108,10 @@ export default {
         };
     },
 
-    watch: {
-        step(newVal) {
-            this.currentStep = newVal; // ✅ 부모에서 받은 step이 변경될 때 반응하도록 설정
-            console.log("Updated step:", newVal);
-        },
-    },
-
-    props: {
-        step: Number,
-    },
-
+    watch: { step(newVal) { this.currentStep = newVal; } },
 };
 </script>
-
 <style scoped>
-/* ✅ 전체 레이아웃 */
 .product-section {
     display: flex;
     align-items: center;
@@ -130,7 +124,6 @@ export default {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ 좌측 텍스트 영역 */
 .product-text {
     flex: 1;
     padding: 20px;
@@ -148,7 +141,6 @@ export default {
     margin-bottom: 20px;
 }
 
-/* ✅ 특징 및 장점 스타일 */
 .product-features h3 {
     font-size: 20px;
     margin-bottom: 10px;
@@ -172,7 +164,6 @@ export default {
     margin-right: 10px;
 }
 
-/* ✅ 우측 이미지 영역 */
 .product-images {
     flex: 1;
     display: flex;
@@ -188,7 +179,6 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ 반응형 처리 */
 @media (max-width: 768px) {
     .product-section {
         flex-direction: column;

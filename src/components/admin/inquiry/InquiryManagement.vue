@@ -4,20 +4,15 @@
 
         <p class="d-inline-flex gap-1">
         </p>
-        <!-- 카드 스타일 섹션 -->
         <div>
             <div class="bg-white shadow-md rounded-lg p-6">
                 <h1 class="text-2xl font-bold text-center mb-6">문의 목록</h1>
                 <p class="text-center">현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
 
-                <!-- 제품 목록 테이블 -->
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse border border-gray-300 table table-hover">
                         <thead class="bg-gray-200">
                             <tr>
-                                <!-- <th class="border border-gray-300 p-2" v-if="showCheckBox">
-                                    <input type="checkbox" v-model="allSelected" @change="toggleSelectAll"> 전체선택
-                                </th> -->
                                 <th class="border border-gray-300 p-2">No</th>
                                 <th class="border border-gray-300 p-2">제목</th>
                                 <th class="border border-gray-300 p-2">작성자</th>
@@ -28,15 +23,11 @@
                         <tbody>
                             <tr v-for="(inquiry, count) in InquiryList" :key="inquiry.inquiryId"
                                 class="text-center hover:bg-gray-100">
-                                <!-- <td class="border border-gray-300 p-2" v-if="showCheckBox">
-                                    <input type="checkbox" v-model="selectedInquirys" :value="inquiry.inquiryId">
-                                </td> -->
                                 <td class="border border-gray-300 p-2">{{ this.currentPage * this.pageSize + count + 1
                                     }}
                                 </td>
                                 <td>
-                                    <p @click="$router.push('inquiry/' + inquiry.inquiryId)"
-                                        class="cursor-pointer hover:underline">
+                                    <p @click="$router.push('inquiry/' + inquiry.inquiryId)" style="cursor: pointer;">
                                         {{ inquiry.title }}
                                     </p>
                                 </td>
@@ -47,7 +38,6 @@
                     </table>
                 </div>
 
-                <!-- 페이지네이션 섹션 -->
                 <div class="container d-flex flex-column align-items-center my-3">
 
                     <nav aria-label="Page navigation example">
@@ -69,7 +59,6 @@
                         </ul>
                     </nav>
                 </div>
-
             </div>
         </div>
     </div>
@@ -77,6 +66,7 @@
 
 <script>
 import dayjs from 'dayjs';
+
 export default {
     name: 'InquiryManagement',
     data() {
@@ -96,10 +86,6 @@ export default {
         }
     },
 
-    setup() {
-        console.log('InquiryManagement 컴포넌트 호출');
-    },
-
     created() {
         this.fetchInquiryListData();
     },
@@ -115,7 +101,6 @@ export default {
         async fetchInquiryListData() {
 
             try {
-
                 const params = {
                     page: this.currentPage,
                     size: this.pageSize,
@@ -126,12 +111,12 @@ export default {
                 });
 
                 this.InquiryList = response.data.content;
-                console.log('this.InquiryList', this.InquiryList);
+
                 this.pageData = response.data;
                 this.totalPages = this.pageData.totalPages;
 
             } catch (error) {
-                console.log('fetchInquiryListData error', error);
+                console.error('fetchInquiryListData error: ', error);
             }
         },
 
@@ -142,7 +127,7 @@ export default {
         changePage(pageNumber) {
             if (pageNumber >= 0 && pageNumber < this.totalPages) {
                 this.currentPage = pageNumber;
-                this.fetchInquiryListData(); // ✅ 올바른 메서드 호출
+                this.fetchInquiryListData();
             }
         }
     }
@@ -154,7 +139,6 @@ export default {
     background-color: white;
 }
 
-/* 테이블 스타일 */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -167,7 +151,6 @@ td {
     text-align: center;
 }
 
-/* 페이지네이션 스타일 */
 .page-item {
     display: inline-block;
     margin: 0 4px;
@@ -183,7 +166,6 @@ td {
     background-color: #f3f3f3;
 }
 
-/* 선택된 페이지 */
 .page-item .font-bold {
     background-color: #007bff;
     color: white;

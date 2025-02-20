@@ -2,11 +2,10 @@ import axios from '@/plugins/axios.js';
 
 export async function hasRefreshToken() {
     try {
-        const response = await axios.get('/auth/checkrefresh');
-        console.log('✅ 서버 응답:', response.data);
+        await axios.post('/auth');
         return true;
     } catch (error) {
-        console.error('❌ Refresh token 확인 실패:', error.response?.status);
+        console.error('hasRefreshToken error: ', error.response?.status);
         return false;
     }
 }

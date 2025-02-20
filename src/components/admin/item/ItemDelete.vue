@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-2xl font-bold text-center mb-5">제품 삭제</h1>
+  <h1 class="text-2xl font-bold text-center mb-5">제품삭제 페이지</h1>
 
   <div class="max-w-4xl mx-auto my-10">
     <p>현재 페이지: {{ currentPage + 1 }} / {{ totalPages }}</p>
@@ -54,47 +54,43 @@
 
 <script>
 import dayjs from 'dayjs';
+
 export default {
   name: 'ItemDelete',
   data() {
     return {
-      selectedIds: [], // 선택된 itemId들을 담을 배열
+      selectedManu: '',
+
+      selectedIds: [],
       ItemListData: [],
+      filteredItemList: [],
+
       currentPage: 0,
       totalPages: 10,
       pageSize: 5,
-      selectedManu: '',
-
-      filteredItemList: [],
     }
   },
 
-  
 
-  mounted() {
-    this.fetchItemList(this.currentPage);
-    
-  },
+
+  mounted() { this.fetchItemList(this.currentPage); },
 
   methods: {
-
-  
-
 
     async fetchItemList(page) {
       try {
         const response = await this.$axios.get(`/admin/items?page=${page}&size=${this.pageSize}&manuName=${this.selectedManu || ''}`, {
-          headers: {
-            "Content-Type": "application/json",
-          }
+          headers: { "Content-Type": "application/json" }
         });
 
         this.ItemListData = response.data;
         this.filteredItemList = this.ItemListData;
+
         this.currentPage = page;
         this.totalPages = response.data.totalPages;
+
       } catch (error) {
-        console.log('page load error', error);
+        console.error('fetchItemList error: ', error);
       }
     },
 
@@ -103,26 +99,24 @@ export default {
     },
 
     handleSelectedItems() {
-      // 선택된 아이템들의 ID 출력
-      console.log('선택된 itemId들:', this.selectedIds);
-
-      // 예시: 선택된 ID들을 서버로 삭제 요청
       this.deleteItems(this.selectedIds);
     },
 
-    async deleteItems(ids) {
+    async deleteItems(deleteIds) {
 
       const isConfirmed = confirm('삭제 시 모든 제품 정보와 파일정보가 삭제됩니다. 계속 하시겠습니까?');
 
       if (isConfirmed) {
 
         try {
-          const response = await this.$axios.delete('/admin/items', { data: ids });
-          console.log('삭제 성공:', response);
+          await this.$axios.delete('/admin/items', { data: deleteIds });
+
           alert("제품이 삭제 되었습니다.");
-          this.fetchItemList(this.currentPage); // TODO: 삭제 후 데이터 다시 불러올 때 빈 리스트일 때 요청 error 발생
+    
+          this.fetchItemList(this.currentPage);
+        
         } catch (error) {
-          console.error('삭제 실패:', error);
+          console.error('deleteItems error: ', error);
         }
       } else {
         alert('삭제가 취소 되었습니다.');
@@ -136,5 +130,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

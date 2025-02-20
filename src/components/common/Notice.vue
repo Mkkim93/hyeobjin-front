@@ -1,13 +1,11 @@
 <template>
   <section class="notice">
-    <!-- 공지사항 제목 -->
     <div class="page-title">
       <div class="container">
         <h3>공지사항</h3>
       </div>
     </div>
 
-    <!-- 검색창 -->
     <div id="board-search">
       <div class="container">
         <div class="search-window">
@@ -26,7 +24,6 @@
       </div>
     </div>
 
-    <!-- 게시판 목록 -->
     <div id="board-list">
       <div class="container">
         <table class="board-table">
@@ -52,7 +49,6 @@
       </div>
     </div>
 
-    <!-- 페이지네이션 -->
     <div class="mt-5 d-flex justify-content-center">
       <nav aria-label="Page navigation">
         <ul class="pagination">
@@ -103,12 +99,14 @@ export default {
         this.boardList = response.data.content;
         this.totalPages = response.data.totalPages;
       } catch (error) {
-        console.error("게시판 데이터를 불러오는 중 오류 발생:", error);
+        console.error("fetchBoardList error:", error);
       }
     },
+
     formatDate(date) {
       return dayjs(date).format("YYYY-MM-DD");
     },
+
     changePage(page) {
       if (page >= 0 && page < this.totalPages) {
         this.currentPage = page;
@@ -120,7 +118,6 @@ export default {
 </script>
 
 <style scoped>
-/* 공지사항 타이틀 스타일 */
 .page-title {
   margin-bottom: 40px;
 }
@@ -131,7 +128,6 @@ export default {
   text-align: center;
 }
 
-/* 검색창 스타일 */
 #board-search .search-window {
   padding: 15px 0;
   background-color: #f9f7f9;
@@ -140,7 +136,7 @@ export default {
 
 #board-search .search-wrap {
   display: flex;
-  justify-content: end; /* 🔥 검색창을 오른쪽 정렬 */
+  justify-content: end;
   gap: 10px;
   max-width: 564px;
   margin: 0 auto;
@@ -163,7 +159,6 @@ export default {
   white-space: nowrap;
 }
 
-/* 게시판 테이블 스타일 */
 #board-list {
   width: 100%;
   overflow-x: auto;
@@ -178,7 +173,7 @@ export default {
 }
 
 .board-table th {
-  text-align: center; /* 🔥 테이블 헤더 중앙 정렬 */
+  text-align: center;
   font-weight: bold;
 }
 
@@ -189,13 +184,11 @@ export default {
   border-top: 1px solid #e7e7e7;
 }
 
-/* 🔥 게시글 제목 왼쪽 정렬 */
 .board-title {
   text-align: left !important;
   padding-left: 10px !important;
 }
 
-/* 모바일 화면에서 테이블 스타일 변경 */
 @media (max-width: 768px) {
   .board-table {
     font-size: 12px;
@@ -211,7 +204,6 @@ export default {
   }
 }
 
-/* 버튼 스타일 */
 .btn {
   display: inline-block;
   padding: 8px 20px;
@@ -232,7 +224,6 @@ export default {
   color: #fff;
 }
 
-/* 초기화 */
 * {
   list-style: none;
   text-decoration: none;
@@ -241,7 +232,6 @@ export default {
   box-sizing: border-box;
 }
 
-/* 모바일에서 가독성 유지 */
 @media (max-width: 480px) {
   .page-title h3 {
     font-size: 20px;

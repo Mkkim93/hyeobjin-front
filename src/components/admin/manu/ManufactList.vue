@@ -6,6 +6,7 @@
       </div>
 
       <div class="card-body">
+        <p class="text-center text-secondary">현재 등록 된 제조사와 제조사별 등록된 제품의 수를 확인할 수 있습니다.</p>
         <div class="table-responsive">
           <table class="table table-hover text-center">
             <thead class="table-light">
@@ -45,19 +46,16 @@ export default {
 </script>
 
 <style scoped>
-/* 컨테이너 스타일 */
 .container {
   max-width: 900px;
 }
 
-/* 카드 스타일 */
 .card {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 테이블 스타일 */
 .table {
   border-collapse: collapse;
   width: 100%;
@@ -75,7 +73,6 @@ th {
   text-align: center;
 }
 
-/* 반응형 */
 @media (max-width: 768px) {
   .table-responsive {
     overflow-x: auto;

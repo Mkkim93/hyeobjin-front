@@ -4,19 +4,18 @@
         <div class="custom-modal">
             <h3>일정 등록</h3>
             <form @submit.prevent="postEvent">
-                <!-- <p>선택한 날짜: {{ createAt }}</p> -->
 
-                <label>일정 제목:</label>
-                <input v-model="newTitle" class="form-control mb-2" type="text" placeholder="제목 입력">
+                <label for="newTitle">일정 제목:</label>
+                <input id="newTitle" v-model="newTitle" class="form-control mb-2" type="text" placeholder="제목 입력">
 
-                <label>일정 설명:</label>
-                <textarea v-model="newDescription" class="form-control mb-2" placeholder="설명 입력"></textarea>
+                <label for="newDescription">일정 설명:</label>
+                <textarea id="newDescription" v-model="newDescription" class="form-control mb-2" placeholder="설명 입력"></textarea>
 
-                <label>시작 날짜:</label>
-                <input v-model="newStartTime" class="form-control mb-2" type="date" placeholder="시작 날짜 입력">
+                <label for="newStartTime">시작 날짜:</label>
+                <input id="newStartTime" v-model="newStartTime" class="form-control mb-2" type="date" placeholder="시작 날짜 입력">
 
-                <label>종료 날짜:</label>
-                <input v-model="newEndTime" class="form-control mb-2" type="date" placeholder="종료 날짜 입력">
+                <label for="newEndTime">종료 날짜:</label>
+                <input id="newEndTime" v-model="newEndTime" class="form-control mb-2" type="date" placeholder="종료 날짜 입력">
 
                 <div>
                     <input class="form-control mb-3" v-model="postcode" placeholder="우편번호">
@@ -28,8 +27,8 @@
                     <label class="form-check-label" for="newHolidays">휴무일 여부</label>
                 </div>
 
-                <label>상세 주소</label>
-                <input class="form-control mb-2" v-model="newLocation" type="text" placeholder="상세 주소 입력" />
+                <label for="newLocation">상세 주소</label>
+                <input id="newLocation" class="form-control mb-2" v-model="newLocation" type="text" placeholder="상세 주소 입력" />
                 <button class="btn btn-dark" type="button" @click="openPostcodePopup">주소 검색</button><br>
 
                 <label>
@@ -41,6 +40,8 @@
                     <input type="radio" name="newCalendarYN" value="N" v-model="newCalendarYN" />
                     비공개
                 </label>
+                <br>
+            <br>
                 <button type="submit" class="btn btn-success">등록</button>
                 <button class="btn btn-danger" @click="closeModal">닫기</button>
             </form>
@@ -54,6 +55,8 @@
 import dayjs from 'dayjs';
 export default {
     name: 'CreateCalendar',
+    props: { createModalOpen: Boolean },
+
     data() {
         return {
             createAt: '',
@@ -69,28 +72,17 @@ export default {
         }
     },
 
-    setup() {
-        console.log('📌 CreateCalendar 컴포넌트 실행됨, createModalOpen:');
-    },
-
-    props: {
-        createModalOpen: Boolean, // ✅ props 선언
-    },
-
     watch: {
         createModalOpen(newVal) {
-            console.log('📌 CreateCalendar 컴포넌트 실행됨, createModalOpen:', newVal);
-        }
+            console.log('📌 CreateCalendar component rendering value:', newVal);
+        },
     },
 
     methods: {
-        // 📌 모달 닫기
         closeModal() {
-            this.$emit('close'); // 부모 컴포넌트에서 `modalOpen = false` 처리
+            this.$emit('close');
         },
 
-
-        // 📌 일정 추가
         async postEvent() {
             try {
                 const newEvent = {
@@ -98,7 +90,6 @@ export default {
                     highlight: 'blue',
                     startTime: this.formatDate(this.newStartTime),
                     endTime: this.formatDate(this.newEndTime),
-                    // createAt: this.formatDate(new Date()),
                     title: this.newTitle,
                     description: this.newDescription,
                     calendarYN: this.newCalendarYN,
@@ -106,21 +97,17 @@ export default {
                     holidays: this.newHolidays,
                 };
 
-                // 프론트엔드 일정 데이터에 추가
-                // this.attributes.push(newEvent);
-                console.log("✅ 추가된 일정:", newEvent);
-
-                // 서버에 일정 저장 요청
                 await this.$axios.post('/admin/calendar', newEvent, {
                     headers: { 'Content-Type': 'application/json' },
                 })
-                console.log('일정 추가 성공');
+
                 alert('일정이 추가되었습니다.');
+
                 this.closeModal();
                 this.$router.go('/admin/calendar');
 
             } catch (error) {
-                console.log('일정 추가 실패', error);
+                console.error('postEvent error: ', error);
             }
 
         },
@@ -128,8 +115,8 @@ export default {
         openPostcodePopup() {
             new daum.Postcode({
                 oncomplete: (data) => {
-                    this.postcode = data.zonecode;  // 우편번호 입력
-                    this.address = data.address;  // 기본 주소 입력
+                    this.postcode = data.zonecode;
+                    this.address = data.address; 
                 }
             }).open();
         },
@@ -137,14 +124,10 @@ export default {
         formatDate(date) {
             return dayjs(date).format('YYYY-MM-DDTHH:mm');
         }
-
     },
-
 }
 </script>
-
 <style scoped>
-/* ✅ 일정 목록 스타일 */
 .event-list {
     list-style: none;
     padding: 0;
@@ -165,7 +148,6 @@ export default {
     color: white;
 }
 
-/* ✅ 모달 스타일 */
 .custom-modal-overlay {
     position: fixed;
     top: 0;
@@ -189,7 +171,6 @@ export default {
     text-align: center;
 }
 
-/* ✅ 버튼 스타일 */
 .modal-buttons {
     display: flex;
     justify-content: space-between;

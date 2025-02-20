@@ -15,7 +15,6 @@ export class CustomUploadAdaptor {
             },
           })
           .then((response) => {
-            console.log("Upload success:", response.data);
             return { default: response.data.url };
           })
           .catch((error) => {

@@ -1,30 +1,35 @@
 import { createStore } from 'vuex'
 
-const store = createStore({
+export const store = createStore({
     state: {
-        manufactList: [], // 사용할 컴포넌트에서 mapState(['manufactList']) 로 감싸서 아래 mutations 와 actions 에서 업데이트한 데이터를 가지고 간다.
+        myInfoData: null,
+        manufactList: [], 
         errorStatus: null, 
     },
 
     mutations: {
-        setManufacturers(state, manufacturers) {
-            state.manufactList = manufacturers;
+        setMyInfoData(state, data) {
+            state.myInfoData = data;
         },
 
-        setErrorStatus(status) {
-            this.errorStatus = status;
-        }
+        setManufacturers(state, data) {
+            state.manufactList = data;
+        },
+
+        setErrorStatus(state, data) {
+            state.errorStatus = data;
+        },
+
     },
 
     actions: {
-        // 2. 받은 데이터를 업데이트 시켜준다.
         updateManufacturers({ commit }, manufacturers) {
             commit('setManufacturers', manufacturers);
         },
 
-        setErrorStatus({ commit }, status) { // 뮤테이션을 호출하도록 수정
+        setErrorStatus({ commit }, status) {
             commit('setErrorStatus', status);
-        }
+        },
     }
 })
 export default store;

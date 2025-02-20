@@ -30,13 +30,6 @@ export default {
 
   data() {
     return {
-      modalOpen: false, // 일정 추가 모달 상태
-      createModalOpen: false,
-      editModalOpen: false,
-
-      attributes: [],
-
-      // 신규 일정 추가를 위한 데이터
       createAt: '',
       newTitle: '',
       newDescription: '',
@@ -44,28 +37,46 @@ export default {
       newEndTime: '',
       newCalendarYN: 'Y',
       newLocation: '',
-
       postcode: '',
       address: '',
-
+      
       selectedEventId: null,
-      selectedEvent: {
-
-        createAt: '',
-
-      },
-
-      dayOfEventsData: [],
-
       newModifyCalendarData: null,
 
-
-
+      modalOpen: false,
+      createModalOpen: false,
+      editModalOpen: false,
+      
+      attributes: [],
+      dayOfEventsData: [],
+      
+      selectedEvent: { createAt: '' },
     };
   },
 
-  async created() {
-    await this.fetchCalendarDataAdmin();
+  async created() { await this.fetchCalendarDataAdmin(); },
+
+  mounted() {
+
+    this.emitter.on('modifyCalendarObject', (modifyCalendarData) => {
+
+      this.newModifyCalendarData = modifyCalendarData;
+      this.modalOpen = false;
+
+      this.$nextTick(() => {
+        this.editModalOpen = true;
+      });
+    });
+
+    this.emitter.on('createModalOpen', () => {
+      this.modalOpen = false;
+      this.editModalOpen = false;
+
+      this.$nextTick(() => {
+        this.createModalOpen = true;
+        this.$forceUpdate();
+      });
+    });
   },
 
   components: {
@@ -74,71 +85,27 @@ export default {
     CalendarEdit,
   },
 
-  mounted() {
-    this.emitter.on('modifyCalendarObject', (modifyCalendarData) => {
-      console.log("📢 받은 calendarId:", modifyCalendarData);
-      this.newModifyCalendarData = modifyCalendarData;
-      console.log('부모 컴포넌트의 에미터 id:', this.newModifyCalendarData);
-
-      // 📌 Detail 모달 닫고 Edit 모달 열기
-      this.modalOpen = false;  // Detail 닫기
-      this.$nextTick(() => {
-        this.editModalOpen = true; // Edit 열기
-      });
-    });
-
-    this.emitter.on('createModalOpen', () => {
-      console.log('📢 받은 createModalOpen 이벤트');
-      this.modalOpen = false;
-      this.editModalOpen = false;
-
-      this.$nextTick(() => {
-        this.createModalOpen = true; // ✅ 강제로 true 설정
-        this.$forceUpdate(); // ✅ 강제로 UI 업데이트
-        console.log('부모에서 createModalOpen 값:', this.createModalOpen);
-      });
-
-    });
-  },
-
   methods: {
 
-    // 📌 일정 클릭 시 상세 모달 오픈
     async openEventDetailModal(day) {
-      console.log("📅 클릭한 날짜:", day);
-
-      // 시작시간: 해당 날짜의 00:00:00
       const startTime = `${day.id}T00:00:00`;
-
-      // 종료시간: 해당 날짜의 23:59:59
       const endTime = `${day.id}T23:59:59`;
 
-      console.log('day.dates', day.attributes);
-
-      // 선택된 이벤트 저장
       this.selectedEvent = {
         createAt: day.id,
         startTime: startTime,
         endTime: endTime
       };
 
-      console.log('createAt:', this.selectedEvent.createAt);
-      console.log('startTime:', this.selectedEvent.startTime);
-      console.log('endTime:', this.selectedEvent.endTime);
-
       try {
 
         const response = await this.$axios.get(`/admin/calendar/detail?startTime=${this.selectedEvent.startTime}`);
-        console.log('between data', response.data);
-        // 📌 API 호출 (startTime과 endTime을 파라미터로 전달)
-        // this.fetchDetailStartTimeBetween(startTime, endTime);
 
         this.dayOfEventsData = response.data;
-        console.log('dayOfEventsData', this.dayOfEventsData);
-
         this.modalOpen = true;
+
       } catch (error) {
-        console.log('openEventDetailModal error', error);
+        console.error('openEventDetailModal error: ', error);
       }
     },
 
@@ -147,11 +114,8 @@ export default {
         const response = await this.$axios.get('/admin/calendar');
 
         if (!Array.isArray(response.data)) {
-          console.error("❌ API 응답 데이터가 배열이 아닙니다:", response.data);
           return;
         }
-
-        console.log('fetchCalendarDataAdmin.response.data', response.data);
 
         const newAttributes = response.data
           .filter(event => event.startTime && event.endTime)
@@ -159,12 +123,12 @@ export default {
             key: event.calendarId,
 
             highlight: [{
-              color: event.holidays ? 'red' : 'blue',  // ✅ 조건에 따라 색상 변경
-              fillMode: 'solid'  // ✅ 'solid'로 채우기 (다른 옵션: 'light', 'outline')
+              color: event.holidays ? 'red' : 'blue',
+              fillMode: 'solid'
             }],
 
             dot: {
-              color: event.holidays ? 'red' : 'blue',  // ✅ 동그라미 색상 지정
+              color: event.holidays ? 'red' : 'blue',
               class: 'highlight-dot'
             },
 
@@ -180,24 +144,19 @@ export default {
             }
           }));
 
-
-        // ✅ 기존 데이터와 새로운 데이터 병합 후 중복 제거
         const mergedAttributes = [...this.attributes, ...newAttributes];
         this.attributes = Array.from(new Set(mergedAttributes.map(attr => JSON.stringify(attr)))).map(attr => JSON.parse(attr));
 
-        console.log('Merged attributes:', this.attributes);
       } catch (error) {
-        console.log('admin call calendar fetch error', error);
-      }
+        console.error('fetchCalendarDataAdmin error: ', error);
+      } 
     }
-
   }
 }
 
 </script>
 
 <style scoped>
-/* ✅ 모달 오버레이 */
 .custom-modal-overlay {
   position: fixed;
   top: 0;
@@ -211,7 +170,6 @@ export default {
   z-index: 1050;
 }
 
-/* ✅ 모달 스타일 */
 .custom-modal {
   background: #fff;
   padding: 20px;
@@ -222,7 +180,6 @@ export default {
   text-align: center;
 }
 
-/* ✅ 버튼 스타일 */
 .modal-buttons {
   display: flex;
   justify-content: space-between;
@@ -252,7 +209,6 @@ export default {
   height: 160px;
 }
 
-/* 2) 또 다른 예시: 달력 내부 셀 스타일 */
 :deep(.vc-day) {
   cursor: pointer;
   padding: 10px;
@@ -261,16 +217,12 @@ export default {
 
 :deep(.calendar-wrapper) {
   width: 100%;
-  /* 부모 컨테이너가 가득 차도록 설정 */
   max-width: 100%;
-  /* 최대 너비 설정 (필요시 조정) */
   margin: 10 auto;
-  /* 가운데 정렬 */
 }
 
 :deep(.vc-container) {
   width: 100%;
-  /* 달력 컨테이너가 부모 크기에 맞게 조정됨 */
 }
 
 .bi {

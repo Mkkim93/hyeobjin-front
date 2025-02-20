@@ -6,14 +6,15 @@
   <div v-if="!errorStatus">
     <HomeView v-if="!isAdminPage" @updateCategoryStep="updateCategoryStep" />
     <Header v-if="!isMainPage" />
+
     <div class="main-content">
       <div :class="{ 'main-content': !isAdminPage, 'admin-content': isAdminPage }">
-        <!-- isMainPage이고, isAdminPage가 아닐 때만 FormCategory 렌더링 -->
         <FormCategory :categoryStep="categoryStep" v-if="isMainPage && !isAdminPage" />
         <router-view />
       </div>
     </div>
-    <Footer v-if="isMainPage && !isAdminPage"/>
+
+    <Footer v-if="!isAdminPage" />
   </div>
 </template>
 
@@ -35,10 +36,10 @@ export default {
   },
 
   computed: {
-    ...mapState(['errorStatus']), // Vuex 상태를 직접 사용
+    ...mapState(['errorStatus']),
 
     isAdminPage() {
-      return this.$route.path.startsWith('/admin'); // /admin 경로인지 확인
+      return this.$route.path.startsWith('/admin');
     },
 
     isMainPage() {
@@ -48,7 +49,7 @@ export default {
 
   methods: {
     updateCategoryStep(step) {
-      this.categoryStep = step; 
+      this.categoryStep = step;
     }
   },
 
