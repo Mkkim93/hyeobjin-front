@@ -4,7 +4,6 @@
 
     <form @submit.prevent="modifyBoardData" class="edit-form">
       
-      <!-- 게시글 정보 -->
       <div class="info-container">
         <div class="info-item">
           <strong>작성자:</strong> {{ EditBoardData.writer }}
@@ -26,7 +25,6 @@
         </div>
       </div>
 
-      <!-- 공개여부 선택 -->
       <div class="visibility-toggle">
         <label>
           <input type="radio" name="boardYN" value="Y" v-model="EditBoardData.boardYN" />
@@ -38,7 +36,6 @@
         </label>
       </div>
 
-      <!-- 제목 입력 -->
       <div class="input-group">
         <label for="boardTitle">제목</label>
         <input
@@ -50,18 +47,15 @@
         />
       </div>
 
-      <!-- 내용 입력 -->
       <div class="editor-container">
         <Editor v-model="editorContent" />
       </div>
 
-      <!-- 파일 업로드 -->
       <div class="input-group file-upload">
         <label for="fileInput">첨부 파일</label>
         <input type="file" id="fileInput" multiple @change="handleFileChange" class="file-input" />
       </div>
 
-      <!-- 버튼 영역 -->
       <div class="button-group">
         <button type="button" class="cancel-btn" @click="$router.back()">취소</button>
         <button type="submit" class="submit-btn">수정 완료</button>
@@ -147,7 +141,6 @@ export default {
 </script>
 
 <style scoped>
-/* 전체 컨테이너 */
 .notice-edit-container {
   max-width: 800px;
   margin: 40px auto;
@@ -157,7 +150,6 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 제목 스타일 */
 .notice-title {
   font-size: 24px;
   font-weight: bold;
@@ -166,7 +158,6 @@ export default {
   color: #333;
 }
 
-/* 게시글 정보 */
 .info-container {
   display: flex;
   flex-wrap: wrap;
@@ -185,7 +176,6 @@ export default {
   margin-bottom: 10px;
 }
 
-/* 공개 여부 선택 */
 .visibility-toggle {
   display: flex;
   gap: 15px;
@@ -204,7 +194,6 @@ export default {
   margin-right: 5px;
 }
 
-/* 입력 필드 */
 .input-group {
   margin-bottom: 20px;
 }
@@ -230,7 +219,6 @@ export default {
   border-color: #666;
 }
 
-/* 에디터 */
 .editor-container {
   background: #fff;
   padding: 10px;
@@ -239,7 +227,6 @@ export default {
   margin-bottom: 20px;
 }
 
-/* 파일 업로드 */
 .file-upload {
   display: flex;
   flex-direction: column;
@@ -252,7 +239,6 @@ export default {
   border-radius: 6px;
 }
 
-/* 버튼 스타일 */
 .button-group {
   display: flex;
   justify-content: space-between;

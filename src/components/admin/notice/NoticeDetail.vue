@@ -1,7 +1,6 @@
 <template>
   <div class="notice-detail-container">
     <div class="card">
-      <!-- 게시글 제목 -->
       <div class="card-header">
         <h3 class="title">{{ boardDetail.boardTitle }}</h3>
         <div class="action-buttons">
@@ -10,7 +9,6 @@
         </div>
       </div>
 
-      <!-- 게시글 정보 -->
       <div class="card-body">
         <div class="post-info">
           <span>📅 등록일: {{ formatDate(boardDetail.boardRegDate) }}</span>
@@ -21,12 +19,10 @@
 
         <hr />
 
-        <!-- 게시글 내용 -->
         <div class="content-box">
           <div v-html="boardDetail.boardContent"></div>
         </div>
 
-        <!-- 첨부 파일 -->
         <div class="file-section" v-if="boardDetail.adminBoardFiles && boardDetail.adminBoardFiles.length > 0">
           <h5 class="file-title">📎 첨부파일</h5>
           <ul class="file-list">
@@ -39,7 +35,6 @@
         </div>
       </div>
 
-      <!-- 버튼 영역 -->
       <div class="card-footer">
         <router-link to="/admin/notice" class="btn back-btn">⬅ 목록으로</router-link>
       </div>
@@ -142,14 +137,12 @@ export default {
 </script>
 
 <style scoped>
-/* ✅ 기본 레이아웃 */
 .notice-detail-container {
-  max-width: 850px;
+  max-width: 100%;
   margin: 40px auto;
   padding: 20px;
 }
 
-/* ✅ 카드 스타일 */
 .card {
   background: #f8f8f8;
   border-radius: 10px;
@@ -157,7 +150,6 @@ export default {
   overflow: hidden;
 }
 
-/* ✅ 제목 영역 */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -169,7 +161,6 @@ export default {
   color: white;
 }
 
-/* ✅ 버튼 스타일 */
 .action-buttons {
   display: flex;
   gap: 10px;
@@ -198,7 +189,6 @@ export default {
   opacity: 0.8;
 }
 
-/* ✅ 게시글 정보 */
 .post-info {
   display: flex;
   flex-wrap: wrap;
@@ -211,7 +201,6 @@ export default {
   margin-bottom: 10px;
 }
 
-/* ✅ 게시글 내용 */
 .content-box {
   font-size: 16px;
   line-height: 1.6;
@@ -221,7 +210,6 @@ export default {
   border-radius: 8px;
 }
 
-/* ✅ 파일 섹션 */
 .file-section {
   margin-top: 20px;
 }
@@ -268,7 +256,6 @@ export default {
   opacity: 0.8;
 }
 
-/* ✅ 하단 버튼 */
 .card-footer {
   padding: 15px;
   text-align: right;

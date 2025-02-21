@@ -2,28 +2,31 @@
   <div class="d-flex" id="wrapper">
 
     <div class="bg-light border-end" :class="{ 'toggled': isToggled }" id="sidebar-wrapper">
-      <div class="sidebar-heading text-center py-4"><a href="/admin">관리자 홈</a></div>
+      <div class="sidebar-heading text-center py-4"><i class="fa-solid fa-house me-2"></i><a href="/admin">관리자 홈</a></div>
       <div class="list-group list-group-flush">
         
             <router-link to="/admin/item" class="list-group-item list-group-item-action">
-              <i class="bi bi-diagram-3-fill">제품 관리</i></router-link>
+              <i class="bi bi-diagram-3-fill me-2"></i>제품 관리</router-link>
+              
+              <router-link to="/admin/detail" class="list-group-item list-group-item-action">
+                <i class="fa-solid fa-sitemap me-2"></i>제품 상세 관리</router-link>
         
             <router-link to="/admin/manu" class="list-group-item list-group-item-action">
-              <i class="bi bi-buildings-fill">제조사 관리</i></router-link>
+              <i class="bi bi-buildings-fill me-2"></i>제조사 관리</router-link>
         
             <router-link to="/admin/notice" class="list-group-item list-group-item-action">
-              <i class="bi bi-pencil-square">공지 사항</i></router-link>
+              <i class="bi bi-pencil-square me-2"></i>공지/FAQ 관리</router-link>
         
             <router-link to="/admin/calendar" class="list-group-item list-group-item-action"><i
-            class="bi bi-calendar-day-fill">일정 관리</i></router-link>
+            class="bi bi-calendar-day-fill me-2"></i>일정 관리</router-link>
         
-            <router-link to="/admin/inquiry" class="list-group-item list-group-item-action"><i
-            class="bi bi-calendar-day-fill">고객 문의</i></router-link>
-        
+            <router-link to="/admin/inquiry" class="list-group-item list-group-item-action"><i 
+              class="fa-solid fa-question me-2"></i>고객 문의</router-link>
+            
             <router-link to="/admin/user" class="list-group-item list-group-item-action">
-          <i class="fa-solid fa-users-gear">관리자 목록</i></router-link>
+          <i class="fa-solid fa-users-gear me-2"></i>관리자 목록</router-link>
 
-        <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-gear-fill"></i>설정</a>
+        <a href="#" class="list-group-item list-group-item-action me-2"><i class="bi bi-gear-fill me-2"></i>설정(준비중)</a>
       </div>
     </div>
 
@@ -38,13 +41,13 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/">메인 페이지</a>
               </li>
              
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown">
-                  Menu
+                  메뉴
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="/admin/myinfo">내정보</a></li>
@@ -147,6 +150,10 @@ export default {
 };
 </script>
 <style scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
 #sidebar-wrapper {
   width: 250px;
   min-height: 100vh;

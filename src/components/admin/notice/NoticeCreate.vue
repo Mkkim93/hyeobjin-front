@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="card shadow-sm p-4">
-      <h2 class="text-center mb-4">공지 등록</h2>
+      <h2 class="text-center mb-4">공지/FAQ 등록</h2>
 
       <div class="mb-3">
         <label for="title" class="form-label">제목</label>
@@ -24,6 +24,19 @@
          <label for="boardType">
           <input type="radio" name="boardType" v-model="boardType" value="FAQ">
          FAQ</label> 
+      </div>
+
+      <br>
+
+      <div class="visibility-toggle">
+        <label>
+          <input type="radio" name="boardYN" value="Y" v-model="boardYN" />
+          공개
+        </label>
+        <label>
+          <input type="radio" name="boardYN" value="N" v-model="boardYN" />
+          비공개
+        </label>
       </div>
 
       <br>
@@ -54,6 +67,7 @@ export default {
       postContent: '',
       files: [],
       boardType: '',
+      boardYN: '',
     };
   },
 
@@ -75,6 +89,7 @@ export default {
           boardTitle: this.title,
           boardContent: this.postContent,
           boardType: this.boardType,
+          boardYN: this.boardYN,
         };
 
         formData.append("createBoardDTO", new Blob([JSON.stringify(createBoardDTO)],
@@ -85,7 +100,7 @@ export default {
           formData.append("files", file);
         });
 
-        if (!boardType) {
+        if (!this.boardType) {
           alert('공개 또는 비공개를 선택해주세요');
           return;
         }
@@ -140,6 +155,6 @@ export default {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 100%;
 }
 </style>

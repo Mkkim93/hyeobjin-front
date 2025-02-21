@@ -38,7 +38,7 @@
           <div class="col-md-4">
             <label for="itemId">창호 부품 선택</label>
             <select id="itemId" v-model="itemId" class="form-select">
-              <option v-for="items in itemNameList" :key="items.itemId" :value="items.itemId">{{ items.itemNum }}
+              <option v-for="items in itemNameList" :key="items.itemId" :value="items.itemId">{{ items.itemName }}
               </option>
             </select>
           </div>
@@ -50,7 +50,7 @@
         </div>
 
         <small class="text-muted d-block">0/4000 byte</small>
-        
+
         <div class="my-3">
           <label for="fileBoxes">파일 첨부 (선택)</label>
           <div class="d-flex">
@@ -241,7 +241,7 @@ export default {
     async fetchItemNameListData(manuId, typeId) {
 
       try {
-        const response = await this.$axios.get(`/items/itemNum?manuId=${manuId}&typeId=${typeId}`);
+        const response = await this.$axios.get(`/items/itemname?manuId=${manuId}&typeId=${typeId}`);
         this.itemNameList = response.data;
       } catch (error) {
         console.error('fetchItemNameListData error', error);
@@ -263,11 +263,19 @@ export default {
         alert("문의 내용을 입력하세요.");
         return;
       }
-      
+
       if (!this.title || this.title.trim() === "") {
         alert("문의 제목을 입력하세요.");
         return;
       }
+
+      const selectedManu = this.manuList.find(manu => manu.manuId === this.manuId);
+      const selectedType = this.typeList.find(type => type.itemTypeId === this.typeId);
+      const selectedItem = this.itemNameList.find(item => item.itemId === this.itemId);
+
+      console.log('selectedManu', selectedManu);
+      console.log('selectedType', selectedType);
+      console.log('selectedItem', selectedItem);
 
       const formData = new FormData();
       formData.append('title', this.title);
@@ -277,9 +285,9 @@ export default {
       formData.append('email', this.emailId.concat('@' + this.emailDomain))
       formData.append('addr', this.addr);
       formData.append('detailAddr', this.detailAddr);
-      formData.append('typeId', this.typeId);
-      formData.append('manuId', this.manuId);
-      formData.append('itemId', this.itemId);
+      formData.append('itemName', selectedItem.itemName);
+      formData.append('manuName', selectedManu.manuName);
+      formData.append('itemTypeName', selectedType.itemTypeName);
 
       if (this.fileBoxes.length > 0) {
         this.fileBoxes.forEach((fileObject) => {

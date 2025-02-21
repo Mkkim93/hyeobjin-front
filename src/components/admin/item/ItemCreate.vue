@@ -306,11 +306,11 @@ label {
 }
 
 .warn-container {
-  display: block; /* 인라인 요소를 블록처럼 만들어 중앙 정렬 가능 */
-  text-align: center; /* 텍스트를 중앙 정렬 */
-  color: #dc3545; /* 경고 색상 (부트스트랩 'danger' 색상 참고) */
-  font-size: 14px; /* 크기 조정 */
-  margin-top: -10px; /* h1과의 간격 줄이기 */
-  margin-bottom: 20px; /* 아래쪽 여백 추가 */
+  display: block; 
+  text-align: center;
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -10px; 
+  margin-bottom: 20px;
 }
 </style>

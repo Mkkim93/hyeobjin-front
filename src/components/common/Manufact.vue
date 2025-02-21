@@ -140,16 +140,19 @@ export default {
     },
 
     async fetchItems(manuId) {
+      
       this.itemTypeNames = null
       try {
         const response = await this.$axios.get(`/items/numbers?manuId=${manuId}`, {
+          
+          
           headers: {
             "Content-Type": "application/json",
           },
         });
 
         this.itemsNumList = response.data;
-
+        
       } catch (error) {
         console.error('fetchItems error: ', error);
       }
@@ -228,21 +231,20 @@ body {
 
 
 .free-content {
-  flex: 1 1 100%; /* 부모 flex에 맞춰 정렬 */
-  width: 100%; /* 부모 요소의 전체 너비 사용 */
-  max-width: 1200px; /* 너무 커지지 않도록 제한 */
-  margin: 20px auto; /* 가운데 정렬 */
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 1200px; 
+  margin: 20px auto; 
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   text-align: center;
-  overflow-x: hidden; /* 가로 스크롤 방지 */
-  word-wrap: break-word; /* 긴 단어 자동 줄바꿈 */
-  word-break: break-word; /* 단어가 너무 길어도 줄바꿈 */
+  overflow-x: hidden; 
+  word-wrap: break-word; 
+  word-break: break-word; 
 }
 
-/* ✅ free-content 내부 이미지 반응형 적용 */
 .free-content img {
   max-width: 100%;
   height: auto;
@@ -252,23 +254,22 @@ body {
   border: 1px solid #ddd;
 }
 
-/* ✅ 반응형 적용: 화면이 작아질 경우 여백 및 크기 조정 */
 @media (max-width: 1024px) {
   .free-content {
     padding: 15px;
-    max-width: 90%; /* 화면이 줄어들면 너비 조정 */
+    max-width: 90%; 
   }
 }
 
 @media (max-width: 768px) {
   .free-content {
     padding: 10px;
-    max-width: 100%; /* 작은 화면에서는 전체 너비 사용 */
-    text-align: left; /* 좌측 정렬 */
+    max-width: 100%;
+    text-align: left; 
   }
 
   .free-content img {
-    max-width: 100%; /* 모바일에서 너비 최적화 */
+    max-width: 100%; 
   }
 }
 

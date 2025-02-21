@@ -80,7 +80,9 @@ export default {
       currentPage: 0,
       totalPages: 0,
       pageSize: 10,
-      boardType: 'FAQ'
+      boardType: 'FAQ',
+
+      selectedPostId: null,
     };
   },
   created() { this.fetchBoardList(); },
@@ -115,6 +117,10 @@ export default {
         this.fetchBoardList();
       }
     },
+
+    togglePost(postId) {
+    this.selectedPostId = this.selectedPostId === postId ? null : postId;
+  },
   },
 };
 </script>

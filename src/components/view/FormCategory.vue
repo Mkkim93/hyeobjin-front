@@ -25,7 +25,7 @@ export default {
 
             cate01: [
                 { path: "/about", name: "인사말" },
-                { path: "/history", name: "연혁" },
+                // { path: "/history", name: "연혁" },
                 { path: "/location", name: "오시는 길" }
             ],
 

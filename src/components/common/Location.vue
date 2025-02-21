@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-/* ✅ 전체 레이아웃 */
+
 .location-container {
   display: flex;
   flex-direction: column;
@@ -56,10 +56,10 @@ export default {
   text-align: center;
   padding: 60px 20px;
   min-height: 100vh;
-  background-color: #fafafa; /* 밝은 배경으로 심플하게 */
+  background-color: #fafafa; 
 }
 
-/* ✅ 제목 스타일 */
+
 .location-title {
   font-size: 2.2rem;
   color: #333;
@@ -71,14 +71,14 @@ export default {
 .location-title::after {
   content: "";
   display: block;
-  width: 80px;          /* 길이를 짧게 조정해 미니멀한 느낌 */
-  height: 3px;          /* 두께도 조금 줄임 */
-  background-color: #999; /* 중립 색상 사용 */
+  width: 80px;       
+  height: 3px;         
+  background-color: #999;
   margin: 12px auto 0;
   border-radius: 2px;
 }
 
-/* ✅ 지도 + 정보 카드 배치 */
+
 .map-info-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -88,7 +88,7 @@ export default {
   width: 100%;
 }
 
-/* ✅ 지도 카드 */
+
 .map-card,
 .info-card {
   background: #fff;
@@ -117,22 +117,21 @@ export default {
   border-radius: 10px;
 }
 
-/* ✅ 정보 카드 */
+
 .info-card {
   width: 100%;
   max-width: 600px;
   text-align: left;
 }
 
-/* ✅ 정보 제목 */
+
 .info-title {
   font-size: 1.6rem;
-  color: #333; /* 파란색 계열 제거 */
+  color: #333; 
   margin-bottom: 15px;
   font-weight: 700;
 }
 
-/* ✅ 정보 목록 */
 .info-list {
   list-style: none;
   padding: 0;
@@ -146,14 +145,12 @@ export default {
   margin-bottom: 12px;
 }
 
-/* ✅ 아이콘 색상 */
 .info-list i {
   margin-right: 10px;
-  color: #666; /* 중립 계열 */
+  color: #666; 
   font-size: 1.1rem;
 }
 
-/* ✅ 반응형 */
 @media (max-width: 768px) {
   .map-info-wrapper {
     flex-direction: column;

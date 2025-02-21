@@ -2,13 +2,8 @@
   <section class="container bg-light p-5 rounded shadow-lg">
     <form @submit.prevent="modifyItemData">
     <h1 class="text-center fw-bold text-dark mb-4">제품 수정</h1>
-
-    <!-- Bootstrap Row -->
-    <div class="row">
-      
-      <!-- 좌측 영역: 폼(컬럼 7) -->
+    <div class="row">      
       <div class="col-md-7">
-        
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="itemName" class="form-label">제품명</label>
@@ -29,11 +24,9 @@
               <label for="itemType" class="form-label">제품 타입</label>
               <select id="itemType" v-model="ItemDetailData.itemTypeId" class="form-control"
                 @focus="showItemTypeOptions = true" @blur="showItemTypeOptions = false">
-                <!-- 기존 선택값 표시 -->
                 <option v-if="!showItemTypeOptions" :value="ItemDetailData.itemTypeId">
                   {{ ItemDetailData.itemType }}
                 </option>
-                <!-- 선택 리스트 -->
                 <option v-for="type in ItemTypeData" :key="type.itemTypeId" :value="type.itemTypeId">
                   {{ type.itemTypeName }}
                 </option>
@@ -68,11 +61,9 @@
               <label for="glassSpecId" class="form-label">유리 두께</label>
               <select id="glassSpecId" v-model="ItemDetailData.glassSpecId" class="form-control"
                 @focus="showGlassOptions = true" @blur="showGlassOptions = false">
-                <!-- 기존 선택값 표시 -->
                 <option v-if="!showGlassOptions" :value="ItemDetailData.glassSpecId">
                   {{ ItemDetailData.glassSize }}
                 </option>
-                <!-- 선택 리스트 -->
                 <option v-for="glassType in GlassTypeData" :key="glassType.glassSpecId" :value="glassType.glassSpecId">
                   {{ glassType.glassSpecSize }}
                 </option>
@@ -91,20 +82,13 @@
             <label class="form-check-label" for="itemYN">공개 여부</label>
           </div>
 
-          <!-- 수정 버튼 -->
           <div class="text-end">
             <button type="submit" class="btn btn-primary">수정</button>
           </div>
-
-          <!-- 에디터 (현재 레이아웃 그대로) -->
-          
-        
       </div>
 
-      <!-- 우측 영역: 이미지(컬럼 5) -->
       <div class="col-md-5 d-flex justify-content-center align-items-start">
         <div class="position-relative bg-white p-4 rounded shadow-sm w-100">
-          <!-- 등록 / 미등록 배지 -->
           <div v-if="ItemDetailData.itemYN === true">
             <span class="badge bg-success text-dark position-absolute top-0 end-0 mt-2 me-2">
               등록
@@ -116,16 +100,14 @@
             </span>
           </div>
 
-          <!-- 이미지 표시 -->
           <img
             class="img-fluid w-100"
             :src="ItemFileData.mainPreviewUrl || (ItemFileData.fileName 
                    ? `/item/${ItemFileData.fileName}` 
-                   : 'https://dummyimage.com/900x400/dee2e6/6c757d.jpg')"
+                   : 'https://dummyimage.com/500x500/dee2e6/6c757d.jpg')"
             alt="제품 이미지"
           />
 
-          <!-- 이미지 업로드 -->
           <div class="mt-3">
             <label for="imageUrl" class="form-label">제품 이미지 업로드</label>
             <input

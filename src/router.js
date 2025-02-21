@@ -4,6 +4,7 @@ import About from "./components/common/About.vue";
 import Admin from "./components/admin/Admin.vue";
 import BoardDetail from "./components/common/BoardDetail.vue";
 import CalendarManageMent from "./components/admin/calender/CalendarManageMent.vue";
+import DetailManagement from "./components/admin/detail/DetailManagement.vue";
 import ForbiddenPage from "./components/error/ForbiddenPage.vue";
 import FAQ from "./components/common/FAQ.vue";
 import Help from "./components/view/Help.vue";
@@ -67,7 +68,8 @@ const routes = [
       { path: 'notice/edit/:id', name: 'NoticeEdit', component: NoticeEdit, props: true },
       { path: 'calendar', name: 'CalendarManageMent', component: CalendarManageMent, props: true },
       { path: 'myinfo', name: 'MyInfo', component: MyInfo, props: true},
-      { path: 'profile', name: 'MyProfile', component: MyProfile, props: true}
+      { path: 'profile', name: 'MyProfile', component: MyProfile, props: true},
+      { path: 'detail', name: 'DetailManagement', component: DetailManagement, props: true},
     ]
   },
 

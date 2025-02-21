@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <strong>📱 연락처:</strong> {{ inquiryDetail.tel }}
-                        
+
                     </div>
                     <div>
                         <strong>📅 작성일:</strong> {{ formatDate(inquiryDetail.createAt) }}
@@ -139,8 +139,23 @@ export default {
             });
         },
 
-        deleted() {
+        async deleted() {
             console.log("삭제 기능 구현 예정");
+            const isConfirmed = confirm('문의 내용을 삭제 하시겠습니까?');
+
+            if (isConfirmed) {
+
+                try {
+                    const response = await this.$axios.delete(`/admin/inquiry?inquiryId=${this.inquiryDetail.inquiryId}`);
+
+                    alert(response.data);
+                    this.$router.push('/admin/inquiry');
+                } catch (error) {
+                    console.error('deleted error', error);
+                }
+            } else {
+                alert('삭제가 취소 되었습니다.');
+            }
         },
 
         async downloadFile(fileboxId, fileName) {
@@ -175,7 +190,7 @@ export default {
 
                 const blob = new Blob([response.data], { type: response.headers['content-type'] });
                 const fileURL = URL.createObjectURL(blob);
-                
+
                 window.open(fileURL, '_blank');
 
             } catch (error) {

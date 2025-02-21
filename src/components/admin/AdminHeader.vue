@@ -91,7 +91,7 @@
 
     <div class="card shadow-sm">
       <div class="card-header bg-white fw-bold d-flex justify-content-between">
-        <span>💳 최근 제품 등록 및 수정 현황</span>
+        <span>💳 최근 제품 등록 및 수정 현황(준비중)</span>
         <span class="text-muted">📅 23 - 30 March 2020</span>
       </div>
       <div class="card-body">

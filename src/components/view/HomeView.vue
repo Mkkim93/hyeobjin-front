@@ -26,7 +26,7 @@
               data-bs-toggle="dropdown" aria-expanded="false"> 회사소개 </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownCompany">
               <li><router-link class="dropdown-item" to="/about" @click="setCategoryStep(1)">인사말</router-link></li>
-              <li><a class="dropdown-item" href="#!">연혁</a></li>
+              <!-- <li><a class="dropdown-item" href="#!">연혁</a></li> -->
               <li><router-link class="dropdown-item" to="/location" @click="setCategoryStep(1)">오시는 길</router-link></li>
             </ul>
           </li>

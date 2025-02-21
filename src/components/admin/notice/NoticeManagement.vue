@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
     <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white text-center">
+      <div class="card-header bg-white text-white text-center">
         <h3 class="mb-0">📌 공지사항 관리</h3>
       </div>
 
@@ -179,6 +179,10 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  color: #444;
+}
+
 .table {
   border-radius: 8px;
   overflow: hidden;
@@ -190,8 +194,8 @@ export default {
 }
 
 .page-item.active .page-link {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #444;
+  border-color: #444;
   color: white;
 }
 
