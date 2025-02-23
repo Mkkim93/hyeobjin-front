@@ -8,7 +8,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access");
+    const token = store.state.accessToken;
+    // const token = localStorage.getItem("access");
     if (token) {
       config.headers["Authorization"] = `${token}`;
     }
@@ -26,15 +27,16 @@ instance.interceptors.response.use(
     if (error.response) {
       const statusCode = error.response.status;
       const errorMessage = error.response.data;
-      console.warn("🚨 서버 응답:", errorMessage);
-
+      console.warn("🚨 서버 응답:", errorMessage);    
+      
       store.dispatch("setErrorStatus", { status: statusCode, message: errorMessage });
 
       switch (statusCode) {
         case 401:
           alert("로그인이 필요한 서비스 입니다.");
-          window.location.href = '/login';
-          localStorage.removeItem("access");
+          this.$router.push('/login')
+          store.dispatch("logout");
+          // localStorage.removeItem("access");
           break;
 
         case 403:
@@ -48,7 +50,7 @@ instance.interceptors.response.use(
           break;
           
         case 500:
-          alert("서버 오류가 발생했습니다. 최대한 빠르게 복구 하도록 하겠습니다.");
+          alert("서버 오류가 발생했습니다.");
           window.location.href = '/error/500';
           break;
 

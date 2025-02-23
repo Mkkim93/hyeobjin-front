@@ -94,7 +94,7 @@ const router = createRouter({
 
 // 4. router guard
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.requiresAuth) {
+  if (to.path.startsWith('/admin')) { // /admin 경로에서만 실행
       try {
           await handleAccessValidation(router);
           next();

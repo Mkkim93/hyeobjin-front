@@ -273,10 +273,6 @@ export default {
       const selectedType = this.typeList.find(type => type.itemTypeId === this.typeId);
       const selectedItem = this.itemNameList.find(item => item.itemId === this.itemId);
 
-      console.log('selectedManu', selectedManu);
-      console.log('selectedType', selectedType);
-      console.log('selectedItem', selectedItem);
-
       const formData = new FormData();
       formData.append('title', this.title);
       formData.append('content', this.content);
@@ -386,7 +382,7 @@ export default {
 }
 
 .privacy-container {
-  max-width: 600px;
+  max-width: 100%;
   margin: 20px 0;
   font-size: 14px;
 }
@@ -405,6 +401,7 @@ export default {
 .privacy-details {
   margin-top: 10px;
   padding: 15px;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import axios from '@/plugins/axios.js';
 import { hasRefreshToken } from './checktoken';
+import store from '@/store.js';
 
 function decodeBase64Url(base64Url) {
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -43,8 +44,9 @@ export async function refreshAccessToken($axios) {
         if (!newAccessToken) {
             throw new Error("not new token response");
         }
-        
-        localStorage.setItem("access", newAccessToken);
+
+        store.commit('setAccessToken', newAccessToken);
+        // localStorage.setItem("access", newAccessToken);
         return newAccessToken;
 
     } catch (error) {
@@ -56,13 +58,14 @@ export async function refreshAccessToken($axios) {
 }
 
 export async function handleAccessValidation($router) {
-    const accessToken = localStorage.getItem("access");
+    // const accessToken = localStorage.getItem("access");
+    const accessToken = store.state.accessToken;
+    
     if (!accessToken) {
        const response =  await axios.post('/auth');
        console.log('response', response);
     }
 
-   
     if (!(await hasRefreshToken())) {
         console.warn("Refresh token이 존재하지 않음. 자동 로그아웃 처리");
         // localStorage.removeItem("access"); 

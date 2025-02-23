@@ -5,6 +5,7 @@ export const store = createStore({
         myInfoData: null,
         manufactList: [], 
         errorStatus: null, 
+        accessToken: null,
     },
 
     mutations: {
@@ -20,6 +21,14 @@ export const store = createStore({
             state.errorStatus = data;
         },
 
+        setAccessToken(state, token) {
+            state.accessToken = token;
+        },
+
+        clearAccessToken(state) {
+            state.accessToken = null;
+        }
+
     },
 
     actions: {
@@ -30,6 +39,14 @@ export const store = createStore({
         setErrorStatus({ commit }, status) {
             commit('setErrorStatus', status);
         },
+
+        login({ commit }, token) {
+            commit("setAccessToken", token);
+        },
+
+        logout({ commit }) {
+            commit("clearAccessToken");
+        }
     }
 })
 export default store;

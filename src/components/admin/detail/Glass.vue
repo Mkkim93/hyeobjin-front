@@ -151,13 +151,13 @@ export default {
 
       try {
         await this.$axios.delete("/admin/glass", {
-          params: { deletedIds: this.selectedId }, // ✅ 배열 그대로 전달
-          paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" }) // ✅ 배열을 URL에서 반복 형식으로 변환
+          params: { deletedIds: this.selectedId },
+          paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" })
         });
 
         alert("삭제되었습니다.");
         this.glassList = this.glassList.filter(glass => !this.selectedId.includes(glass.glassSpecId));
-        this.selectedId = []; // 선택한 목록 초기화
+        this.selectedId = []; 
       } catch (error) {
         console.error('submitDelete error:', error);
       }
@@ -208,12 +208,12 @@ export default {
 
 .btn-sm {
   padding: 8px 12px;
-  font-size: 0.875rem; /* 버튼 글씨 크기 줄이기 */
+  font-size: 0.875rem;
   border-radius: 6px;
 }
 
 .d-flex.justify-content-center {
-  flex-wrap: wrap; /* 화면이 작아지면 줄바꿈 되도록 설정 */
+  flex-wrap: wrap;
 }
 
 </style>

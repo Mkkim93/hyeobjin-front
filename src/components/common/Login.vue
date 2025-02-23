@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: "Login",
   data() {
@@ -33,6 +34,9 @@ export default {
     };
   },
   methods: {
+
+    ...mapActions(["login"]),
+
     async handleLogin() {
       try {
         const response = await this.$axios.post("/login", {
@@ -44,7 +48,7 @@ export default {
 
         const accessToken = response.headers['authorization'];
         if (accessToken) {
-          localStorage.setItem("access", accessToken);
+          this.login(accessToken);
         }
 
         alert('로그인 성공');

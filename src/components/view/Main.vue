@@ -76,7 +76,9 @@
         <div class="container px-5 my-5 px-5">
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">고객 문의</h2>
-                <p class="lead mb-0">남겨주신 문의에 대해 성실하게 답변 드리겠습니다.</p>
+                <p class="lead mb-0">남겨주신 문의에 대해 신속하고 정확한 답변을 드릴 수 있도록 최선을 다하겠습니다.
+                    궁금한 사항이 있으시면 언제든지 문의 부탁드립니다.
+                </p>
             </div>
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
@@ -102,7 +104,7 @@
                                 <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i>
                                 </div>
                                 <div class="ms-4">
-                                    <h2 class="h4 fw-bolder">기타 문의</h2>
+                                    <h2 class="h4 fw-bolder">FAQ</h2>
                                     <p class="mb-1">자주 하는 질문 확인</p>
                                     <a class="text-decoration-none" href="/faq">
                                         바로가기

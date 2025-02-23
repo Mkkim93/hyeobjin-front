@@ -14,6 +14,10 @@
       </div>
     </div>
 
+    <button v-show="showButton" @click="scrollToTop" class="scroll-to-top">
+      ↑ TOP
+    </button>
+
     <Footer v-if="!isAdminPage" />
   </div>
 </template>
@@ -32,6 +36,7 @@ export default {
   data() {
     return {
       categoryStep: 0,
+      showButton: false,
     };
   },
 
@@ -47,9 +52,25 @@ export default {
     }
   },
 
+  mounted() {
+    window.addEventListener("scroll", this.checkScroll);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("scroll", this.checkScroll);
+  },
+
   methods: {
     updateCategoryStep(step) {
       this.categoryStep = step;
+    },
+
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+
+    checkScroll() {
+      this.showButton = window.scrollY > 300;
     }
   },
 
@@ -76,5 +97,25 @@ export default {
 
 .admin-content {
   background-color: #f0f0f0;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  padding: 10px 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  transform: scale(1.1);
 }
 </style>

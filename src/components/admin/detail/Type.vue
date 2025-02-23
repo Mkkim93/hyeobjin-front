@@ -46,7 +46,7 @@
         <div class="text-center mt-4 d-flex justify-content-center gap-2">
           <button @click="submitChanges" class="btn btn-warning btn-sm">수정하기</button>
           <button @click="submitCreate" class="btn btn-success btn-sm">새 항목 추가</button>
-          <button @click="submitRegister" class="btn btn-primary btn-sm" v-if="newGlassSpec">등록하기</button>
+          <button @click="submitRegister" class="btn btn-primary btn-sm" v-if="newItemType">등록하기</button>
           <button @click="submitDelete" class="btn btn-danger btn-sm">삭제하기</button>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default {
 
           const response = await this.$axios.delete('/admin/type', {
             params: { itemTypeIds: this.selectedId },
-            paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" }) // ✅ 배열을 URL에서 반복 형식으로 변환
+            paramsSerializer: params => qs.stringify(params, { arrayFormat: "repeat" })
           });
 
           alert(response.data);
@@ -208,11 +208,11 @@ export default {
 
 .btn-sm {
   padding: 8px 12px;
-  font-size: 0.875rem; /* 버튼 글씨 크기 줄이기 */
+  font-size: 0.875rem;
   border-radius: 6px;
 }
 
 .d-flex.justify-content-center {
-  flex-wrap: wrap; /* 화면이 작아지면 줄바꿈 되도록 설정 */
+  flex-wrap: wrap;
 }
 </style>
