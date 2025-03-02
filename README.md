@@ -45,6 +45,7 @@ Spring Boot와 Vue.js를 기반으로 구축되었으며, Nginx를 리버스 프
 - QueryDSL (동적 쿼리)
 - AWS S3 (파일 업로드 및 저장)
 - SMTP (이메일 전송)
+- Redis (Token Session 관리)
 
 ### 🔹 **프론트엔드 (Vue.js)**
 - Vue.js 3 / Vite
